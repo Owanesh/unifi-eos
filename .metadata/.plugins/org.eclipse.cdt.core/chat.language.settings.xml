@@ -4,9 +4,6 @@
 		<extension point="org.eclipse.cdt.core.LanguageSettingsProvider">
 			<provider id="org.eclipse.cdt.build.crossgcc.CrossGCCBuiltinSpecsDetector">
 				<language id="org.eclipse.cdt.core.gcc">
-					<entry kind="includePath" name="/usr/local/include">
-						<flag value="BUILTIN|READONLY"/>
-					</entry>
 					<entry kind="includePath" name="/Library/Developer/CommandLineTools/usr/lib/clang/8.1.0/include">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
@@ -1012,9 +1009,6 @@
 				</language>
 				<language id="org.eclipse.cdt.core.g++">
 					<entry kind="includePath" name="/Library/Developer/CommandLineTools/usr/include/c++/v1">
-						<flag value="BUILTIN|READONLY"/>
-					</entry>
-					<entry kind="includePath" name="/usr/local/include">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
 					<entry kind="includePath" name="/Library/Developer/CommandLineTools/usr/lib/clang/8.1.0/include">
@@ -2057,9 +2051,6 @@
 		<extension point="org.eclipse.cdt.core.LanguageSettingsProvider">
 			<provider id="org.eclipse.cdt.build.crossgcc.CrossGCCBuiltinSpecsDetector">
 				<language id="org.eclipse.cdt.core.gcc">
-					<entry kind="includePath" name="/usr/local/include">
-						<flag value="BUILTIN|READONLY"/>
-					</entry>
 					<entry kind="includePath" name="/Library/Developer/CommandLineTools/usr/lib/clang/8.1.0/include">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
@@ -3065,9 +3056,6 @@
 				</language>
 				<language id="org.eclipse.cdt.core.g++">
 					<entry kind="includePath" name="/Library/Developer/CommandLineTools/usr/include/c++/v1">
-						<flag value="BUILTIN|READONLY"/>
-					</entry>
-					<entry kind="includePath" name="/usr/local/include">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
 					<entry kind="includePath" name="/Library/Developer/CommandLineTools/usr/lib/clang/8.1.0/include">

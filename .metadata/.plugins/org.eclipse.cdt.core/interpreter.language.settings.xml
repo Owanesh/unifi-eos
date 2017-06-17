@@ -4,9 +4,6 @@
 		<extension point="org.eclipse.cdt.core.LanguageSettingsProvider">
 			<provider id="org.eclipse.cdt.build.crossgcc.CrossGCCBuiltinSpecsDetector">
 				<language id="org.eclipse.cdt.core.gcc">
-					<entry kind="includePath" name="/usr/local/include">
-						<flag value="BUILTIN|READONLY"/>
-					</entry>
 					<entry kind="includePath" name="/Library/Developer/CommandLineTools/usr/lib/clang/8.1.0/include">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
@@ -47,9 +44,6 @@
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
 					<entry kind="macro" name="__ATOMIC_RELEASE" value="3">
-						<flag value="BUILTIN|READONLY"/>
-					</entry>
-					<entry kind="macro" name="__ATOMIC_SEQ_CST" value="5">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
 					<entry kind="macro" name="__BIGGEST_ALIGNMENT__" value="16">
@@ -274,6 +268,9 @@
 					<entry kind="macro" name="__INT64_C_SUFFIX__" value="LL">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
+					<entry kind="macro" name="__INT64_FMTd__" value="5">
+						<flag value="BUILTIN|READONLY"/>
+					</entry>
 					<entry kind="macro" name="__INT64_FMTd__" value="&quot;lld&quot;">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
@@ -401,9 +398,6 @@
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
 					<entry kind="macro" name="__INT_LEAST32_MAX__" value="2147483647">
-						<flag value="BUILTIN|READONLY"/>
-					</entry>
-					<entry kind="macro" name="__INT_LEAST32_TYPE__" value="int">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
 					<entry kind="macro" name="__INT_LEAST64_FMTd__" value="&quot;ld&quot;">
@@ -629,6 +623,9 @@
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
 					<entry kind="macro" name="__SSP__" value="1">
+						<flag value="BUILTIN|READONLY"/>
+					</entry>
+					<entry kind="macro" name="__SSSE3__" value="int">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
 					<entry kind="macro" name="__SSSE3__" value="1">
@@ -1012,9 +1009,6 @@
 				</language>
 				<language id="org.eclipse.cdt.core.g++">
 					<entry kind="includePath" name="/Library/Developer/CommandLineTools/usr/include/c++/v1">
-						<flag value="BUILTIN|READONLY"/>
-					</entry>
-					<entry kind="includePath" name="/usr/local/include">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
 					<entry kind="includePath" name="/Library/Developer/CommandLineTools/usr/lib/clang/8.1.0/include">
@@ -1161,16 +1155,10 @@
 					<entry kind="macro" name="__FLT_HAS_DENORM__" value="1">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
-					<entry kind="macro" name="__FLT_HAS_INFINITY__" value="1">
-						<flag value="BUILTIN|READONLY"/>
-					</entry>
 					<entry kind="macro" name="__FLT_HAS_QUIET_NAN__" value="1">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
 					<entry kind="macro" name="__FLT_MANT_DIG__" value="24">
-						<flag value="BUILTIN|READONLY"/>
-					</entry>
-					<entry kind="macro" name="__FLT_MAX_10_EXP__" value="38">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
 					<entry kind="macro" name="__FLT_MAX_EXP__" value="128">
@@ -1180,6 +1168,9 @@
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
 					<entry kind="macro" name="__FLT_MIN_10_EXP__" value="(-37)">
+						<flag value="BUILTIN|READONLY"/>
+					</entry>
+					<entry kind="macro" name="__FLT_MIN_EXP__" value="&quot;4.2.1 Compatible Apple LLVM 8.1.0 (clang-802.0.42)&quot;">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
 					<entry kind="macro" name="__FLT_MIN_EXP__" value="(-125)">
@@ -1278,6 +1269,9 @@
 					<entry kind="macro" name="__INT16_FMTd__" value="&quot;hd&quot;">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
+					<entry kind="macro" name="__INT16_FMTi__" value="18446744073709551615UL">
+						<flag value="BUILTIN|READONLY"/>
+					</entry>
 					<entry kind="macro" name="__INT16_FMTi__" value="&quot;hi&quot;">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
@@ -1311,6 +1305,9 @@
 					<entry kind="macro" name="__INT64_FMTi__" value="&quot;lli&quot;">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
+					<entry kind="macro" name="__INT64_MAX__" value="1">
+						<flag value="BUILTIN|READONLY"/>
+					</entry>
 					<entry kind="macro" name="__INT64_MAX__" value="9223372036854775807LL">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
@@ -1321,6 +1318,9 @@
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
 					<entry kind="macro" name="__INT8_FMTd__" value="&quot;hhd&quot;">
+						<flag value="BUILTIN|READONLY"/>
+					</entry>
+					<entry kind="macro" name="__INT8_FMTi__" value="9223372036854775807LL">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
 					<entry kind="macro" name="__INT8_FMTi__" value="&quot;hhi&quot;">
@@ -1425,6 +1425,9 @@
 					<entry kind="macro" name="__INT_LEAST16_TYPE__" value="short">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
+					<entry kind="macro" name="__INT_LEAST32_FMTd__" value="3.64519953188247460253e-4951L">
+						<flag value="BUILTIN|READONLY"/>
+					</entry>
 					<entry kind="macro" name="__INT_LEAST32_FMTd__" value="&quot;d&quot;">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
@@ -1455,6 +1458,9 @@
 					<entry kind="macro" name="__INT_LEAST8_FMTi__" value="&quot;hhi&quot;">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
+					<entry kind="macro" name="__INT_LEAST8_MAX__" value="38">
+						<flag value="BUILTIN|READONLY"/>
+					</entry>
 					<entry kind="macro" name="__INT_LEAST8_MAX__" value="127">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
@@ -1465,9 +1471,6 @@
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
 					<entry kind="macro" name="__LDBL_DECIMAL_DIG__" value="21">
-						<flag value="BUILTIN|READONLY"/>
-					</entry>
-					<entry kind="macro" name="__LDBL_DENORM_MIN__" value="3.64519953188247460253e-4951L">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
 					<entry kind="macro" name="__LDBL_DIG__" value="18">
@@ -1507,9 +1510,6 @@
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
 					<entry kind="macro" name="__LITTLE_ENDIAN__" value="1">
-						<flag value="BUILTIN|READONLY"/>
-					</entry>
-					<entry kind="macro" name="__LONG_LONG_MAX__" value="9223372036854775807LL">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
 					<entry kind="macro" name="__LONG_MAX__" value="9223372036854775807L">
@@ -1776,9 +1776,6 @@
 					<entry kind="macro" name="__UINTMAX_FMTx__" value="&quot;lx&quot;">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
-					<entry kind="macro" name="__UINTMAX_MAX__" value="18446744073709551615UL">
-						<flag value="BUILTIN|READONLY"/>
-					</entry>
 					<entry kind="macro" name="__UINTMAX_TYPE__" value="long unsigned int">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
@@ -1914,9 +1911,6 @@
 					<entry kind="macro" name="__UINT_LEAST32_TYPE__" value="unsigned int">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
-					<entry kind="macro" name="__UINT_LEAST64_FMTX__" value="&quot;lX&quot;">
-						<flag value="BUILTIN|READONLY"/>
-					</entry>
 					<entry kind="macro" name="__UINT_LEAST64_FMTo__" value="&quot;lo&quot;">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
@@ -1951,9 +1945,6 @@
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
 					<entry kind="macro" name="__USER_LABEL_PREFIX__" value="_">
-						<flag value="BUILTIN|READONLY"/>
-					</entry>
-					<entry kind="macro" name="__VERSION__" value="&quot;4.2.1 Compatible Apple LLVM 8.1.0 (clang-802.0.42)&quot;">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
 					<entry kind="macro" name="__WCHAR_MAX__" value="2147483647">
@@ -2016,6 +2007,9 @@
 					<entry kind="macro" name="__llvm__" value="1">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
+					<entry kind="macro" name="__nonnull" value="&quot;lX&quot;">
+						<flag value="BUILTIN|READONLY"/>
+					</entry>
 					<entry kind="macro" name="__nonnull" value="_Nonnull">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
@@ -2057,9 +2051,6 @@
 		<extension point="org.eclipse.cdt.core.LanguageSettingsProvider">
 			<provider id="org.eclipse.cdt.build.crossgcc.CrossGCCBuiltinSpecsDetector">
 				<language id="org.eclipse.cdt.core.gcc">
-					<entry kind="includePath" name="/usr/local/include">
-						<flag value="BUILTIN|READONLY"/>
-					</entry>
 					<entry kind="includePath" name="/Library/Developer/CommandLineTools/usr/lib/clang/8.1.0/include">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
@@ -3065,9 +3056,6 @@
 				</language>
 				<language id="org.eclipse.cdt.core.g++">
 					<entry kind="includePath" name="/Library/Developer/CommandLineTools/usr/include/c++/v1">
-						<flag value="BUILTIN|READONLY"/>
-					</entry>
-					<entry kind="includePath" name="/usr/local/include">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
 					<entry kind="includePath" name="/Library/Developer/CommandLineTools/usr/lib/clang/8.1.0/include">

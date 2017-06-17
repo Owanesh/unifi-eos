@@ -54,6 +54,7 @@ dkms.conf
 
 #Eclipse ignored files
 .metadata
+.metadata/
 bin/
 tmp/
 *.tmp

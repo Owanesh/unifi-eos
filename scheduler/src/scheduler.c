@@ -2,8 +2,9 @@
 #include <stdlib.h>
 #include "task.h"
 #include "utilities.h"
+#include "schedulerFunctions.h"
 
-int main() {
+int testTask() {
 	Task* t = NULL;
 	char buffer[256];
 	t = malloc(sizeof(Task));
@@ -17,3 +18,9 @@ int main() {
 	}
 	return 0;
 }
+
+int main() {
+	testTask();
+	printMainMenu();
+}
+

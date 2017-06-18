@@ -45,7 +45,7 @@
 # Kernel Module Compile Results
 *.mod*
 *.cmd
-.tmp_versions/
+*.tmp_versions/
 modules.order
 Module.symvers
 Mkfile.old
@@ -53,7 +53,7 @@ dkms.conf
 
 
 #Eclipse ignored files
-.metadata
+*.metadata
 .metadata/
 bin/
 tmp/
@@ -62,9 +62,9 @@ tmp/
 *.swp
 *~.nib
 local.properties
-.settings/
-.loadpath
-.recommenders
+*.settings/
+*.loadpath
+*.recommenders
 RemoteSystemsTempFiles/
 # External tool builders
 .externalToolBuilders/
@@ -72,34 +72,14 @@ RemoteSystemsTempFiles/
 # Locally stored "Eclipse launch configurations"
 *.launch
 
-# PyDev specific (Python IDE for Eclipse)
-*.pydevproject
 
 # CDT-specific (C/C++ Development Tooling)
-.cproject
-
-# Java annotation processor (APT)
-.factorypath
-
-# PDT-specific (PHP Development Tools)
-.buildpath
-
-# sbteclipse plugin
-.target
-
-# Tern plugin
-.tern-project
-
-# TeXlipse plugin
-.texlipse
-
-# STS (Spring Tool Suite)
-.springBeans
+*.cproject
 
 # Code Recommenders
-.recommenders/
+*.recommenders/
 
 # Scala IDE specific (Scala & Java development for Eclipse)
-.cache-main
-.scala_dependencies
-.worksheet
+*.cache-main
+*.scala_dependencies
+*.worksheet

@@ -1,17 +1,14 @@
-#include "utilities.h"
+#include "header/utilities.h"
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
 #include <stdlib.h>
 
 int stringArrayLen(char *includes[]) {
-	size_t count = 0;
+	int count = 0;
 	while (includes[count] != NULL)
 		count++;
 	return count;
-}
-int intArrayLen(int a[]) {
-	return sizeof(a) / sizeof(int);
 }
 
 /* Options : Array of strings with your menu option
@@ -58,12 +55,13 @@ void clearConsole() {
 	system("clear"); /* Or ( "cls" ); for non-POSIX */
 }
 
-bool isIntegerAllowed(int number, int allowedRange[], int disabled[]) {
+bool isIntegerAllowed(int number, int allowedRange[], int disabled[],
+		int disabled_length) {
 	bool valid = true;
 	bool inRange =
-			(number > allowedRange[0] - 1 && number < allowedRange[1] + 1) ?
+			(number >= allowedRange[0] && number <= allowedRange[1]) ?
 					true : false;
-	for (int i = 0; i < intArrayLen(disabled) && valid; i++) {
+	for (int i = 0; (i < disabled_length) && valid && inRange; i++) {
 		if (number == disabled[i])
 			valid = false;
 	}

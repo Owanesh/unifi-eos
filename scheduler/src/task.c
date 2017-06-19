@@ -4,7 +4,7 @@
  *  Created on: 18 giu 2017
  *      Author: matteomauro
  */
-#include "task.h" //types "Task" and "byte" defined here
+#include "header/task.h" //types "Task" and "byte" defined here
 #include <stdio.h>
 #include <string.h>
 

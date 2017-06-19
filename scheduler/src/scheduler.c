@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "task.h"
-#include "utilities.h"
-#include "schedulerFunctions.h"
+#include "header/task.h"
+#include "header/utilities.h"
+#include "header/schedulerFunctions.h"
 
 int testTask() {
 	Task* t = NULL;
@@ -20,20 +20,22 @@ int testTask() {
 }
 
 int main() {
-	testTask();
+
 	/* TEST OF MAIN MENU */
-	 printMainMenu();
+	printMainMenu();
 	/* TEST OF <GET INTEGER FROM STDIN>*/
-	int allowed[2] = { 1, 7 };
-	int disabled[] = { 2,3,4,5,6 };
+	int allowed[] = { 1, 7 };
+	int disabled[] = { 1, 2 };
+
 	int myInt;
-	bool valid=false;
+	bool valid = false;
 	while (!valid) {
 		printf("\nInserisci la tua scelta > ");
 		scanf("%d", &myInt);
-		if (!isIntegerAllowed(myInt, allowed, disabled)) {
+		if (!isIntegerAllowed(myInt, allowed, disabled,
+				LENGTH_ARRAY(disabled))) {
 			printf("Il valore inserito, non risulta valido. Riprovare");
-		}else{
+		} else {
 			valid = true;
 		}
 	}

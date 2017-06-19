@@ -1,5 +1,5 @@
-#include "schedulerFunctions.h"
-#include "utilities.h"
+#include "header/schedulerFunctions.h"
+#include "header/utilities.h"
 #include <stdio.h>
 
 void printMainMenu() {

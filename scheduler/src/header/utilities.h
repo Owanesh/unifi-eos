@@ -1,4 +1,4 @@
-#define UTILITIES_H_
+#define LENGTH_ARRAY(x)  (sizeof(x) / sizeof((x)[0]))
 /* Boolean type definition */
 typedef enum {
 	false = 0, true = 1
@@ -9,5 +9,6 @@ void printMenu(char *options[], char* header, char* footer, bool rowWrap,
 		bool evidence, int lineSize);
 void printRow(int a, char lineChar);
 int stringArrayLen(char *includes[]);
- int intArrayLen(int a[]);
-bool isIntegerAllowed(int number, int allowedRange[], int disabled[]);
+int intArrayLen(int a[]);
+bool isIntegerAllowed(int number, int allowedRange[], int disabled[],
+		int disabled_length);

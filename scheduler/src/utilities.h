@@ -9,3 +9,5 @@ void printMenu(char *options[], char* header, char* footer, bool rowWrap,
 		bool evidence, int lineSize);
 void printRow(int a, char lineChar);
 int stringArrayLen(char *includes[]);
+ int intArrayLen(int a[]);
+bool isIntegerAllowed(int number, int allowedRange[], int disabled[]);

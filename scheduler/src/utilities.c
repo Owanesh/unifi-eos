@@ -7,7 +7,7 @@
 /*
  * Counts the rows of options matrix
  */
-int stringArrayLen(char *options[]) {
+int stringArrayLen(const char *options[]) {
 	int count = 0;
 	while (options[count] != NULL)
 		count++;
@@ -20,7 +20,7 @@ int stringArrayLen(char *options[]) {
  * rowWrap : if true, between options, there is a row
  * evidence : if true, each option has a > prepended
  * */
-void printMenu(char *options[], char* header, char* footer, bool rowWrap,
+void printMenu(const char *options[], char* header, char* footer, bool rowWrap,
 		bool evidence, int lineSize) {
 	printRow(lineSize, '~');
 	if (header) {

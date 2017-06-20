@@ -1,3 +1,6 @@
+#ifndef HEADER_TASK_H_
+#define HEADER_TASK_H_
+
 typedef struct Task {
 	unsigned long id;
 	char name[9];
@@ -12,3 +15,5 @@ typedef unsigned char byte;
 int setTask(Task* t, char* name, byte priority, byte exec_cycles);
 
 void getTaskDescription(Task* t, char* buffer);
+
+#endif /* HEADER_TASK_H_ */

@@ -18,6 +18,32 @@ const char* options[] = { "(1) Crea un nuovo task",
 
 ReadyQueue *head = NULL, *tail = NULL;
 
+void test() {
+	head = (ReadyQueue*) malloc(sizeof(ReadyQueue));
+	if (head != NULL) {
+		setTask(&(head->task), "TASK_1", 1, 30);
+		head->next = NULL;
+		head->next = (ReadyQueue*) malloc(sizeof(ReadyQueue));
+		if (head->next != NULL) {
+			setTask(&(head->next->task), "TASK_2", 2, 50);
+		}
+	}
+	ReadyQueue *previous = malloc(sizeof(ReadyQueue));
+	ReadyQueue *rst = searchById(head, 3, &previous);
+	if (rst != NULL) {
+		char buffer[100];
+		getTaskDescription(&(rst->task), buffer);
+		printf("trovato %s\n", buffer);
+		if (previous != NULL) {
+			getTaskDescription(&(previous->task), buffer);
+			printf("previous  %s\n", buffer);
+		}
+	} else {
+		printf("TASK NOT FOUND\n");
+	}
+
+}
+
 void switchOptions(int value) {
 	unsigned long id;
 	switch (value) {
@@ -42,11 +68,15 @@ void switchOptions(int value) {
 	case 6:
 		changeScheduling(head);
 		break;
+	case 0:
+		test();
+		break;
+
 	}
 }
 
 int main() {
-	int optionsAllowed[] = { 1, 7 };
+	int optionsAllowed[] = { 0, 7 };
 	int value;
 	do {
 		printMenu(options, "Scheduler C", "Busiello and Mauro", false, true,

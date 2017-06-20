@@ -54,10 +54,6 @@ void printRow(int a, char lineChar) {
 	printf("\n");
 }
 
-void clearConsole() {
-	system("clear"); /* Or ( "cls" ); for non-POSIX */
-}
-
 /*
  * Verifies num checking if it stands between the range and if it's not disabled.
  * If you want to not specify a range set allowedRange to NULL.

@@ -7,7 +7,6 @@ typedef enum {
 	false = 0, true = 1
 } bool;
 
-void clearConsole();
 void printMenu(const char *options[], char* header, char* footer, bool rowWrap,
 		bool evidence, int lineSize);
 void printRow(int a, char lineChar);

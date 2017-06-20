@@ -4,9 +4,12 @@
 #include <ctype.h>
 #include <stdlib.h>
 
-int stringArrayLen(char *includes[]) {
+/*
+ * Counts the rows of options matrix
+ */
+int stringArrayLen(char *options[]) {
 	int count = 0;
-	while (includes[count] != NULL)
+	while (options[count] != NULL)
 		count++;
 	return count;
 }
@@ -55,11 +58,19 @@ void clearConsole() {
 	system("clear"); /* Or ( "cls" ); for non-POSIX */
 }
 
-bool isValueAllowed(int num, int allowedRange[], int disabled[],
+/*
+ * Verifies num checking if it stands between the range and if it's not disabled.
+ * If you want to not specify a range set allowedRange to NULL.
+ * Return true if it's available, otherwise false
+ */
+bool isValueAllowed(int num, int allowedRange[2], int disabled[],
 		int disabled_length) {
 	bool valid = true;
+	//inRange == true if numis between range or if allowedRange[0]>=allowedRange[1]
 	bool inRange =
-			(num >= allowedRange[0] && num <= allowedRange[1]) ? true : false;
+			(allowedRange == NULL)
+					|| (num >= allowedRange[0] && num <= allowedRange[1]) ?
+					true : false;
 	for (int i = 0; (i < disabled_length) && valid && inRange; i++) {
 		if (num == disabled[i])
 			valid = false;
@@ -72,12 +83,13 @@ bool isValueAllowed(int num, int allowedRange[], int disabled[],
  * allowed[2]-> allowed[0]=min value / allowed[1]=max value
  * disabled[]-> selections forbidden
  * dis_length-> length of disabled[]
+ * Returns the value inserted
  */
 int selectOption(int allowed[2], int disabled[], int dis_length) {
 	int value;
 	bool valid = false;
 	while (!valid) {
-		value = readValue("\nInserisci la tua scelta > ");
+		value = readValue();
 		if (!isValueAllowed(value, allowed, disabled, dis_length)) {
 			printf("Il valore inserito non risulta nelle opzioni. Riprovare\n");
 		} else {
@@ -98,12 +110,12 @@ int selectOption(int allowed[2], int disabled[], int dis_length) {
  - Text before the number : "abc 123"
  - other : "--123"
  */
-int readValue(const char *prompt) {
+int readValue() {
 	int value;
 	int validSyntax;
 	char buffer[100];
 	do {
-		fputs(prompt, stdout);
+		fputs("\nInserisci la tua scelta > ", stdout);
 		if (fgets(buffer, sizeof(buffer), stdin) == NULL) {
 			//errore di lettura, uscita forzata
 			return false;

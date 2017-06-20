@@ -55,16 +55,66 @@ void clearConsole() {
 	system("clear"); /* Or ( "cls" ); for non-POSIX */
 }
 
-bool isIntegerAllowed(int number, int allowedRange[], int disabled[],
+bool isValueAllowed(int num, int allowedRange[], int disabled[],
 		int disabled_length) {
 	bool valid = true;
 	bool inRange =
-			(number >= allowedRange[0] && number <= allowedRange[1]) ?
-					true : false;
+			(num >= allowedRange[0] && num <= allowedRange[1]) ? true : false;
 	for (int i = 0; (i < disabled_length) && valid && inRange; i++) {
-		if (number == disabled[i])
+		if (num == disabled[i])
 			valid = false;
 	}
 	return valid && inRange;
+}
+
+/*
+ * Allows to select an option between the range allowed
+ * allowed[2]-> allowed[0]=min value / allowed[1]=max value
+ * disabled[]-> selections forbidden
+ * dis_length-> length of disabled[]
+ */
+int selectOption(int allowed[2], int disabled[], int dis_length) {
+	int value;
+	bool valid = false;
+	while (!valid) {
+		value = readValue("\nInserisci la tua scelta > ");
+		if (!isValueAllowed(value, allowed, disabled, dis_length)) {
+			printf("Il valore inserito non risulta nelle opzioni. Riprovare\n");
+		} else {
+			valid = true;
+		}
+	}
+	return value;
+}
+
+/* readValue(): return the value read
+ Allows
+ - leading spaces : " 123"
+ - trailing spaces : "123 "
+ - leading zeros : "00000123"
+ - Rescans after error input.
+ Catches the following errors
+ - No input : ""
+ - Text before the number : "abc 123"
+ - other : "--123"
+ */
+int readValue(const char *prompt) {
+	int value;
+	int validSyntax;
+	char buffer[100];
+	do {
+		fputs(prompt, stdout);
+		if (fgets(buffer, sizeof(buffer), stdin) == NULL) {
+			//errore di lettura, uscita forzata
+			return false;
+		}
+		// una carattere iniziale resituirebbe 0
+		validSyntax = sscanf(buffer, "%d", &value) && buffer[0] != '\n'
+				&& buffer[0] != ' ';
+
+		if (validSyntax != 1)
+			fputs("Input sintatticamente non valido. Riprovare.\n", stdout);
+	} while (!validSyntax);
+	return value;
 }
 

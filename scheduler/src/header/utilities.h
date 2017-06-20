@@ -10,5 +10,5 @@ void printMenu(char *options[], char* header, char* footer, bool rowWrap,
 void printRow(int a, char lineChar);
 int stringArrayLen(char *includes[]);
 int intArrayLen(int a[]);
-bool isIntegerAllowed(int number, int allowedRange[], int disabled[],
-		int disabled_length);
+int selectOption(int allowed[2], int disabled[], int dis_length);
+int readValue(const char *prompt);

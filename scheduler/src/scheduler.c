@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <ctype.h>
 #include "header/task.h"
 #include "header/utilities.h"
 #include "header/schedulerFunctions.h"
@@ -21,23 +22,10 @@ int testTask() {
 
 int main() {
 
-	/* TEST OF MAIN MENU */
-	printMainMenu();
-	/* TEST OF <GET INTEGER FROM STDIN>*/
 	int allowed[] = { 1, 7 };
 	int disabled[] = { 1, 2 };
-
-	int myInt;
-	bool valid = false;
-	while (!valid) {
-		printf("\nInserisci la tua scelta > ");
-		scanf("%d", &myInt);
-		if (!isIntegerAllowed(myInt, allowed, disabled,
-				LENGTH_ARRAY(disabled))) {
-			printf("Il valore inserito, non risulta valido. Riprovare");
-		} else {
-			valid = true;
-		}
-	}
+	printMainMenu();
+	int x = selectOption(allowed, disabled, LENGTH_ARRAY(disabled));
+	printf("\nHai selezionato %d", x);
 }
 

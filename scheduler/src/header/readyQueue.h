@@ -6,6 +6,7 @@
 typedef struct ReadyQueue {
 	Task task;
 	struct ReadyQueue *next;
+	struct ReadyQueue *previous;
 } ReadyQueue;
 
 /*
@@ -13,6 +14,6 @@ typedef struct ReadyQueue {
  * If previous != NULL and exists a task with the specified Id, then previous will contain the previous
  * element (useful foe elimination)
  */
-ReadyQueue* searchById(ReadyQueue *head, unsigned long id, ReadyQueue **previous);
+ReadyQueue* searchById(ReadyQueue *head, unsigned long id);
 
 #endif /* HEADER_READYQUEUE_H_ */

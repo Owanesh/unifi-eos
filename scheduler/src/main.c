@@ -28,16 +28,12 @@ void test() {
 			setTask(&(head->next->task), "TASK_2", 2, 50);
 		}
 	}
-	ReadyQueue *previous = malloc(sizeof(ReadyQueue));
-	ReadyQueue *rst = searchById(head, 3, &previous);
+	ReadyQueue *rst = searchById(head, 3);
 	if (rst != NULL) {
 		char buffer[100];
 		getTaskDescription(&(rst->task), buffer);
 		printf("trovato %s\n", buffer);
-		if (previous != NULL) {
-			getTaskDescription(&(previous->task), buffer);
-			printf("previous  %s\n", buffer);
-		}
+
 	} else {
 		printf("TASK NOT FOUND\n");
 	}

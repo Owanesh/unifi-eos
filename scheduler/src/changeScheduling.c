@@ -4,6 +4,9 @@
 int policyScheduling = 0;
 
 void changeScheduling(ReadyQueue *head) {
-
+	policyScheduling = ((policyScheduling-1)*-1);
 }
 
+void bubbleSort(ReadyQueue **head){
+
+}

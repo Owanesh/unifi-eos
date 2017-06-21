@@ -16,5 +16,6 @@
 extern int policyScheduling;
 
 void changeScheduling(ReadyQueue *head);
+void bubbleSort(ReadyQueue **head);
 
 #endif /* HEADER_CHANGESCHEDULING_H_ */

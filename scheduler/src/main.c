@@ -16,38 +16,16 @@ const char* options[] = { "(1) Crea un nuovo task",
 		"(6) Cambiare la politica di scheduling utilizzata",
 		"(7) Uscire dal programma", NULL };
 
-ReadyQueue *head = NULL, *tail = NULL;
-
-void test() {
-	head = (ReadyQueue*) malloc(sizeof(ReadyQueue));
-	if (head != NULL) {
-		setTask(&(head->task), "TASK_1", 1, 30);
-		head->next = NULL;
-		head->next = (ReadyQueue*) malloc(sizeof(ReadyQueue));
-		if (head->next != NULL) {
-			setTask(&(head->next->task), "TASK_2", 2, 50);
-		}
-	}
-	ReadyQueue *rst = searchById(head, 3);
-	if (rst != NULL) {
-		char buffer[100];
-		getTaskDescription(&(rst->task), buffer);
-		printf("trovato %s\n", buffer);
-
-	} else {
-		printf("TASK NOT FOUND\n");
-	}
-
-}
+ReadyQueue *head = NULL;
 
 void switchOptions(int value) {
 	unsigned long id;
 	switch (value) {
 	case 1:
-		insertNewTask(head);
+		insertNewTask(&head);
 		break;
 	case 2:
-		execute(tail);
+		execute(head);
 		break;
 	case 3:
 		id = selectOption( NULL, NULL, 0);
@@ -65,9 +43,8 @@ void switchOptions(int value) {
 		changeScheduling(head);
 		break;
 	case 0:
-		test();
+		printList(head);
 		break;
-
 	}
 }
 

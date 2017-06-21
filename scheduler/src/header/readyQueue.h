@@ -15,5 +15,16 @@ typedef struct ReadyQueue {
  * element (useful foe elimination)
  */
 ReadyQueue* searchById(ReadyQueue *head, unsigned long id);
+/*
+ * Get the last element of the list if it's not empty, otherwise NULL
+ */
+ReadyQueue* getLastNode(ReadyQueue *head);
+
+/*
+ * Returns 1 if the list is empty, otherwise 0 (NOTE: you have to pass the head of the list)
+ */
+int isEmpty(ReadyQueue *head);
+
+void printList(ReadyQueue *head);
 
 #endif /* HEADER_READYQUEUE_H_ */

@@ -9,6 +9,6 @@
 #define HEADER_INSERT_H_
 
 #include "readyQueue.h"
-int insertNewTask(ReadyQueue *head);
+void insertNewTask(ReadyQueue **head);
 
 #endif /* HEADER_INSERT_H_ */

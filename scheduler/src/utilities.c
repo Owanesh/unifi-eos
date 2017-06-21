@@ -3,6 +3,34 @@
 #include <string.h>
 #include <ctype.h>
 #include <stdlib.h>
+#include <string.h>
+
+/*
+ * ALlows to get a line from stdin checking that is not
+ * TOO_LONG = the string has more characters than sz
+ * INVALID = the string starts with ' ' or '\n'
+ * NO_INPUT = read error
+ */
+int getLine(char *buff, size_t sz) {
+	int ch, extra;
+
+	if (fgets(buff, sz, stdin) == NULL)
+		return NO_INPUT;
+	if (buff[0] == ' ' || buff[0] == '\n')
+		return INVALID;
+	// If it was too long, there'll be no newline. In that case, we flush
+	// to end of line so that excess doesn't affect the next call.
+	if (buff[strlen(buff) - 1] != '\n') {
+		extra = 0;
+		while (((ch = getchar()) != '\n') && (ch != EOF))
+			extra = 1;
+		return (extra == 1) ? TOO_LONG : OK;
+	}
+
+	// Otherwise remove newline and give string back to caller.
+	buff[strlen(buff) - 1] = '\0';
+	return OK;
+}
 
 /*
  * Counts the rows of options matrix

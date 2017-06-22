@@ -10,7 +10,7 @@
 
 #include "readyQueue.h"
 
-void execute(ReadyQueue *tail);
+void execute(ReadyQueue *head);
 void executeById(ReadyQueue *head, unsigned long id);
 
 #endif /* HEADER_EXECUTE_H_ */

@@ -17,7 +17,7 @@ void printMenu(const char *options[], char* header, char* footer, bool rowWrap,
 		bool evidence, int lineSize);
 void printRow(int a, char lineChar);
 int stringArrayLen(const char *options[]);
-int selectOption(int allowed[2], int disabled[], int dis_length);
+int selectOption(char *prompt, int allowed[2], int disabled[], int dis_length);
 int readValue();
 
 #endif /* HEADER_UTILITIES_H_ */

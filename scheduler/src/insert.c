@@ -23,13 +23,12 @@ void requestData(char *name, byte *priority, byte *exec_cycles) {
 	requestName(name);
 
 	int appo[2] = { 0, 9 };
-	printf("Inserisci priorità (tra 0 e 9): ");
-	*priority = selectOption(appo, NULL, 0);
+	*priority = selectOption("Inserisci priorità (tra 0 e 9): ", appo, NULL, 0);
 
 	appo[0] = 1;
 	appo[1] = 99;
-	printf("Inserisci cicli di esecuzione (tra 1 e 99): ");
-	*exec_cycles = selectOption(appo, NULL, 0);
+	*exec_cycles = selectOption("Inserisci cicli di esecuzione (tra 1 e 99): ",
+			appo, NULL, 0);
 }
 
 void requestName(char *name) {

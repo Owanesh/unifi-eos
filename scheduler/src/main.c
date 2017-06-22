@@ -28,18 +28,20 @@ void switchOptions(int value) {
 		execute(head);
 		break;
 	case 3:
-		id = selectOption( NULL, NULL, 0);
+		id = selectOption("\nInserire l'ID del task che si vuole eseguire: ",
+		NULL, NULL, 0);
 		executeById(head, id);
 		break;
 	case 4:
-		printf("\nInserire l'ID del task che si vuole eseguire");
-		id = selectOption( NULL, NULL, 0);
-		deleteById(head, id);
+		id = selectOption("\nInserire l'ID del task che si vuole cancellare: ",
+		NULL, NULL, 0);
+		deleteById(&head, id);
 		break;
 	case 5:
-		printf("\nInserire l'ID del task che si vuole modificare");
-		id = selectOption(NULL, NULL, 0);
+		id = selectOption("\nInserire l'ID del task che si vuole modificare: ",
+		NULL, NULL, 0);
 		modifyById(head, id);
+		bubbleSort(&head); //it might need to be sorted
 		break;
 	case 6:
 		changeScheduling(head);
@@ -57,7 +59,8 @@ int main() {
 	do {
 		printMenu(options, "Scheduler C", "Busiello and Mauro", false, true,
 				50);
-		value = selectOption(optionsAllowed, NULL, 0);
+		value = selectOption("Selezionare un'opzione del menù: ",
+				optionsAllowed, NULL, 0);
 		switchOptions(value);
 	} while (value != 7);
 	return 0;

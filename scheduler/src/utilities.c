@@ -109,10 +109,13 @@ bool isValueAllowed(int num, int allowedRange[2], int disabled[],
  * dis_length-> length of disabled[]
  * Returns the value inserted
  */
-int selectOption(int allowed[2], int disabled[], int dis_length) {
+int selectOption(char *prompt, int allowed[2], int disabled[], int dis_length) {
 	int value;
 	bool valid = false;
 	while (!valid) {
+		if (prompt != NULL) {
+			printf("%s", prompt);
+		}
 		value = readValue();
 		if (!isValueAllowed(value, allowed, disabled, dis_length)) {
 			printf("Il valore inserito non risulta nelle opzioni. Riprovare\n");
@@ -139,7 +142,6 @@ int readValue() {
 	int validSyntax;
 	char buffer[100];
 	do {
-		fputs("\nInserisci la tua scelta > ", stdout);
 		if (fgets(buffer, sizeof(buffer), stdin) == NULL) {
 			//errore di lettura, uscita forzata
 			return false;
@@ -149,7 +151,7 @@ int readValue() {
 				&& buffer[0] != ' ';
 
 		if (validSyntax != 1)
-			fputs("Input sintatticamente non valido. Riprovare.\n", stdout);
+			printf("Input sintatticamente non valido. Riprovare: ");
 	} while (!validSyntax);
 	return value;
 }

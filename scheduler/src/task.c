@@ -16,9 +16,3 @@ int setTask(Task* t, char* name, byte priority, byte exec_cycles) {
 	}
 	return valid;
 }
-
-void getTaskDescription(Task* t, char* buffer) {
-	sprintf(buffer, "ID: %lu\nName: %s\nPriority: %d\nExecution cycles: %d",
-			t->id, t->name, t->priority, t->exec_cycles);
-}
-

@@ -12,7 +12,7 @@ void deleteTail(ReadyQueue *task);
  */
 int deleteById(ReadyQueue **head, unsigned long id) {
 	if (isEmpty(*head)) {
-		printf("La coda dei task è vuota.");
+		printf("La coda dei task e' vuota.");
 		return 0;
 	}
 	ReadyQueue *found = searchById(*head, id);
@@ -30,7 +30,7 @@ int deleteById(ReadyQueue **head, unsigned long id) {
  */
 int delete(ReadyQueue **head, ReadyQueue *task) {
 	if (isEmpty(*head)) {
-		printf("La coda dei task è vuota.");
+		printf("La coda dei task e' vuota.");
 		return 0;
 	}
 	int done = handleSpecialCase(head, task);

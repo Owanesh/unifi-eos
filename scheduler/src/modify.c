@@ -9,7 +9,7 @@ byte requestPriority(ReadyQueue* found);
  */
 int modifyById(ReadyQueue *head, unsigned long id) {
 	if (isEmpty(head)) {
-		printf("La lista dei task è vuota.");
+		printf("La lista dei task e' vuota.");
 		return 0;
 	}
 	ReadyQueue *found = searchById(head, id);
@@ -24,8 +24,8 @@ int modifyById(ReadyQueue *head, unsigned long id) {
 
 byte requestPriority(ReadyQueue* found) {
 	int appo[2] = { 0, 9 };
-	printf("\nPriorità attuale:%d", found->task.priority);
-	byte priority = selectOption("\nInserisci la nuova priorità (tra 0 e 9): ",
+	printf("\nPriorita' attuale:%d", found->task.priority);
+	byte priority = selectOption("\nInserisci la nuova priorita' (tra 0 e 9): ",
 			appo, NULL, 0);
 	return priority;
 }

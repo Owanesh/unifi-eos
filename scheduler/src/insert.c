@@ -22,7 +22,7 @@ void requestData(char *name, byte *priority, byte *exec_cycles) {
 	requestName(name);
 
 	int appo[2] = { 0, 9 };
-	*priority = selectOption("Inserisci priorità (tra 0 e 9): ", appo, NULL, 0);
+	*priority = selectOption("Inserisci priorita' (tra 0 e 9): ", appo, NULL, 0);
 
 	appo[0] = 1;
 	appo[1] = 99;

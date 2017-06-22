@@ -7,7 +7,7 @@ void checkTermination(ReadyQueue** head, ReadyQueue* task);
 
 void execute(ReadyQueue **head) {
 	if (isEmpty(*head)) {
-		printf("La lista dei task è vuota.");
+		printf("La lista dei task e' vuota.");
 		return;
 	}
 	ReadyQueue *last = getLastNode(*head);
@@ -18,7 +18,7 @@ void execute(ReadyQueue **head) {
 
 void executeById(ReadyQueue **head, unsigned long id) {
 	if (isEmpty(*head)) {
-		printf("La lista dei task è vuota.");
+		printf("La lista dei task e' vuota.");
 		return;
 	}
 	ReadyQueue *found = searchById(*head, id);

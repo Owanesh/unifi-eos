@@ -32,6 +32,7 @@ void switchOptions(int value) {
 		executeById(head, id);
 		break;
 	case 4:
+		printf("\nInserire l'ID del task che si vuole eseguire");
 		id = selectOption( NULL, NULL, 0);
 		deleteById(head, id);
 		break;

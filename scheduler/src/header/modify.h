@@ -1,10 +1,3 @@
-/*
- * modify.h
- *
- *  Created on: 20 giu 2017
- *      Author: matteomauro
- */
-
 #ifndef HEADER_MODIFY_H_
 #define HEADER_MODIFY_H_
 

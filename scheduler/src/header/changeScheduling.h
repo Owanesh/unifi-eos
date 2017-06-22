@@ -1,10 +1,3 @@
-/*
- * changeScheduling.h
- *
- *  Created on: 20 giu 2017
- *      Author: matteomauro
- */
-
 #ifndef HEADER_CHANGESCHEDULING_H_
 #define HEADER_CHANGESCHEDULING_H_
 #define POLICY_PRIORITY 0

@@ -9,14 +9,13 @@ void requestName(char *name);
 void addTask(ReadyQueue **head, char *name, byte priority, byte exec_cycles);
 
 /*
- * Inserts a new Task in the list passed as argument, according to specified scheduling policy
+ * Inserts a new Task in the list passed as argument
  */
 void insertNewTask(ReadyQueue **head) {
 	char name[9];
 	byte priority, exec_cycles;
 	requestData(name, &priority, &exec_cycles);
 	addTask(head, name, priority, exec_cycles);
-
 }
 
 void requestData(char *name, byte *priority, byte *exec_cycles) {

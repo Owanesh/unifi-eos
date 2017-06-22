@@ -1,9 +1,3 @@
-/*
- * task.c
- *
- *  Created on: 18 giu 2017
- *      Author: matteomauro
- */
 #include "header/task.h"
 #include <stdio.h>
 #include <string.h>

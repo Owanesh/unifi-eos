@@ -5,9 +5,13 @@
 byte requestPriority(ReadyQueue* found);
 
 /*
- * Modifies priority of the specified task, returns 1 in case of success, 0 otherwise (i.e. task not found)
+ * Modifies priority of the specified task, returns 1 in case of success, 0 otherwise (i.e. list empty / task not found)
  */
 int modifyById(ReadyQueue *head, unsigned long id) {
+	if (isEmpty(head)) {
+		printf("La lista dei task è vuota.");
+		return 0;
+	}
 	ReadyQueue *found = searchById(head, id);
 	if (found == NULL) {
 		printf("Task non trovato nel sistema.");

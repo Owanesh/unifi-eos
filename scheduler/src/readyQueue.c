@@ -46,16 +46,18 @@ ReadyQueue* getLastNode(ReadyQueue *head) {
 }
 
 void printList(ReadyQueue *head) {
-	printf("CODA DEI TASK\n");
 	if (head == NULL) {
-		printf("VUOTA");
+		return;
 	} else {
+		printf("\n+----+-----------+-----------+-------------------+\n");
+		printf("| ID | PRIORITA' | NOME TASK | ESECUZ. RIMANENTI |\n");
+		printf("+----+-----------+-----------+-------------------+\n");
 		ReadyQueue *node = head;
 		do {
-			char buffer[100];
-			getTaskDescription(&(node->task), buffer);
-			printf("%s\nnext= %p\nprevious=%p\nmyAddress=%p\n-----------\n",
-					buffer, node->next, node->previous, node);
+			printf("| %lu  |     %d     |   %s    |        %d         |\n",
+					node->task.id, node->task.priority, node->task.name,
+					node->task.exec_cycles);
+			printf("+----+-----------+-----------+-------------------+\n");
 			node = node->next;
 		} while (node != NULL);
 	}

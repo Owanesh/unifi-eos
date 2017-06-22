@@ -1,12 +1,12 @@
 #include "header/changeScheduling.h"
 #include "header/readyQueue.h"
 
-int policyScheduling = 0;
+int policyScheduling = POLICY_PRIORITY;
 
 void changeScheduling(ReadyQueue *head) {
-	policyScheduling = ((policyScheduling-1)*-1);
+	policyScheduling = ((policyScheduling - 1) * -1);
 }
 
-void bubbleSort(ReadyQueue **head){
+void bubbleSort(ReadyQueue **head) {
 
 }

@@ -7,6 +7,8 @@
 
 #ifndef HEADER_CHANGESCHEDULING_H_
 #define HEADER_CHANGESCHEDULING_H_
+#define POLICY_PRIORITY 0
+#define POLICY_EXEC_CYCLES 1
 
 #include "readyQueue.h"
 

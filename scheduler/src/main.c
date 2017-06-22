@@ -26,11 +26,19 @@ void switchOptions(int value) {
 		break;
 	case 2:
 		execute(&head);
+		if (policyScheduling == POLICY_EXEC_CYCLES) {
+			// it might need to be sorted
+			bubbleSort(&head);
+		}
 		break;
 	case 3:
 		id = selectOption("\nInserire l'ID del task che si vuole eseguire: ",
 		NULL, NULL, 0);
 		executeById(&head, id);
+		if (policyScheduling == POLICY_EXEC_CYCLES) {
+			// it might need to be sorted
+			bubbleSort(&head);
+		}
 		break;
 	case 4:
 		id = selectOption("\nInserire l'ID del task che si vuole cancellare: ",
@@ -41,14 +49,13 @@ void switchOptions(int value) {
 		id = selectOption("\nInserire l'ID del task che si vuole modificare: ",
 		NULL, NULL, 0);
 		modifyById(head, id);
-		bubbleSort(&head); //it might need to be sorted
+		if (policyScheduling == POLICY_PRIORITY) {
+			// it might need to be sorted
+			bubbleSort(&head);
+		}
 		break;
 	case 6:
 		changeScheduling(head);
-		break;
-	case 0:
-		printList(head);
-		bubbleSort(&head);
 		break;
 	}
 }
@@ -62,6 +69,7 @@ int main() {
 		value = selectOption("Selezionare un'opzione del menù: ",
 				optionsAllowed, NULL, 0);
 		switchOptions(value);
+		printList(head);
 	} while (value != 7);
 	return 0;
 }

@@ -11,7 +11,7 @@
 #include "header/changeScheduling.h"
 
 const char* options[] = { "(1) Crea un nuovo task",
-		"(2) Esegui il task in testa alla coda", "(3) Esegui un task specifico",
+		"(2) Esegui il prossimo task", "(3) Esegui un task specifico",
 		"(4) Elimina un task specifico", "(5) Modifica la priorita di un task",
 		"(6) Cambiare la politica di scheduling utilizzata",
 		"(7) Uscire dal programma", NULL };
@@ -25,12 +25,12 @@ void switchOptions(int value) {
 		insertNewTask(&head);
 		break;
 	case 2:
-		execute(head);
+		execute(&head);
 		break;
 	case 3:
 		id = selectOption("\nInserire l'ID del task che si vuole eseguire: ",
 		NULL, NULL, 0);
-		executeById(head, id);
+		executeById(&head, id);
 		break;
 	case 4:
 		id = selectOption("\nInserire l'ID del task che si vuole cancellare: ",

@@ -36,7 +36,8 @@ void switchOptions(int value) {
 		deleteById(head, id);
 		break;
 	case 5:
-		id = selectOption( NULL, NULL, 0);
+		printf("\nInserire l'ID del task che si vuole modificare");
+		id = selectOption(NULL, NULL, 0);
 		modifyById(head, id);
 		break;
 	case 6:
@@ -44,6 +45,7 @@ void switchOptions(int value) {
 		break;
 	case 0:
 		printList(head);
+		bubbleSort(&head);
 		break;
 	}
 }

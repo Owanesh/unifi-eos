@@ -7,12 +7,26 @@ int compare_policy(struct ReadyQueue *a, struct ReadyQueue *b);
 
 int policyScheduling = POLICY_PRIORITY;
 
+/* @parameters (ReadyQueue *head)
+ * @explanation:
+ * Change policy scheduling and sort list
+ */
 void changeScheduling(ReadyQueue *head) {
 	policyScheduling = ((policyScheduling - 1) * -1);
+	bubbleSort(&head);
 }
 
 
-int compare_policy(struct ReadyQueue *a, struct ReadyQueue *b) {
+/* @parameters (ReadyQueue *a, ReadyQueue *b)
+ * @returns : {0,-1,1}
+ * 		0 : two elements have equal values
+ * 		1 : A is major than B
+ * 	   -1 : A is minor than B
+ * @explanation:
+ * This function make a comparison between two nodes of list.
+ * Comparison Parameter will be selected dynamically on base of policyScheduling variables
+ */
+int compare_policy(ReadyQueue *a, ReadyQueue *b) {
 	if (policyScheduling)
 		return a->task.exec_cycles < b->task.exec_cycles ? -1 :
 				a->task.exec_cycles > b->task.exec_cycles ? 1 : 0;
@@ -21,7 +35,8 @@ int compare_policy(struct ReadyQueue *a, struct ReadyQueue *b) {
 				a->task.priority > b->task.priority ? 1 : 0;
 }
 
-void bubbleSort(struct ReadyQueue **headQueue) {
+
+void bubbleSort(ReadyQueue **headQueue) {
 	bool swapped;
 	struct ReadyQueue *current;
 	struct ReadyQueue *previous = NULL;
@@ -48,8 +63,8 @@ void bubbleSort(struct ReadyQueue **headQueue) {
 
 
 
-void swap(struct ReadyQueue *left, struct ReadyQueue *right) {
-	struct ReadyQueue *appo1, *appo2;
+void swap(ReadyQueue *left, ReadyQueue *right) {
+	ReadyQueue *appo1, *appo2;
 	appo1 = (left == right->next) ? right : right->next;
 	appo2 = (right == left->next) ? left : left->next;
 	left->next = appo1;

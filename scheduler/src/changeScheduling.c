@@ -3,7 +3,7 @@
 #include "header/utilities.h"
 
 void swap(ReadyQueue *left, ReadyQueue *right);
-int compare_policy(struct ReadyQueue *a, struct ReadyQueue *b);
+int compare_policy(ReadyQueue *a, ReadyQueue *b);
 
 int policyScheduling = POLICY_PRIORITY;
 
@@ -16,15 +16,14 @@ void changeScheduling(ReadyQueue *head) {
 	bubbleSort(&head);
 }
 
-
 /* @parameters (ReadyQueue *a, ReadyQueue *b)
  * @returns : {0,-1,1}
  * 		0 : two elements have equal values
- * 		1 : A is major than B
+ * 		1 : A is greater than B
  * 	   -1 : A is minor than B
  * @explanation:
- * This function make a comparison between two nodes of list.
- * Comparison Parameter will be selected dynamically on base of policyScheduling variables
+ * This function makes a comparison between two nodes of list.
+ * Comparison Parameter will be selected dynamically on base of policyScheduling variable
  */
 int compare_policy(ReadyQueue *a, ReadyQueue *b) {
 	if (policyScheduling)
@@ -35,21 +34,20 @@ int compare_policy(ReadyQueue *a, ReadyQueue *b) {
 				a->task.priority > b->task.priority ? 1 : 0;
 }
 
-
 void bubbleSort(ReadyQueue **headQueue) {
-	bool swapped;
-	struct ReadyQueue *current;
-	struct ReadyQueue *previous = NULL;
-
-	if (*headQueue == NULL)
+	if (isEmpty(*headQueue))
 		return;
+
+	bool swapped;
+	ReadyQueue *current;
+	ReadyQueue *previous = NULL;
 	do {
 		swapped = false;
 		current = *headQueue;
 		while (current->next != previous) {
 			if (compare_policy(current, current->next) > 0) {
 				swap(current, current->next);
-				if (current == *headQueue) { //swapped on head of queue
+				if (current == *headQueue) { //swapped the head of queue
 					(*headQueue) = current->previous;
 				}
 				swapped = true;
@@ -61,8 +59,6 @@ void bubbleSort(ReadyQueue **headQueue) {
 	} while (swapped);
 }
 
-
-
 void swap(ReadyQueue *left, ReadyQueue *right) {
 	ReadyQueue *appo1, *appo2;
 	appo1 = (left == right->next) ? right : right->next;
@@ -73,12 +69,12 @@ void swap(ReadyQueue *left, ReadyQueue *right) {
 	appo2 = (right == left->previous) ? left : left->previous;
 	left->previous = appo1;
 	right->previous = appo2;
-	if (left->next)
+	if (left->next != NULL)
 		left->next->previous = left;
-	if (left->previous)
+	if (left->previous != NULL)
 		left->previous->next = left;
-	if (right->next)
+	if (right->next != NULL)
 		right->next->previous = right;
-	if (right->previous)
+	if (right->previous != NULL)
 		right->previous->next = right;
 }

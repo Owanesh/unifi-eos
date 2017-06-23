@@ -14,6 +14,4 @@ typedef unsigned char byte;
  */
 int setTask(Task* t, char* name, byte priority, byte exec_cycles);
 
-void getTaskDescription(Task* t, char* buffer);
-
 #endif /* HEADER_TASK_H_ */

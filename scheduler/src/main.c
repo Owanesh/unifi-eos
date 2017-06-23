@@ -23,7 +23,7 @@ void switchOptions(int value) {
 	switch (value) {
 	case 1:
 		insertNewTask(&head);
-		// bubbleSort(&head);
+		bubbleSort(&head);
 		break;
 	case 2:
 		execute(&head);
@@ -56,21 +56,28 @@ void switchOptions(int value) {
 		}
 		break;
 	case 6:
-		changeScheduling(head);
-		break;
-
-	case 0:
-		printList(head);
+		changeScheduling();
+		bubbleSort(&head);
 		break;
 	}
 }
 
+void printPolicy() {
+	printf("\nScheduling attuale: ");
+	if (policyScheduling == POLICY_PRIORITY) {
+		printf("Priorita'");
+	} else {
+		printf("Esecuzioni rimanenti");
+	}
+	printRow(50, '-');
+}
 int main() {
-	int optionsAllowed[] = { 0, 7 };
+	int optionsAllowed[] = { 1, 7 };
 	int value;
 	do {
 		printMenu(options, "Scheduler C", "Busiello and Mauro", false, true,
 				50);
+		printPolicy();
 		value = selectOption("Selezionare un'opzione del menu': ",
 				optionsAllowed, NULL, 0);
 		switchOptions(value);

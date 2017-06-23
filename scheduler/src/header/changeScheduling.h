@@ -10,7 +10,7 @@
 // defined in changeScheduling.c in order to be available for the other modules
 extern int policyScheduling;
 
-void changeScheduling(ReadyQueue *head);
+void changeScheduling();
 void bubbleSort(ReadyQueue **head);
 
 #endif /* HEADER_CHANGESCHEDULING_H_ */

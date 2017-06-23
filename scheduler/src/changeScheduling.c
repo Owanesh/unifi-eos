@@ -3,39 +3,16 @@
 #include "header/utilities.h"
 
 void swap(ReadyQueue *left, ReadyQueue *right);
-int compare_policy(ReadyQueue *a, ReadyQueue *b);
+
+int compare_policy(ReadyQueue *left, ReadyQueue *right);
 
 int policyScheduling = POLICY_PRIORITY;
 
-/* @parameters (ReadyQueue *head)
- * @explanation:
- * Change policy scheduling and sort list
+/*
+ * Change policy scheduling
  */
-void changeScheduling(ReadyQueue *head) {
-	policyScheduling = ((policyScheduling - 1) * -1);
-	bubbleSort(&head);
-}
-
-/* @parameters (ReadyQueue *a, ReadyQueue *b)
- * @returns : {-1,1}
- * 		1 : need swap
- * 	   -1 : no swap needed
- * @explanation:
- * This function makes a comparison between two nodes of list.
- * Comparison Parameter will be selected dynamically on base of policyScheduling variable
- */
-int compare_policy(ReadyQueue *a, ReadyQueue *b) {
-	// Priority = DESC   //Exec_Cycles = ASC
-	// If Equal value : Sort by ID DESC
-	if (policyScheduling){
-		return a->task.exec_cycles < b->task.exec_cycles ? -1 :
-				a->task.exec_cycles > b->task.exec_cycles ? 1 :
-						a->task.id < b->task.id ? 1 : -1 ;
-	}else{
-		return a->task.priority > b->task.priority ? -1 :
-				a->task.priority < b->task.priority ? 1 :
-						a->task.id < b->task.id ? 1 : -1 ;
-	}
+void changeScheduling() {
+	policyScheduling = ((policyScheduling + 1) % 2);
 }
 
 void bubbleSort(ReadyQueue **headQueue) {
@@ -44,11 +21,10 @@ void bubbleSort(ReadyQueue **headQueue) {
 
 	bool swapped;
 	ReadyQueue *current;
-	ReadyQueue *previous = NULL;
 	do {
 		swapped = false;
 		current = *headQueue;
-		while (current->next != previous) {
+		while (current->next != NULL) {
 			if (compare_policy(current, current->next) > 0) {
 				swap(current, current->next);
 				if (current == *headQueue) { //swapped the head of queue
@@ -59,26 +35,41 @@ void bubbleSort(ReadyQueue **headQueue) {
 				current = current->next;
 			}
 		}
-		previous = current;
 	} while (swapped);
 }
 
-void swap(ReadyQueue *left, ReadyQueue *right) {
-	ReadyQueue *appo1, *appo2;
-	appo1 = (left == right->next) ? right : right->next;
-	appo2 = (right == left->next) ? left : left->next;
-	left->next = appo1;
-	right->next = appo2;
-	appo1 = (left == right->previous) ? right : right->previous;
-	appo2 = (right == left->previous) ? left : left->previous;
-	left->previous = appo1;
-	right->previous = appo2;
-	if (left->next != NULL)
-		left->next->previous = left;
-	if (left->previous != NULL)
-		left->previous->next = left;
-	if (right->next != NULL)
-		right->next->previous = right;
-	if (right->previous != NULL)
-		right->previous->next = right;
+/*
+ * This function makes a comparison between two nodes of list.
+ * Comparison Parameter will be selected dynamically on base of policyScheduling variable
+ */
+int compare_policy(ReadyQueue *left, ReadyQueue *right) {
+	// Priority = DESC   //Exec_Cycles = ASC
+	// If Equal value : Sort by ID DESC
+	if (policyScheduling == POLICY_EXEC_CYCLES) {
+		return left->task.exec_cycles > right->task.exec_cycles ? 1 :
+				left->task.exec_cycles < right->task.exec_cycles ? -1 :
+				left->task.id < right->task.id ? 1 : -1;
+	} else {
+		return left->task.priority > right->task.priority ? -1 :
+				left->task.priority < right->task.priority ? 1 :
+				left->task.id < right->task.id ? 1 : -1;
+	}
+
 }
+
+void swap(ReadyQueue *left, ReadyQueue *right) {
+	//MAX 6 pointers to change,
+	//but if c is the last or b is the head they become 5,
+	//if both the case then 4
+	if (right->next != NULL) {
+		right->next->previous = left;
+	}
+	if (left->previous != NULL) {
+		left->previous->next = right;
+	}
+	left->next = right->next;
+	right->next = left;
+	right->previous = left->previous;
+	left->previous = right;
+}
+

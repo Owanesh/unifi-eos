@@ -23,6 +23,7 @@ void switchOptions(int value) {
 	switch (value) {
 	case 1:
 		insertNewTask(&head);
+		// bubbleSort(&head);
 		break;
 	case 2:
 		execute(&head);
@@ -56,6 +57,10 @@ void switchOptions(int value) {
 		break;
 	case 6:
 		changeScheduling(head);
+		break;
+
+	case 0:
+		printList(head);
 		break;
 	}
 }

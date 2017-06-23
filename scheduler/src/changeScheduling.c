@@ -17,21 +17,25 @@ void changeScheduling(ReadyQueue *head) {
 }
 
 /* @parameters (ReadyQueue *a, ReadyQueue *b)
- * @returns : {0,-1,1}
- * 		0 : two elements have equal values
- * 		1 : A is greater than B
- * 	   -1 : A is minor than B
+ * @returns : {-1,1}
+ * 		1 : need swap
+ * 	   -1 : no swap needed
  * @explanation:
  * This function makes a comparison between two nodes of list.
  * Comparison Parameter will be selected dynamically on base of policyScheduling variable
  */
 int compare_policy(ReadyQueue *a, ReadyQueue *b) {
-	if (policyScheduling)
+	// Priority = DESC   //Exec_Cycles = ASC
+	// If Equal value : Sort by ID DESC
+	if (policyScheduling){
 		return a->task.exec_cycles < b->task.exec_cycles ? -1 :
-				a->task.exec_cycles > b->task.exec_cycles ? 1 : 0;
-	else
-		return a->task.priority < b->task.priority ? -1 :
-				a->task.priority > b->task.priority ? 1 : 0;
+				a->task.exec_cycles > b->task.exec_cycles ? 1 :
+						a->task.id < b->task.id ? 1 : -1 ;
+	}else{
+		return a->task.priority > b->task.priority ? -1 :
+				a->task.priority < b->task.priority ? 1 :
+						a->task.id < b->task.id ? 1 : -1 ;
+	}
 }
 
 void bubbleSort(ReadyQueue **headQueue) {

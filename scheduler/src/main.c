@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <ctype.h>
 #include "header/task.h"
 #include "header/utilities.h"
 #include "header/readyQueue.h"

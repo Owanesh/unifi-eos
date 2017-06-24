@@ -1,7 +1,6 @@
 #include "header/utilities.h"
 #include <stdio.h>
 #include <string.h>
-#include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -55,7 +54,8 @@ void printMenu(const char *options[], char* header, char* footer, bool rowWrap,
 		printf("%s", header);
 	}
 	printRow(lineSize, '-');
-	for (int i = 0; i < stringArrayLen(options); i++) {
+	int i = 0;
+	for (i; i < stringArrayLen(options); i++) {
 		if (i > 0)
 			printf("\n");
 		if (evidence) {
@@ -76,7 +76,8 @@ void printMenu(const char *options[], char* header, char* footer, bool rowWrap,
 
 void printRow(int a, char lineChar) {
 	printf("\n");
-	for (int i = 0; i < a; i++) {
+	int i=0;
+	for (i; i < a; i++) {
 		printf("%c", lineChar);
 	}
 	printf("\n");
@@ -95,7 +96,8 @@ bool isValueAllowed(int num, int allowedRange[2], int disabled[],
 			(allowedRange == NULL)
 					|| (num >= allowedRange[0] && num <= allowedRange[1]) ?
 					true : false;
-	for (int i = 0; (i < disabled_length) && valid && inRange; i++) {
+	int i=0;
+	for (i; (i < disabled_length) && valid && inRange; i++) {
 		if (num == disabled[i])
 			valid = false;
 	}

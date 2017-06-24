@@ -55,7 +55,7 @@ void printMenu(const char *options[], char* header, char* footer, bool rowWrap,
 	}
 	printRow(lineSize, '-');
 	int i = 0;
-	for (i; i < stringArrayLen(options); i++) {
+	for (; i < stringArrayLen(options); i++) {
 		if (i > 0)
 			printf("\n");
 		if (evidence) {
@@ -77,7 +77,7 @@ void printMenu(const char *options[], char* header, char* footer, bool rowWrap,
 void printRow(int a, char lineChar) {
 	printf("\n");
 	int i=0;
-	for (i; i < a; i++) {
+	for (; i < a; i++) {
 		printf("%c", lineChar);
 	}
 	printf("\n");
@@ -97,7 +97,7 @@ bool isValueAllowed(int num, int allowedRange[2], int disabled[],
 					|| (num >= allowedRange[0] && num <= allowedRange[1]) ?
 					true : false;
 	int i=0;
-	for (i; (i < disabled_length) && valid && inRange; i++) {
+	for (; (i < disabled_length) && valid && inRange; i++) {
 		if (num == disabled[i])
 			valid = false;
 	}

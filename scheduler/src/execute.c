@@ -5,6 +5,10 @@
 
 void checkTermination(ReadyQueue** head, ReadyQueue* task);
 
+/*
+ * Esegue il primto task della ReadyQueue (decrementa il numero cicli rimanenti),
+ * Necessita della testa della coda e dell'id del task da eseguire
+ */
 void execute(ReadyQueue **head) {
 	if (isEmpty(*head)) {
 		printf("La lista dei task e' vuota.");
@@ -16,6 +20,11 @@ void execute(ReadyQueue **head) {
 	checkTermination(head, last);
 }
 
+/*
+ * Esegue il task specificato (decrementa il numero cicli rimanenti),
+ * ritorna 1 in caso di successo, 0 altrimenti
+ * Necessita della testa della coda e dell'id del task da eseguire
+ */
 void executeById(ReadyQueue **head, unsigned long id) {
 	if (isEmpty(*head)) {
 		printf("La lista dei task e' vuota.");

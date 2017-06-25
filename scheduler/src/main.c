@@ -19,6 +19,7 @@ const char* options[] = { "(1) Crea un nuovo task",
 //puntatore alla testa della coda dei task
 ReadyQueue *head = NULL;
 
+/* Controlla la scelta dell'utente ed invoca le funzioni opportune */
 void switchOptions(int value) {
 	unsigned long id;
 	switch (value) {

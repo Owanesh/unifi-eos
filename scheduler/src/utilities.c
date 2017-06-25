@@ -32,8 +32,9 @@ int getLine(char *buff, size_t sz) {
 	return OK;
 }
 
-/*
- * Conta le opzioni del menù
+/* Restituisce un valore intero indicante la dimensione di un
+ * array di stringhe, avente come ultimo valore, un valore di tipo NULL
+ * Usato per contare le opzioni del menù
  */
 int stringArrayLen(const char *options[]) {
 	int count = 0;
@@ -75,6 +76,9 @@ void printMenu(const char *options[], char* header, char* footer, bool rowWrap,
 	}
 }
 
+/* Riceve in input un valore intero (A) ed un carattere,
+ * stampa per A volte il carattere, contenuto tra due righe vuote
+ */
 void printRow(int a, char lineChar) {
 	printf("\n");
 	int i = 0;

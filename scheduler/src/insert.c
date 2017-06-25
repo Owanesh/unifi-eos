@@ -17,6 +17,8 @@ void insertNewTask(ReadyQueue **head) {
 	addTask(head, name, priority, exec_cycles);
 }
 
+/* Richiede input numerici all'utente, imponendo i limiti entro i quali
+ * viene considerato valido */
 void requestData(char *name, byte *priority, byte *exec_cycles) {
 	requestName(name);
 
@@ -30,6 +32,9 @@ void requestData(char *name, byte *priority, byte *exec_cycles) {
 			appo, NULL, 0);
 }
 
+/* Valida un input di una stringa da parte dell'utente
+ * Nel caso di un input non consistente vengono stampati gli opportuni
+ * messaggi di errore */
 void requestName(char *name) {
 	int rc = OK;
 	do {
@@ -45,6 +50,8 @@ void requestName(char *name) {
 	} while (rc != OK);
 }
 
+/* Aggiunge un task all'interno della coda, allocando dinamicamente lo spazio
+ * e facendo i collegamenti con i puntatori successivi e precedenti */
 void addTask(ReadyQueue **head, char *name, byte priority, byte exec_cycles) {
 	if (isEmpty(*head)) {
 		//prima inizializzazione della lista

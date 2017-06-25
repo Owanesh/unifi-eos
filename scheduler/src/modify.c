@@ -22,6 +22,8 @@ int modifyById(ReadyQueue *head, unsigned long id) {
 	return 1;
 }
 
+/* Richiede input numerici all'utente per la priorità,
+ * imponendo i limiti entro i quali viene considerato valido */
 byte requestPriority(ReadyQueue* found) {
 	int appo[2] = { 0, 9 };
 	printf("\nPriorita' attuale:%d", found->task.priority);

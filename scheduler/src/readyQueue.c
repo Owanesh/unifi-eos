@@ -44,6 +44,7 @@ ReadyQueue* getLastNode(ReadyQueue *head) {
 	return last;
 }
 
+/* Stampa in forma tabellare le informazioni relative ai task */
 void printList(ReadyQueue *head) {
 	if (head == NULL) {
 		return;

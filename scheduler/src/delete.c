@@ -64,17 +64,22 @@ int handleSpecialCase(ReadyQueue **head, ReadyQueue *task) {
 	}
 	return done;
 }
+/* Cancella un task dalla lista
+ * nel caso in cui sia l'unico elemento */
 void deleteLastNode(ReadyQueue **head) {
 	free(*head);
 	*head = NULL;
 }
 
+/* Cancella un task all'inizio della lista*/
 void deleteHead(ReadyQueue **head, ReadyQueue * task) {
 	ReadyQueue *memoryToBeFreed = *head;
 	*head = task->next;
 	(*head)->previous = NULL;
 	free(memoryToBeFreed);
 }
+
+/* Cancella un task alla coda della lista */
 void deleteTail(ReadyQueue *task) {
 	free(task->previous->next);
 	task->previous->next = NULL;

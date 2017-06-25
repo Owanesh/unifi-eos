@@ -60,6 +60,9 @@ int compare_policy(ReadyQueue *left, ReadyQueue *right) {
 
 }
 
+/* Scambia due nodi all'interno della lista
+ * scambiando anche i rispettivi puntatori ai successivi e precedenti nodi
+ */
 void swap(ReadyQueue *left, ReadyQueue *right) {
 	//MAX 6 puntatori da modificare,
 	//se left è il primo nodo o right è l'ultimo nodo della lista diventano 5,

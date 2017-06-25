@@ -11,7 +11,7 @@ void execute(ReadyQueue **head) {
 		return;
 	}
 	ReadyQueue *last = getLastNode(*head);
-	last->task.exec_cycles--;
+	last->task.exec_cycles--; //decremento delle esecuzioni di un'unità
 	printf("Esecuzione avvenuta con successo.\n");
 	checkTermination(head, last);
 }
@@ -26,16 +26,19 @@ void executeById(ReadyQueue **head, unsigned long id) {
 		printf("Task non trovato nel sistema");
 		return;
 	}
-	found->task.exec_cycles--;
+	found->task.exec_cycles--; //decremento delle esecuzioni di un'unità
 	printf("Esecuzione avvenuta con successo.\n");
 	checkTermination(head, found);
 }
 
+/*
+ * Verifica se task è terminato, in caso affermativo ne avvia l'eliminazione dalla lista
+ */
 void checkTermination(ReadyQueue** head, ReadyQueue* task) {
 	if (task->task.exec_cycles == 0) {
 		char name[9];
 		strcpy(name, task->task.name);
-		delete(head, task);
+		delete(head, task); //cancellazione delegata al modulo delete
 		printf("Il task %s ha terminato la sua esecuzione.", name);
 	}
 }

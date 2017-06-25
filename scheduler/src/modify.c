@@ -5,7 +5,7 @@
 byte requestPriority(ReadyQueue* found);
 
 /*
- * Modifies priority of the specified task, returns 1 in case of success, 0 otherwise (i.e. list empty / task not found)
+ * Modifica la priorità del task specificato, ritorna 1 in caso di successo, altrimenti 0
  */
 int modifyById(ReadyQueue *head, unsigned long id) {
 	if (isEmpty(head)) {

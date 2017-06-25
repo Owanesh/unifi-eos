@@ -10,18 +10,16 @@ typedef struct ReadyQueue {
 } ReadyQueue;
 
 /*
- * Returns the pointer to a Task searched by Id. Returns NULL if not found.
- * If previous != NULL and exists a task with the specified Id, then previous will contain the previous
- * element (useful foe elimination)
+ * Restituisce un puntatore al Task identificato da 'id, altrimenti NULL.
  */
 ReadyQueue* searchById(ReadyQueue *head, unsigned long id);
 /*
- * Get the last element of the list if it's not empty, otherwise NULL
+ * Restituisce il puntatore all'ultimo nodo della lista se non vuota, altrimenti NULL
  */
 ReadyQueue* getLastNode(ReadyQueue *head);
 
 /*
- * Returns 1 if the list is empty, otherwise 0 (NOTE: you have to pass the head of the list)
+ * Restituisce 1 se la lista è vuota, altrimenti 0
  */
 int isEmpty(ReadyQueue *head);
 

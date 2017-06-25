@@ -5,10 +5,10 @@
 #include <string.h>
 
 /*
- * ALlows to get a line from stdin checking that is not
- * TOO_LONG = the string has more characters than sz
- * INVALID = the string starts with ' ' or '\n'
- * NO_INPUT = read error
+ * Acquisisce una linea di testo da stdin verificando che non sia:
+ * TOO_LONG = la stringa è troppo lunga
+ * INVALID = la stringa inizia con ' ' or '\n'
+ * NO_INPUT = errore di I/O
  */
 int getLine(char *buff, size_t sz) {
 	int ch, extra;
@@ -17,8 +17,9 @@ int getLine(char *buff, size_t sz) {
 		return NO_INPUT;
 	if (buff[0] == ' ' || buff[0] == '\n')
 		return INVALID;
-	// If it was too long, there'll be no newline. In that case, we flush
-	// to end of line so that excess doesn't affect the next call.
+	// se la stringa fosse troppo lunga non ci sarebbe carattere di newline
+	// è necessario rimuovere le digitazioni presente nel buffer input
+	// per non influenzare le prossime richieste
 	if (buff[strlen(buff) - 1] != '\n') {
 		extra = 0;
 		while (((ch = getchar()) != '\n') && (ch != EOF))
@@ -26,13 +27,13 @@ int getLine(char *buff, size_t sz) {
 		return (extra == 1) ? TOO_LONG : OK;
 	}
 
-	// Otherwise remove newline and give string back to caller.
+	// rimozione del carattere newline
 	buff[strlen(buff) - 1] = '\0';
 	return OK;
 }
 
 /*
- * Counts the rows of options matrix
+ * Conta le opzioni del menù
  */
 int stringArrayLen(const char *options[]) {
 	int count = 0;
@@ -41,11 +42,11 @@ int stringArrayLen(const char *options[]) {
 	return count;
 }
 
-/* Options : Array of strings with your menu option
- * Header : An header title, not required
- * Footer : A footer sign, not required
- * rowWrap : if true, between options, there is a row
- * evidence : if true, each option has a > prepended
+/* Options : opzioni del menù
+ * Header : header title, non obbligatorio
+ * Footer : footer title, non obbligatorio
+ * rowWrap : se true viene inserita una riga tra le opzioni
+ * evidence : se true viene inserito '>' all'inizio di ogni opzione
  * */
 void printMenu(const char *options[], char* header, char* footer, bool rowWrap,
 		bool evidence, int lineSize) {
@@ -76,7 +77,7 @@ void printMenu(const char *options[], char* header, char* footer, bool rowWrap,
 
 void printRow(int a, char lineChar) {
 	printf("\n");
-	int i=0;
+	int i = 0;
 	for (; i < a; i++) {
 		printf("%c", lineChar);
 	}
@@ -84,19 +85,18 @@ void printRow(int a, char lineChar) {
 }
 
 /*
- * Verifies num checking if it stands between the range and if it's not disabled.
- * If you want to not specify a range set allowedRange to NULL.
- * Return true if it's available, otherwise false
+ * Controlla che 'num' sia compreso nel range e che sia diverso da un valore disabilitato.
+ * Se alloweRange == NULL allora ogni valore è valido (a meno di valori disabilitati).
+ * Restituisce true se il valore digitato è valido, altrimenti false.
  */
 bool isValueAllowed(int num, int allowedRange[2], int disabled[],
 		int disabled_length) {
 	bool valid = true;
-	//inRange == true if numis between range or if allowedRange[0]>=allowedRange[1]
 	bool inRange =
 			(allowedRange == NULL)
 					|| (num >= allowedRange[0] && num <= allowedRange[1]) ?
 					true : false;
-	int i=0;
+	int i = 0;
 	for (; (i < disabled_length) && valid && inRange; i++) {
 		if (num == disabled[i])
 			valid = false;
@@ -105,11 +105,11 @@ bool isValueAllowed(int num, int allowedRange[2], int disabled[],
 }
 
 /*
- * Allows to select an option between the range allowed
+ * Consente di selezionare un'opzione specificata nel range di optionsAllowed.
  * allowed[2]-> allowed[0]=min value / allowed[1]=max value
- * disabled[]-> selections forbidden
- * dis_length-> length of disabled[]
- * Returns the value inserted
+ * disabled[]-> opzioni non valide
+ * dis_length-> cardinalità dell'insieme dei valori disabilitati
+ * Restituisce il valore valido digitato dall'utente.
  */
 int selectOption(char *prompt, int allowed[2], int disabled[], int dis_length) {
 	int value;
@@ -128,16 +128,15 @@ int selectOption(char *prompt, int allowed[2], int disabled[], int dis_length) {
 	return value;
 }
 
-/* readValue(): return the value read
- Allows
- - leading spaces : " 123"
- - trailing spaces : "123 "
- - leading zeros : "00000123"
- - Rescans after error input.
- Catches the following errors
+/* readValue(): restituisce il valore inserito da stind
+ Consente:
+ - spazi iniziali : " 123"
+ - spazi finali : "123 "
+ - zeri iniziali : "00000123"
+ Controlla i seguenti errori:
  - No input : ""
- - Text before the number : "abc 123"
- - other : "--123"
+ - testo prima di un numero : "abc 123"
+ - caratteri speciali : "--123"
  */
 int readValue() {
 	int value;
@@ -151,7 +150,6 @@ int readValue() {
 		// una carattere iniziale resituirebbe 0
 		validSyntax = sscanf(buffer, "%d", &value) && buffer[0] != '\n'
 				&& buffer[0] != ' ';
-
 		if (validSyntax != 1)
 			printf("Input sintatticamente non valido. Riprovare: ");
 	} while (!validSyntax);

@@ -8,7 +8,7 @@ void deleteHead(ReadyQueue **head, ReadyQueue * task);
 void deleteTail(ReadyQueue *task);
 
 /*
- * Deletes the task specified by id, returns 1 in case of success, otherwise 0 (i.e. taks not found)
+ * Elimina il task specificato, ritorna 1 in caso di successo, altrimenti 0
  */
 int deleteById(ReadyQueue **head, unsigned long id) {
 	if (isEmpty(*head)) {
@@ -25,8 +25,8 @@ int deleteById(ReadyQueue **head, unsigned long id) {
 }
 
 /*
- * Deletes the task passed as argument (head might be changed so it's necessary to the function)
- * Returns 1 in case of success, otherwise 0 (head is empty)
+ * Elimina il task specificato.
+ * Ritorna 1 in caso di successo, altrimenti 0
  */
 int delete(ReadyQueue **head, ReadyQueue *task) {
 	if (isEmpty(*head)) {
@@ -34,20 +34,25 @@ int delete(ReadyQueue **head, ReadyQueue *task) {
 		return 0;
 	}
 	int done = handleSpecialCase(head, task);
-
+	//se done==true allora l'eliminazione è già stata effettuata
 	if (!done) {
 		task->next->previous = task->previous;
-		ReadyQueue *memoryToBeFreed = task->previous->next; //saving the pointer
+		ReadyQueue *memoryToBeFreed = task->previous->next;
 		task->previous->next = task->next;
 		free(memoryToBeFreed);
 	}
 	return 1;
 }
 
+/*
+ * Determina se l'eliminazione ricade in uno dei seguenti casi:
+ * - rimozione unico nodo della lista
+ * - rimozione primo elemento
+ * - rimozione ultimo elemento
+ */
 int handleSpecialCase(ReadyQueue **head, ReadyQueue *task) {
 	int done = 0;
 	if (task->next == NULL && task->previous == NULL) {
-		//there's only one element
 		deleteLastNode(head);
 		done = 1;
 	} else if (task->next == NULL) {
@@ -65,8 +70,8 @@ void deleteLastNode(ReadyQueue **head) {
 }
 
 void deleteHead(ReadyQueue **head, ReadyQueue * task) {
-	ReadyQueue *memoryToBeFreed = *head; //saving the pointer
-	*head = task->next; //modify the head
+	ReadyQueue *memoryToBeFreed = *head;
+	*head = task->next;
 	(*head)->previous = NULL;
 	free(memoryToBeFreed);
 }

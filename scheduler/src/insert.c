@@ -8,7 +8,7 @@ void requestName(char *name);
 void addTask(ReadyQueue **head, char *name, byte priority, byte exec_cycles);
 
 /*
- * Inserts a new Task in the list passed as argument
+ * Inserisce un nuovo task nella lista ricevuta
  */
 void insertNewTask(ReadyQueue **head) {
 	char name[9];
@@ -21,7 +21,8 @@ void requestData(char *name, byte *priority, byte *exec_cycles) {
 	requestName(name);
 
 	int appo[2] = { 0, 9 };
-	*priority = selectOption("Inserisci priorita' (tra 0 e 9): ", appo, NULL, 0);
+	*priority = selectOption("Inserisci priorita' (tra 0 e 9): ", appo, NULL,
+			0);
 
 	appo[0] = 1;
 	appo[1] = 99;
@@ -46,15 +47,17 @@ void requestName(char *name) {
 
 void addTask(ReadyQueue **head, char *name, byte priority, byte exec_cycles) {
 	if (isEmpty(*head)) {
+		//prima inizializzazione della lista
 		*head = malloc(sizeof(ReadyQueue));
 		(*head)->next = NULL;
 		(*head)->previous = NULL;
 		setTask(&((*head)->task), name, priority, exec_cycles);
 	} else {
+		//aggiunta in coda
 		ReadyQueue *last = getLastNode(*head);
 		last->next = malloc(sizeof(ReadyQueue));
-		last->next->next = NULL; //last pointer has no successor
-		last->next->previous = last; //set link to the ex-last
+		last->next->next = NULL;
+		last->next->previous = last;
 		setTask(&(last->next->task), name, priority, exec_cycles);
 	}
 }

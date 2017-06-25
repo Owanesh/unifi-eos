@@ -9,12 +9,15 @@ int compare_policy(ReadyQueue *left, ReadyQueue *right);
 int policyScheduling = POLICY_PRIORITY;
 
 /*
- * Change policy scheduling
+ * Cambia la politica di scheduling attuale
  */
 void changeScheduling() {
 	policyScheduling = ((policyScheduling + 1) % 2);
 }
 
+/*
+ * Realizza l'ordinamento della lista attraverso bubblesort
+ */
 void bubbleSort(ReadyQueue **headQueue) {
 	if (isEmpty(*headQueue))
 		return;
@@ -27,7 +30,8 @@ void bubbleSort(ReadyQueue **headQueue) {
 		while (current->next != NULL) {
 			if (compare_policy(current, current->next) > 0) {
 				swap(current, current->next);
-				if (current == *headQueue) { //swapped the head of queue
+				if (current == *headQueue) {
+					//è stata modificata la testa della lista
 					(*headQueue) = current->previous;
 				}
 				swapped = true;
@@ -39,8 +43,7 @@ void bubbleSort(ReadyQueue **headQueue) {
 }
 
 /*
- * This function makes a comparison between two nodes of list.
- * Comparison Parameter will be selected dynamically on base of policyScheduling variable
+ * Determina se i due nodi debbano essere scambiati, in base alla politica di scheduling corrente.
  */
 int compare_policy(ReadyQueue *left, ReadyQueue *right) {
 	// Priority = DESC   //Exec_Cycles = ASC
@@ -58,9 +61,9 @@ int compare_policy(ReadyQueue *left, ReadyQueue *right) {
 }
 
 void swap(ReadyQueue *left, ReadyQueue *right) {
-	//MAX 6 pointers to change,
-	//but if c is the last or b is the head they become 5,
-	//if both the case then 4
+	//MAX 6 puntatori da modificare,
+	//se left è il primo nodo o right è l'ultimo nodo della lista diventano 5,
+	//se entrambi i casi diventano 4.
 	if (right->next != NULL) {
 		right->next->previous = left;
 	}

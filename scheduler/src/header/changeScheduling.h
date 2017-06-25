@@ -5,9 +5,9 @@
 
 #include "readyQueue.h"
 
-// policySheduling = 0 -> PRIORITA (DEFAULT)
-// policySheduling = 1 -> ESECUZIONI RIMANENTI
-// defined in changeScheduling.c in order to be available for the other modules
+/* policySheduling = 0 -> PRIORITA (DEFAULT)
+ * policySheduling = 1 -> ESECUZIONI RIMANENTI
+ */
 extern int policyScheduling;
 
 void changeScheduling();

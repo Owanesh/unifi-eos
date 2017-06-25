@@ -10,7 +10,8 @@ typedef struct Task {
 typedef unsigned char byte;
 
 /*
- *setTask necessita un puntatore ad un task, altrimenti le modifiche sarebbero locali alla funzione
+ * Funzione setter di un task comprendente tutti i possibili parametri.
+ * Restituisce 0 se i parametri non sono validi, altrimenti un numero !=0
  */
 int setTask(Task* t, char* name, byte priority, byte exec_cycles);
 

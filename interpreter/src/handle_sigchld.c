@@ -3,7 +3,7 @@
 #include <errno.h>	//errno
 #include "header/handle_sigchld.h"
 
-void handle_sigchld(int sig) {
+void handle_sigchld() {
 	int saved_errno = errno;
 	//ripeto il ciclo finchè ci sono processi che hanno terminato
 	while (waitpid((pid_t) (-1), NULL, WNOHANG) > 0) {

@@ -1,3 +1,5 @@
+#include <stdlib.h>
+#include <stdio.h>
 #include <signal.h>	//sigaction, sigemptyset, struct sigaction, SIGCHLD, SA_RESTART, SA_NOCLDSTOP
 #include "header/parallelExec.h"
 #include "header/handle_sigchld.h" //funzione handler

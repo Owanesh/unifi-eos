@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
 /*
  * Acquisisce una linea di testo da stdin verificando che non sia:
@@ -160,3 +161,19 @@ int readValue() {
 	return value;
 }
 
+char *trim(char *str) {
+	char *end;
+	// Trim spazi iniziali
+	while (isspace((unsigned char) *str))
+		str++;
+	if (*str == '\0' || *str == '\n')  // tutti spazi
+		return NULL;
+	// Trim spazi finali
+	end = str + strlen(str) - 1;
+	while (end > str && isspace((unsigned char) *end))
+		end--;
+	// terminatore aggiornato per ignorare gli eventuali spazi
+	*(end + 1) = '\0';
+
+	return str;
+}

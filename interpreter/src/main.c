@@ -21,8 +21,6 @@ void switchOptions(int value) {
 		//esecuzione parallela
 		parallelExec();
 		break;
-	default:
-		printf("\nProgramma terminato.");
 	}
 }
 
@@ -33,4 +31,6 @@ int main(void) {
 	value = selectOption("Selezionare un'opzione del menu': ", optionsAllowed,
 	NULL, 0);
 	switchOptions(value);
+	printf("\nProgramma terminato.");
+	exit(EXIT_SUCCESS);
 }

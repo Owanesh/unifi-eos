@@ -1,52 +1,53 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "header/readCommand.h"
+#include "header/utilities.h"
 #include <string.h>
 
 void str_split(char* input_string, const char token_delimiter, char* *command,
 		char** *args);
 
-char* readCommand() {
+char** readCommand() {
 	char *str;
 	int ch, size = 21, len = 0;
 	str = realloc(NULL, sizeof(char) * size); //20 caratteri disponibili + '\0'
 	if (str == NULL) //errore
-		return str;
+		return NULL;
 
 	while ((ch = fgetc(stdin)) != EOF && ch != '\n') { //lettura fino a EOF o '\n'
 		str[len++] = ch;
 		if (len == size) {
 			str = realloc(str, sizeof(char) * (size += 16)); //rialloco 15 caratteri + '\0'
 			if (str == NULL) //errore
-				return str;
+				return NULL;
 		}
 	}
 	str[len++] = '\0'; //terminazione stringa
 	str = realloc(str, sizeof(char) * len); //rialloco esattamente lo spazio occupato
+	char* trimmedStr = trim(str);
+	free(str); // non serve piu'
+	if (trimmedStr == NULL) {
+		// l'utente non ha inserito nessun comando
+		return NULL;
+	} else {
+		char** args = 0;
+		char* command = "";
+		str_split(trimmedStr, ' ', &command, &args);
+		/* Test of stringsplit*/
 
-
-	char** args = 0;
-	char* command = "";
-    str_split(str, ' ', &command, &args);
-	/* Test of stringsplit*/
-/*
-	printf("Il comando e' %s\n", command);
-	if (args) {
-		int i;
-		for (i = 0; *(args + i); i++) {
-			printf("parametri=[%s]\n", *(args + i));
-			free(*(args + i));
+		printf("Il comando e' %s\n", command);
+		if (args) {
+			int i;
+			for (i = 0; *(args + i); i++) {
+				printf("parametri=[%s]\n", *(args + i));
+				free(*(args + i));
+			}
+			printf("\n");
+			free(args);
 		}
-		printf("\n");
-		free(args);
+		return args;
 	}
-*/
-	return str;
 }
-
-
-
-
 
 void str_split(char* input_string, const char token_delimiter, char* *command,
 		char** *args) {

@@ -11,7 +11,7 @@ void createFile(int count);
 
 void sequentialExec() {
 	int count = 0;
-	char* command;
+	char** command;
 	pid_t pid;
 	do {
 		printf("\n> ");

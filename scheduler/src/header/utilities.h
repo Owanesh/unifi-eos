@@ -53,4 +53,6 @@ int selectOption(char *prompt, int allowed[2], int disabled[], int dis_length);
  */
 int readValue();
 
+char *trim(char *str);
+
 #endif /* HEADER_UTILITIES_H_ */

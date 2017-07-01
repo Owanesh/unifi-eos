@@ -1,3 +1,6 @@
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <signal.h>	//sigaction, sigemptyset, struct sigaction, SIGCHLD, SA_RESTART, SA_NOCLDSTOP
@@ -8,7 +11,17 @@ void bind_handler_sigchld();
 
 void parallelExec() {
 	bind_handler_sigchld(); // imposto l'handler opportuno
+	char* command;
+	pid_t pid;
+	do {
+		command = readCommand();
+		if (command != NULL) {
+			if ((pid = fork()) == 0) {
+				//processo figlio
 
+			}
+		}
+	} while (command != NULL);
 }
 
 void bind_handler_sigchld() {
@@ -23,6 +36,6 @@ void bind_handler_sigchld() {
 	if (sigaction(SIGCHLD, &sa, 0) == -1) {
 		//errore, uscita forzata
 		perror(0);
-		exit(1);
+		exit(EXIT_FAILURE);
 	}
 }

@@ -2,7 +2,7 @@
 #include <sys/wait.h>	//waitpid, pid_t, WNOHANG
 #include <errno.h>	//errno
 #include "header/handle_sigchld.h"
-
+#include <stdlib.h>
 void handle_sigchld() {
 	int saved_errno = errno;
 	//ripeto il ciclo finchè ci sono processi che hanno terminato

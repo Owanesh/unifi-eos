@@ -84,7 +84,7 @@ RemoteSystemsTempFiles/
 *.scala_dependencies
 *.worksheet
 
-
+**/interpreter/src/output_file/
 
 nbproject/private/
 **/build/

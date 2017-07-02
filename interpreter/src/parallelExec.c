@@ -14,7 +14,7 @@ void parallelExec() {
 	char* command;
 	pid_t pid;
 	do {
-		command = readCommand();
+		//command = readCommand();
 		if (command != NULL) {
 			if ((pid = fork()) == 0) {
 				//processo figlio

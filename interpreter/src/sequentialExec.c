@@ -3,6 +3,7 @@
 #include <sys/wait.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <fcntl.h>
 #include <errno.h>
 #include "header/sequentialExec.h"
@@ -10,20 +11,30 @@
 void createFile(int count);
 
 void sequentialExec() {
+	int termination_flag = 0;
 	int count = 0;
-	char** command;
+	char* str = NULL;
 	pid_t pid;
 	do {
 		printf("\n> ");
-		command = readCommand();
-		if (command != NULL) {
+		//acquisizione comando da parte dell'utente
+		char* str = readCommand();
+		if (str != NULL) {
+			termination_flag = 1;
 			count++; //incremento dell'indice degli output file
 			if ((pid = fork()) == 0) {
 				//processo figlio
+				//la memoria dinamica istanziata in parseCommand sara'
+				//liberata al termine di questo processo figlio
+				int saved_stdout = dup(STDOUT_FILENO);		//in caso di errore
+				char **command = parseCommand(str);
 				createFile(count);
-				char *args = "date";
-				char *argv[] = { "+%Y-%m-%d", NULL };
-				execvp(args, argv); //l'ouput è redirezionato anche dopo execvp
+				if (execvp(command[0], command) == -1) {
+					//l'ouput è redirezionato anche dopo execvp
+					dup2(saved_stdout, STDOUT_FILENO);
+					printf("Comando non riconosciuto.\n");
+					exit(EXIT_FAILURE);
+				}
 			} else {
 				//processo padre
 				int status;
@@ -36,14 +47,16 @@ void sequentialExec() {
 				}
 
 			}
+		} else {
+			termination_flag = 0;
 		}
-	} while (command != NULL);
+	} while (termination_flag != 0);
 }
 
 void createFile(int count) {
 	char fileName[100];
 	sprintf(fileName, "src/output_file/out.%d", count);
-	//crea il file se non esiste, altrimenti truncate. Permesso di scrittura per l'owner
+//crea il file se non esiste, altrimenti truncate. Permesso di scrittura per l'owner
 	int fd = open(fileName, O_CREAT | O_TRUNC | O_WRONLY, 0600);
 	if (fd < 0) {
 		perror("Apertura file: ");

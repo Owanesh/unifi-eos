@@ -22,20 +22,19 @@ char** readCommand() {
 				return NULL;
 		}
 	}
-	str[len++] = '\0'; //terminazione stringa
-	str = realloc(str, sizeof(char) * len); //rialloco esattamente lo spazio occupato
+	str[len++] = '\0'; //Terminazione stringa
+	str = realloc(str, sizeof(char) * len); //Rialloco esattamente lo spazio occupato
 	char* trimmedStr = trim(str);
 	free(str); // non serve piu'
 	if (trimmedStr == NULL) {
-		// l'utente non ha inserito nessun comando
+		// L'utente non ha inserito nessun comando
 		return NULL;
 	} else {
 		char** args = 0;
 		char* command = "";
 		str_split(trimmedStr, ' ', &command, &args);
 		/* Test of stringsplit*/
-
-		printf("Il comando e' %s\n", command);
+		printf("\nIl comando e' %s\n", command);
 		if (args) {
 			int i;
 			for (i = 0; *(args + i); i++) {
@@ -52,10 +51,10 @@ char** readCommand() {
 void str_split(char* input_string, const char token_delimiter, char* *command,
 		char** *args) {
 	//strtok deprecata, ma windows non ha strsep
-	char** result_splitted_string_array = 0;
+	char** result_splitted_string_array = NULL;
 	int token_counter = 0;
 	char* temp_string = input_string;
-	char delim[2]; //usato per le strok, che vogliono un array
+	char delim[2]; //Usato per le strok, che vogliono un array
 	delim[0] = token_delimiter;
 	delim[1] = 0;
 
@@ -66,31 +65,29 @@ void str_split(char* input_string, const char token_delimiter, char* *command,
 		}
 		temp_string++;
 	}
-
-	/* Aggiungo uno spazio di sicurezza per i token finali */
-	token_counter++;
-
-	/* Alloco uno spazio di memoria atto a contenere il numero di token trovati */
-	result_splitted_string_array = malloc(sizeof(char*) * ++token_counter);
-
+	if (token_counter > 0) {	 //Ho trovato almeno un token
+		/* Alloco uno spazio di memoria atto a contenere il numero di token trovati */
+		result_splitted_string_array = malloc(sizeof(char*) * ++token_counter);
+	}
 	if (result_splitted_string_array != NULL) {
 		int id_tok = 0;
-		char* token = strtok(input_string, delim); //divide la stringa in sottostringhe, usa toke_delimiter per capire
-
-		/* preso il token successivo (strtok), controllo se e' valido*/
+		char* token = strtok(input_string, delim);
+		/* Preso il token successivo (strtok), controllo se e' valido*/
 		while (token != NULL) {
 			if (id_tok == 0) { //se è il primo in assoluto, allora e' il comando e non un argomento
 				*command = strdup(token); //clona dinamicamente la stringa token e la mette in command
 				token = strtok(0, delim);
 			}
 			*(result_splitted_string_array + id_tok) = strdup(token);
-			//nello spazio zero, ci sara' il secondo blocco, perche strtok sara' gia stato eseguito
+			//Nello spazio zero, ci sara' il secondo blocco, perche strtok sara' gia stato eseguito
 			token = strtok(0, delim);
 			id_tok++;
 		}
 		*(result_splitted_string_array + id_tok) = 0;
+	} else {
+		//Non ho trovato token, quindi la stringa arrivata equivale al comando
+		*command = input_string;
 	}
 	*args = result_splitted_string_array;
-
 }
 

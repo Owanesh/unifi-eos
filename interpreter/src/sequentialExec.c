@@ -11,9 +11,9 @@
 void createFile(int count);
 
 void sequentialExec() {
+	printf("Nota: Premere INVIO per terminare\n");
 	int termination_flag = 0;
 	int count = 0;
-	char* str = NULL;
 	pid_t pid;
 	do {
 		printf("\n> ");
@@ -25,12 +25,13 @@ void sequentialExec() {
 			if ((pid = fork()) == 0) {
 				//processo figlio
 				//la memoria dinamica istanziata in parseCommand sara'
-				//liberata al termine di questo processo figlio
-				int saved_stdout = dup(STDOUT_FILENO);		//in caso di errore
+				//liberata automaticamente al termine di questo processo figlio
+				int saved_stdout = dup(STDOUT_FILENO);//in caso di errore mantengo STdOUT
 				char **command = parseCommand(str);
 				createFile(count);
+				//l'ouput è redirezionato anche dopo execvp
 				if (execvp(command[0], command) == -1) {
-					//l'ouput è redirezionato anche dopo execvp
+					//errore nell'esecuzione di execvp (probabilmente comando non riconosciuto)
 					dup2(saved_stdout, STDOUT_FILENO);
 					printf("Comando non riconosciuto.\n");
 					exit(EXIT_FAILURE);
@@ -56,7 +57,7 @@ void sequentialExec() {
 void createFile(int count) {
 	char fileName[100];
 	sprintf(fileName, "src/output_file/out.%d", count);
-//crea il file se non esiste, altrimenti truncate. Permesso di scrittura per l'owner
+//crea il file se non esiste, altrimenti truncate. Permesso di lettura/scrittura per l'owner
 	int fd = open(fileName, O_CREAT | O_TRUNC | O_WRONLY, 0600);
 	if (fd < 0) {
 		perror("Apertura file: ");

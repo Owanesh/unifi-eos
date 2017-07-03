@@ -5,7 +5,6 @@
 #include <string.h>
 #include <ctype.h>
 
-
 /*
  * Acquisisce una linea di testo da stdin verificando che non sia:
  * TOO_LONG = la stringa è troppo lunga
@@ -153,15 +152,15 @@ int readValue() {
 			//errore di lettura, uscita forzata
 			return false;
 		}
+		char* bufferTrimmed = trim(buffer);
 		// una carattere iniziale resituirebbe 0
-		validSyntax = sscanf(buffer, "%d", &value) && buffer[0] != '\n'
-				&& buffer[0] != ' ';
+		validSyntax = sscanf(bufferTrimmed, "%d", &value)
+				&& bufferTrimmed[0] != '\n' && bufferTrimmed[0] != ' ';
 		if (validSyntax != 1)
 			printf("Input sintatticamente non valido. Riprovare: ");
 	} while (!validSyntax);
 	return value;
 }
-
 
 char *trim(char *str) {
 	char *end;

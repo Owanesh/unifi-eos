@@ -178,3 +178,8 @@ char *trim(char *str) {
 
 	return str;
 }
+
+
+void set_argv(const char **args){
+	argv = (char**)args;
+}

@@ -57,15 +57,14 @@ void sequentialExec() {
 
 void createFile(int count) {
 	char fileName[100];
-	if(argv[1] != '\0'  && argv[1]!=NULL){
-		char* path ="";
-		if(argv[1][strlen(argv[1])-1]=='/')
+	if (argv[1] != '\0' && argv[1] != NULL) {
+		char* path = "";
+		if (argv[1][strlen(argv[1]) - 1] == '/')
 			path = strcat(argv[1], "out.%d");
 		else
 			path = strcat(argv[1], "/out.%d");
 		sprintf(fileName, path, count);
-	}
-	else{
+	} else {
 		sprintf(fileName, "/src/output_file/out.%d", count);
 	}
 
@@ -78,4 +77,3 @@ void createFile(int count) {
 	dup2(fd, 1); // redirezione dell'output su stdout
 	close(fd);
 }
-

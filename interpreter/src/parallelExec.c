@@ -74,19 +74,18 @@ void bind_handler_sigchld() {
 
 void createFileP(int count) {
 	char fileName[100];
-	if(argv[1] != '\0'  && argv[1]!=NULL){
-		char* path ="";
-		if(argv[1][strlen(argv[1])-1]=='/')
+	if (argv[1] != '\0' && argv[1] != NULL) {
+		char* path = "";
+		if (argv[1][strlen(argv[1]) - 1] == '/')
 			path = strcat(argv[1], "out.%d");
 		else
 			path = strcat(argv[1], "/out.%d");
 		sprintf(fileName, path, count);
-	}
-	else{
+	} else {
 		sprintf(fileName, "/src/output_file/out.%d", count);
 	}
 
-	//crea il file se non esiste, altrimenti truncate. Permesso di lettura/scrittura per l'owner
+//crea il file se non esiste, altrimenti truncate. Permesso di lettura/scrittura per l'owner
 	int fd = open(fileName, O_CREAT | O_TRUNC | O_WRONLY, 0600);
 	if (fd < 0) {
 		perror("Apertura file: ");
@@ -95,3 +94,4 @@ void createFileP(int count) {
 	dup2(fd, 1); // redirezione dell'output su stdout
 	close(fd);
 }
+

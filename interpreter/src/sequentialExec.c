@@ -65,7 +65,7 @@ void createFile(int count) {
 			path = strcat(argv[1], "/out.%d");
 		sprintf(fileName, path, count);
 	} else {
-		sprintf(fileName, "/src/output_file/out.%d", count);
+		sprintf(fileName, "./src/output_file/out.%d", count);
 	}
 
 //crea il file se non esiste, altrimenti truncate. Permesso di lettura/scrittura per l'owner

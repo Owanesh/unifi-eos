@@ -145,7 +145,7 @@ int selectOption(char *prompt, int allowed[2], int disabled[], int dis_length) {
  */
 int readValue() {
 	int value;
-	int validSyntax;
+	int validSyntax = 0;
 	char buffer[100];
 	do {
 		if (fgets(buffer, sizeof(buffer), stdin) == NULL) {
@@ -153,9 +153,12 @@ int readValue() {
 			return false;
 		}
 		char* bufferTrimmed = trim(buffer);
-		// una carattere iniziale resituirebbe 0
-		validSyntax = sscanf(bufferTrimmed, "%d", &value)
-				&& bufferTrimmed[0] != '\n' && bufferTrimmed[0] != ' ';
+		//trim restituisce NULL se l'utente ha digitato solo "{' '}\n"
+		if (bufferTrimmed != NULL) {
+			// una carattere iniziale resituirebbe 0
+			validSyntax = sscanf(bufferTrimmed, "%d", &value)
+					&& bufferTrimmed[0] != '\n' && bufferTrimmed[0] != ' ';
+		}
 		if (validSyntax != 1)
 			printf("Input sintatticamente non valido. Riprovare: ");
 	} while (!validSyntax);
@@ -179,7 +182,6 @@ char *trim(char *str) {
 	return str;
 }
 
-
-void set_argv(const char **args){
-	argv = (char**)args;
+void set_argv(const char **args) {
+	argv = (char**) args;
 }

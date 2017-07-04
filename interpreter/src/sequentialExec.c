@@ -6,6 +6,7 @@
 #include <string.h>
 #include <fcntl.h>
 #include <errno.h>
+#include "header/utilities.h"
 #include "header/sequentialExec.h"
 #include "header/readCommand.h"
 void createFile(int count);
@@ -56,7 +57,18 @@ void sequentialExec() {
 
 void createFile(int count) {
 	char fileName[100];
-	sprintf(fileName, "src/output_file/out.%d", count);
+	if(argv[1] != '\0'  && argv[1]!=NULL){
+		char* path ="";
+		if(argv[1][strlen(argv[1])-1]=='/')
+			path = strcat(argv[1], "out.%d");
+		else
+			path = strcat(argv[1], "/out.%d");
+		sprintf(fileName, path, count);
+	}
+	else{
+		sprintf(fileName, "/src/output_file/out.%d", count);
+	}
+
 //crea il file se non esiste, altrimenti truncate. Permesso di lettura/scrittura per l'owner
 	int fd = open(fileName, O_CREAT | O_TRUNC | O_WRONLY, 0600);
 	if (fd < 0) {

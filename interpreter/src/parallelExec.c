@@ -7,6 +7,7 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <signal.h>	//sigaction, sigemptyset, struct sigaction, SIGCHLD, SA_RESTART, SA_NOCLDSTOP
+#include "header/utilities.h"
 #include "header/parallelExec.h"
 #include "header/handle_sigchld.h" //funzione handler
 #include "header/readCommand.h"
@@ -73,7 +74,18 @@ void bind_handler_sigchld() {
 
 void createFileP(int count) {
 	char fileName[100];
-	sprintf(fileName, "src/output_file/out.%d", count);
+	if(argv[1] != '\0'  && argv[1]!=NULL){
+		char* path ="";
+		if(argv[1][strlen(argv[1])-1]=='/')
+			path = strcat(argv[1], "out.%d");
+		else
+			path = strcat(argv[1], "/out.%d");
+		sprintf(fileName, path, count);
+	}
+	else{
+		sprintf(fileName, "/src/output_file/out.%d", count);
+	}
+
 	//crea il file se non esiste, altrimenti truncate. Permesso di lettura/scrittura per l'owner
 	int fd = open(fileName, O_CREAT | O_TRUNC | O_WRONLY, 0600);
 	if (fd < 0) {

@@ -1,10 +1,12 @@
+#include "header/utilities.h"
+#include "header/sequentialExec.h"
+#include "header/parallelExec.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
-#include "header/sequentialExec.h"
-#include "header/parallelExec.h"
-#include "header/utilities.h"
+
+
 
 // opzioni del menù principale
 const char* options[] = { "(1) Esecuzione sequenziale",
@@ -24,7 +26,8 @@ void switchOptions(int value) {
 	}
 }
 
-int main(void) {
+int main(int argc,const char **argv){
+	set_argv(argv);
 	int optionsAllowed[] = { 1, 3 };
 	int value;
 	printMenu(options, "Interprete di comandi", NULL, false, true, 50);

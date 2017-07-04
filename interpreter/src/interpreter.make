@@ -13,4 +13,3 @@ sequentialExec.o: sequentialExec.c header/sequentialExec.h header/readCommand.h
 utilities.o: utilities.c header/utilities.h
 	cc -c utilities.c
 
-

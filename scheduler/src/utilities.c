@@ -152,9 +152,10 @@ int readValue() {
 			//errore di lettura, uscita forzata
 			return false;
 		}
+		char* bufferTrimmed = trim(buffer);
 		// una carattere iniziale resituirebbe 0
-		validSyntax = sscanf(buffer, "%d", &value) && buffer[0] != '\n'
-				&& buffer[0] != ' ';
+		validSyntax = sscanf(bufferTrimmed, "%d", &value)
+				&& bufferTrimmed[0] != '\n' && bufferTrimmed[0] != ' ';
 		if (validSyntax != 1)
 			printf("Input sintatticamente non valido. Riprovare: ");
 	} while (!validSyntax);

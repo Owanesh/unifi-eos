@@ -6,8 +6,6 @@
 #include <unistd.h>
 #include <string.h>
 
-
-
 // opzioni del menù principale
 const char* options[] = { "(1) Esecuzione sequenziale",
 		"(2) Esecuzione parallela", "(3) Esci", NULL };
@@ -26,7 +24,7 @@ void switchOptions(int value) {
 	}
 }
 
-int main(int argc,const char **argv){
+int main(int argc, const char **argv) {
 	set_argv(argv);
 	int optionsAllowed[] = { 1, 3 };
 	int value;

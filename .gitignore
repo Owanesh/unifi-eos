@@ -101,6 +101,7 @@ nbproject/private/
 # Icon must end with two \r
 Icon
 
+**/Debug/
 
 # Thumbnails
 ._*

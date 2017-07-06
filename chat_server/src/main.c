@@ -15,7 +15,7 @@ void switchOptions(int value) {
 	}
 }
 
-int main(int argc,const char **argv){
+int main(int argc, const char **argv) {
 	set_argv(argv);
 	int optionsAllowed[] = { 1, 3 };
 	int value;

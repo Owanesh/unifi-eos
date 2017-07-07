@@ -1,5 +1,6 @@
 #ifndef HEADER_SERVER_H_
 #define HEADER_SERVER_H_
+#include <fcntl.h>
 
 struct Client {
 	pid_t pid;

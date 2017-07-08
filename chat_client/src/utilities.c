@@ -5,7 +5,6 @@
 #include <string.h>
 #include <ctype.h>
 
-
 /*
  * Acquisisce una linea di testo da stdin verificando che non sia:
  * TOO_LONG = la stringa è troppo lunga

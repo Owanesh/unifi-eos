@@ -1,4 +1,3 @@
-#include "header/utilities.h"
 #include "header/main_client.h"
 #include "header/connect.h"
 #include "header/getListOfClients.h"
@@ -7,6 +6,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <signal.h>
+
+#include "header/utilities.h"
 
 // opzioni del menù principale
 const char* options[] = { "(1) Connessione al server", "(2) Elenco dei client",

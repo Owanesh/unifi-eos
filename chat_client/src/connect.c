@@ -28,6 +28,8 @@ int connect() {
 			sleep(1);
 		} while (fdClientPipe == -1);
 		rst = 1; //connessione riuscita
+	} else {
+		printf("Errore di connessione (probabilmente server spento).\n");
 	}
 	return rst;
 }
@@ -42,7 +44,6 @@ int sendRequestToServer() {
 	// apre server_pipe in scrittura
 	fd = open(serverPipePath, O_WRONLY);
 	if (fd == -1) {
-		printf("Errore di connessione (probabilmente server spento).\n");
 		return 0;
 	}
 	char msg[15];

@@ -49,6 +49,7 @@ void parallelExec() {
 				//devo almeno attendere che il figlio abbia copiato localmente il
 				//comando da eseguire
 				pause(); //aspettando SIGUSR1
+				signal(SIGUSR1, SIG_IGN); //ripristino l'handler
 			}
 		} else {
 			termination_flag = 0;

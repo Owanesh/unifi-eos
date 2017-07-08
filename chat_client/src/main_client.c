@@ -1,7 +1,8 @@
 #include "header/utilities.h"
-#include "header/connect.h"
 #include "header/main_client.h"
+#include "header/connect.h"
 #include "header/getListOfClients.h"
+#include "header/sendMessage.h"
 #include "header/handler_functions.h"
 #include <stdio.h>
 #include <stdlib.h>

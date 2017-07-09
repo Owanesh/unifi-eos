@@ -19,7 +19,7 @@ int connect() {
 	int rst = 0;
 	if (isConnected) {
 		//apertura del "<pid>_client_pipe"
-		char pipePath[25];
+		char pipePath[50];
 		sprintf(pipePath, "%d", getpid());
 		strcat(pipePath, "_client_pipe");
 		do {
@@ -27,7 +27,8 @@ int connect() {
 			fdClientPipe = open(pipePath, O_RDONLY);
 			sleep(1);
 		} while (fdClientPipe == -1);
-		rst = 1; //connessione riuscita
+		//da adesso fdClientPipe sara' attiva per comunicare con il server
+		rst = 1;
 	} else {
 		printf("Errore di connessione (probabilmente server spento).\n");
 	}
@@ -39,17 +40,17 @@ int connect() {
  * Restituisce 1 se il file esiste e viene aperto, altrimenti 0
  */
 int sendRequestToServer() {
-	int fd;
 	char *serverPipePath = "server_pipe";
 	// apre server_pipe in scrittura
-	fd = open(serverPipePath, O_WRONLY);
-	if (fd == -1) {
+	fdServerPipe = open(serverPipePath, O_WRONLY);
+	if (fdServerPipe == -1) {
 		return 0;
 	}
-	char msg[15];
+	//da adesso fdServerPipe sara' attiva per comunicare con il server
+	char msg[50];
 	//richiesta-> "CONNECT <pid>"
 	sprintf(msg, "%s %d", "CONNECT", getpid());
-	int msgLength = strlen(msg);
-	write(fd, msg, msgLength);
+	int msgLength = strlen(msg) + 1; //+1 per '\0'
+	write(fdServerPipe, msg, msgLength);
 	return 1;
 }

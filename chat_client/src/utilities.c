@@ -185,3 +185,14 @@ char *trim(char *str) {
 void set_argv(const char **args) {
 	argv = (char**) args;
 }
+/*
+ * Conta le cifre di un numero
+ */
+int countDigits(int n) {
+	int count = 0;
+	while (n != 0) {
+		n /= 10;
+		count++;
+	}
+	return count;
+}

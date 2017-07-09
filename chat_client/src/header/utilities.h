@@ -57,5 +57,5 @@ char *trim(char *str);
 
 char** argv;
 void set_argv(const char **args);
-
+int countDigits(int n);
 #endif /* HEADER_UTILITIES_H_ */

@@ -13,7 +13,7 @@ void stop();
 
 char** getListOfUser(int pidRequest);
 void sendMessage(int pidFrom, int pidTo);
-
+void closeConnection(int closePipe, char* pipeName);
 
 
 #endif /* HEADER_SERVER_H_ */

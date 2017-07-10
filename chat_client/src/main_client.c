@@ -2,6 +2,8 @@
 #include "header/connect.h"
 #include "header/getListOfClients.h"
 #include "header/sendMessage.h"
+#include "header/seeNewMessages.h"
+#include "header/disconnect.h"
 #include "header/handler_functions.h"
 #include "header/utilities.h"
 #include <stdio.h>
@@ -10,7 +12,7 @@
 
 // opzioni del menù principale
 const char* options[] = { "(1) Connessione al server", "(2) Elenco dei client",
-		"(3) Invia messaggio", "(4) Visualizza i nuovi messaggi",
+		"(3) Invia un nuovo messaggio", "(4) Visualizza i nuovi messaggi",
 		"(5) Disconnessione dal server", "(6) Esci", NULL };
 
 int connected = 0;
@@ -47,9 +49,10 @@ void switchOptions(int value) {
 			printf("Non sei connesso.\n");
 		break;
 	case 5:
-		if (connected)
+		if (connected) {
 			disconnect();
-		else
+			connected = 0;
+		} else
 			printf("Non sei connesso.\n");
 		break;
 	case 6:

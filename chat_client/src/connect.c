@@ -10,11 +10,15 @@
 int sendRequestToServer();
 
 /*
- * Apre la connessione al serverPipe ed al clientPipe, salvando i fd
+ * Apre la connessione al server_pipe ed al client_pipe, salvando i fd
  * nei riferimenti presenti in main_client.h.
  * Restituisce 1 se la connessione e' stata aperta con successo, altrimenti 0
  */
 int connect() {
+	/*
+	 * 1) invia richiesta al server
+	 * 2) se la connessione ha successo, tenta di aprire la propria pipe personale in lettura
+	 */
 	int isConnected = sendRequestToServer();
 	int rst = 0;
 	if (isConnected) {

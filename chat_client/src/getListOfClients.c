@@ -10,6 +10,14 @@ void sendRequestToServer();
 void printList(char* list);
 
 void getListOfClients() {
+	/*
+	 * 1) Invia richiesta al server
+	 * 2) Alloca lo spazio per salvare la lista
+	 * 3) Legge un carattere alla volta da fdClientPipe
+	 * 4) se necessario rialloca più spazio
+	 * 5) stampa la lista su stdout
+	 * 6) libera lo spazio occupato
+	 */
 	//dimensione iniziale della lista, se si rivelera' insufficiente verra' riallocata
 	int dim = 50;
 	sendRequestToServer();

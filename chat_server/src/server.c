@@ -5,6 +5,7 @@
 #include <sys/stat.h>           /* For S_IFIFO */
 #include <fcntl.h>
 #include <unistd.h> /* unlink */
+#include <string.h>
 
 int log_enabled = 1;
 

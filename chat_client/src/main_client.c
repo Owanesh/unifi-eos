@@ -2,28 +2,38 @@
 #include "header/connect.h"
 #include "header/getListOfClients.h"
 #include "header/sendMessage.h"
+#include "header/seeNewMessages.h"
+#include "header/disconnect.h"
 #include "header/handler_functions.h"
+#include "header/utilities.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <signal.h>
 
-#include "header/utilities.h"
-
 // opzioni del menù principale
 const char* options[] = { "(1) Connessione al server", "(2) Elenco dei client",
-		"(3) Invia messaggio", "(4) Visualizza i nuovi messaggi",
+		"(3) Invia un nuovo messaggio", "(4) Visualizza i nuovi messaggi",
 		"(5) Disconnessione dal server", "(6) Esci", NULL };
 
 int connected = 0;
+//definizione delle variabile extern dichiarate in main_client.h
+int fdClientPipe;
+int fdServerPipe;
+char** messages = NULL;
+int countMessages = 0;
+
 /* Controlla la scelta dell'utente ed invoca le funzioni opportune */
 void switchOptions(int value) {
 	switch (value) {
 	case 1:
-		if (connect()) {
-			countMessages = 0;
-			connected = 1;
+		if (connected) {
+			printf("Sei connesso.\n");
 		} else {
-			printf("Connessione non riuscita.\n");
+			if (connect()) {
+				connected = 1;
+			} else {
+				printf("Connessione non riuscita.\n");
+			}
 		}
 		break;
 	case 2:
@@ -45,13 +55,15 @@ void switchOptions(int value) {
 			printf("Non sei connesso.\n");
 		break;
 	case 5:
-		if (connected)
+		if (connected) {
 			disconnect();
-		else
+			connected = 0;
+		} else
 			printf("Non sei connesso.\n");
 		break;
 	case 6:
-		terminate();
+		if (connected)
+			disconnect();
 		break;
 	}
 }
@@ -66,7 +78,7 @@ int main(int argc, const char **argv) {
 	int optionsAllowed[] = { 1, 6 };
 	int value;
 	do {
-		char *footer = NULL;
+		char footer[30];
 		sprintf(footer, "Hai %d nuovi messaggi", countMessages);
 		printMenu(options, "Chat C", footer, false, true, 50);
 		value = selectOption("Selezionare un'opzione del menu': ",

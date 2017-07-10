@@ -58,4 +58,5 @@ char *trim(char *str);
 char** argv;
 void set_argv(const char **args);
 
+
 #endif /* HEADER_UTILITIES_H_ */

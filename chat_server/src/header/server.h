@@ -2,18 +2,20 @@
 #define HEADER_SERVER_H_
 #include <fcntl.h>
 
-struct Client {
+typedef struct Client {
 	pid_t pid;
 	struct Client *next;
-};
+} Client ;
 
+/* Basic server command*/
 void start();
-
 void stop();
 
 char** getListOfUser(int pidRequest);
 void sendMessage(int pidFrom, int pidTo);
 void closeConnection(int closePipe, char* pipeName);
-
+char* clientPname(pid_t pid);
+int openPipe(char* pipeName);
+void acceptConnection(Client *head, pid_t pid);
 
 #endif /* HEADER_SERVER_H_ */

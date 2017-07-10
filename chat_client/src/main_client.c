@@ -78,7 +78,7 @@ int main(int argc, const char **argv) {
 	int optionsAllowed[] = { 1, 6 };
 	int value;
 	do {
-		char *footer = NULL;
+		char footer[30];
 		sprintf(footer, "Hai %d nuovi messaggi", countMessages);
 		printMenu(options, "Chat C", footer, false, true, 50);
 		value = selectOption("Selezionare un'opzione del menu': ",

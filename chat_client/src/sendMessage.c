@@ -1,5 +1,5 @@
-#include "header/sendMessage.h"
 #include "header/main_client.h"
+#include "header/sendMessage.h"
 #include "header/utilities.h"
 #include <stdlib.h>
 #include <stdio.h>

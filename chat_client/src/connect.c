@@ -4,10 +4,10 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <signal.h>
-#include "header/connect.h"
 #include "header/main_client.h"
+#include "header/connect.h"
 
-int sendRequestToServer();
+int openingConnection();
 
 /*
  * Apre la connessione al server_pipe ed al client_pipe, salvando i fd
@@ -19,7 +19,7 @@ int connect() {
 	 * 1) invia richiesta al server
 	 * 2) se la connessione ha successo, tenta di aprire la propria pipe personale in lettura
 	 */
-	int isConnected = sendRequestToServer();
+	int isConnected = openingConnection();
 	int rst = 0;
 	if (isConnected) {
 		//apertura del "<pid>_client_pipe"
@@ -43,7 +43,7 @@ int connect() {
  * Apre il server_pipe e invia i propri dati per richiedere accesso.
  * Restituisce 1 se il file esiste e viene aperto, altrimenti 0
  */
-int sendRequestToServer() {
+int openingConnection() {
 	char *serverPipePath = "server_pipe";
 	// apre server_pipe in scrittura
 	fdServerPipe = open(serverPipePath, O_WRONLY);

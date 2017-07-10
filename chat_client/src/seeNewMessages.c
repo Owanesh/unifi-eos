@@ -1,5 +1,6 @@
-#include "header/seeNewMessages.h"
 #include "header/main_client.h"
+#include "header/seeNewMessages.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 

@@ -1,11 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include "header/handler_functions.h"
 #include "header/main_client.h"
+#include "header/handler_functions.h"
+#include "header/disconnect.h"
+
 
 void handler_termination() {
-	signal(SIGINT, handler_termination);
+	// prima di uscire e' necessario avvisare della propria disconnessione
+	disconnect();
+	exit(EXIT_SUCCESS);
 }
 
 void handler_new_message() {
@@ -28,5 +32,6 @@ void handler_new_message() {
 }
 
 void handler_dest_not_found() {
-	signal(SIGUSR2, handler_dest_not_found);
+	printf("Il messaggio non e' stato recapitato: destinatario inesistente.\n");
+	signal(SIGUSR2, handler_dest_not_found); //riattivo l'handler
 }

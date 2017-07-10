@@ -16,6 +16,12 @@ const char* options[] = { "(1) Connessione al server", "(2) Elenco dei client",
 		"(5) Disconnessione dal server", "(6) Esci", NULL };
 
 int connected = 0;
+//definizione delle variabile extern dichiarate in main_client.h
+int fdClientPipe;
+int fdServerPipe;
+char** messages = NULL;
+int countMessages = 0;
+
 /* Controlla la scelta dell'utente ed invoca le funzioni opportune */
 void switchOptions(int value) {
 	switch (value) {
@@ -56,7 +62,8 @@ void switchOptions(int value) {
 			printf("Non sei connesso.\n");
 		break;
 	case 6:
-		terminate();
+		if (connected)
+			disconnect();
 		break;
 	}
 }
@@ -70,8 +77,6 @@ int main(int argc, const char **argv) {
 	signal(SIGUSR2, handler_dest_not_found);
 	int optionsAllowed[] = { 1, 6 };
 	int value;
-	countMessages = 0;
-	messages = NULL;
 	do {
 		char *footer = NULL;
 		sprintf(footer, "Hai %d nuovi messaggi", countMessages);

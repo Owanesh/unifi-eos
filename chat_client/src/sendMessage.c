@@ -160,20 +160,20 @@ int getValue() {
 }
 /*
  * Inserisce in "message" la stringa opportunamente formattata
- * LIST <pid_dest1> ... <pid_destN> <pid_mittente> <message>
+ * MSG <pid_dest1> ... <pid_destN> <pid_mittente> <message>
  */
 void buildMessage(char* message, char** receivers, int count) {
 	/*
 	 * 1) calcolo la dimensione del messaggio finale
-	 * 2) copio "LIST " in un variabile d'appoggio "temp"
+	 * 2) copio "MSG " in un variabile d'appoggio "temp"
 	 * 3) concateno tutti i destinatari separati da uno spazio
 	 * 4) concateno il pid mittente
 	 * 5) concateno il messaggio
 	 * 6) rialloco lo spazio in message
 	 * 7) copio il contenuto di temp in message
 	 */
-	// "LIST " -> 5 caratteri
-	int dimension_message = 5, i;
+	// "MSG " -> 4 caratteri
+	int dimension_message = 4, i;
 	for (i = 0; i < count; i++) {
 		dimension_message += strlen(*(receivers + i)) + 1;	//+1 per lo spazio
 	}
@@ -183,15 +183,15 @@ void buildMessage(char* message, char** receivers, int count) {
 	if (temp == NULL)
 		exit(EXIT_FAILURE);
 	//concateno i dati
-	strcpy(temp, "LIST ");
+	strcpy(temp, "MSG ");
 	for (i = 0; i < count; i++) {
 		strcat(temp, *(receivers + i));
 		strcat(temp, " ");
 	}
-	char* mypid = malloc(sizeof(char) * (countDigits(getpid()) + 2)); //+2 per ' ' e '\0'
+	char* mypid = malloc(sizeof(char) * (countDigits(getpid()) + 3)); //+3 per '$' iniziale, ' ' e '\0' finali
 	if (mypid == NULL)
 		exit(EXIT_FAILURE);
-	sprintf(mypid, "%d ", getpid());
+	sprintf(mypid, "$%d ", getpid());
 	strcat(temp, mypid);
 	strcat(temp, message);
 	message = realloc(message, sizeof(char) * (strlen(temp) + 1));

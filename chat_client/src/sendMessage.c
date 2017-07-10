@@ -5,14 +5,12 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
-#define MAX_LENGTH_MSG 4096
 
 int getMessage(char* message);
 int readLine();
 int getReceivers(char** receivers);
 int getValue();
 void buildMessage(char* message, char** receivers, int count);
-void readResult();
 
 void sendMessage() {
 	/*
@@ -22,10 +20,11 @@ void sendMessage() {
 	 * 3) se il messaggio è valido, richiedere uno o più destinatari
 	 * 4) impacchettare il messaggio come da protocollo
 	 *    -> "MSG <pid_destinatari> <pid_mittente> <messaggio>"
-	 * 5) leggere la risposta da fdClientPipe e stamparla su stdin
 	 */
 	//
 	char* message = malloc(sizeof(char) * MAX_LENGTH_MSG);
+	if (message == NULL)
+		exit(EXIT_FAILURE);
 	char** receivers = NULL;
 	int result = getMessage(message);
 	if (result == OK) {
@@ -34,30 +33,35 @@ void sendMessage() {
 	if (result != 0) {
 		//result contiene il numero di destinatari
 		buildMessage(message, receivers, result);
+		//il messaggio è pronto per essere inviato al server
+		write(fdServerPipe, message, strlen(message) + 1); //+1 perche' strlen non conta '\0'
+	} else if (result == 0) {
+		printf("Messaggio non inviato.\n");
 	}
-	//il messaggio è pronto per essere inviato al server
-	write(fdServerPipe, message, strlen(message) + 1); //+1 perche' strlen non conta '\0'
-	free(message);
-	int i = 0;
-	for (; i < result; i++) {
-		free(*(receivers + i));
+	// free di tutta la memoria allocata
+	if (message != NULL)
+		free(message);
+	if (receivers != NULL) {
+		int i = 0;
+		for (; i < result; i++) {
+			free(*(receivers + i));
+		}
+		free(receivers);
 	}
-	free(receivers);
-	readResult();
 }
 
 int getMessage(char* message) {
-	int rc;
+	int result;
 	printf("Inserisci messaggio (MAX %d caratteri).\n", MAX_LENGTH_MSG);
-	rc = readLine(message, sizeof(char[MAX_LENGTH_MSG]));
-	if (rc == TOO_LONG) {
+	result = readLine(message, sizeof(char[MAX_LENGTH_MSG]));
+	if (result == TOO_LONG) {
 		printf("Messaggio troppo lungo. Messaggio non inviato.\n");
-	} else if (rc == NO_INPUT) {
+	} else if (result == NO_INPUT) {
 		printf("Errore di lettura.\n");
-	} else if (rc == INVALID) {
+	} else if (result == INVALID) {
 		printf("Nessun carattere inserito. Messaggio non inviato.\n");
 	}
-	return rc;
+	return result;
 }
 
 /*
@@ -108,9 +112,13 @@ int getReceivers(char** receivers) {
 			count++;
 			//riallocazione di count puntatori
 			receivers = realloc(receivers, sizeof(char*) * count);
+			if (receivers == NULL)
+				exit(EXIT_FAILURE);
 			//allocazione e inserimento dell'ultimo pid inserito
 			int digits = countDigits(pid) + 1; //+1 per il '\0'
 			*(receivers + count - 1) = malloc(sizeof(char) * digits);
+			if (*(receivers + count - 1) == NULL)
+				exit(EXIT_FAILURE);
 			sprintf(*(receivers + count - 1), "%d", pid);
 		} else if (pid == -1) {
 			count = 0; //azzerando count il messaggio non verrà inviato
@@ -172,6 +180,8 @@ void buildMessage(char* message, char** receivers, int count) {
 	dimension_message += (countDigits(getpid()) + 1); //+1 spazio
 	dimension_message += strlen(message) + 1; //+1 per '\0'
 	char* temp = malloc(sizeof(char) * dimension_message);
+	if (temp == NULL)
+		exit(EXIT_FAILURE);
 	//concateno i dati
 	strcpy(temp, "LIST ");
 	for (i = 0; i < count; i++) {
@@ -179,6 +189,8 @@ void buildMessage(char* message, char** receivers, int count) {
 		strcat(temp, " ");
 	}
 	char* mypid = malloc(sizeof(char) * (countDigits(getpid()) + 2)); //+2 per ' ' e '\0'
+	if (mypid == NULL)
+		exit(EXIT_FAILURE);
 	sprintf(mypid, "%d ", getpid());
 	strcat(temp, mypid);
 	strcat(temp, message);
@@ -186,16 +198,4 @@ void buildMessage(char* message, char** receivers, int count) {
 	strcpy(message, temp);
 	free(temp);
 	free(mypid);
-}
-
-void readResult() {
-	int n;
-	char* listOfClients = malloc(sizeof(char) * MAX_LENGTH_MSG); //dovrebbe essere abbastanza grande
-	if (listOfClients != NULL) {
-		do { /* legge un carattere alla volta fino a '\0' o EOF */
-			n = read(fdClientPipe, listOfClients, 1);
-		} while (n > 0 && *listOfClients++ != '\0');
-	}
-	printf("Lista dei client attualmente connessi:\n%s", listOfClients);
-	free(listOfClients);
 }

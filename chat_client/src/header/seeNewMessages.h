@@ -1,0 +1,4 @@
+#ifndef HEADER_SEENEWMESSAGES_H_
+#define HEADER_SEENEWMESSAGES_H_
+void seeNewMessages();
+#endif /* HEADER_SEENEWMESSAGES_H_ */

@@ -3,11 +3,10 @@
 #include "header/getListOfClients.h"
 #include "header/sendMessage.h"
 #include "header/handler_functions.h"
+#include "header/utilities.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <signal.h>
-
-#include "header/utilities.h"
 
 // opzioni del menù principale
 const char* options[] = { "(1) Connessione al server", "(2) Elenco dei client",
@@ -19,11 +18,14 @@ int connected = 0;
 void switchOptions(int value) {
 	switch (value) {
 	case 1:
-		if (connect()) {
-			countMessages = 0;
-			connected = 1;
+		if (connected) {
+			printf("Sei connesso.\n");
 		} else {
-			printf("Connessione non riuscita.\n");
+			if (connect()) {
+				connected = 1;
+			} else {
+				printf("Connessione non riuscita.\n");
+			}
 		}
 		break;
 	case 2:
@@ -65,6 +67,8 @@ int main(int argc, const char **argv) {
 	signal(SIGUSR2, handler_dest_not_found);
 	int optionsAllowed[] = { 1, 6 };
 	int value;
+	countMessages = 0;
+	messages = NULL;
 	do {
 		char *footer = NULL;
 		sprintf(footer, "Hai %d nuovi messaggi", countMessages);

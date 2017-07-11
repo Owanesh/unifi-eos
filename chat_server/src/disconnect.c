@@ -9,6 +9,7 @@ void removeCase(Client **head, pid_t pid);
 void deleteHead(Client **head, pid_t pid);
 Client* previousClient(Client **head, pid_t pid);
 void deleteClient(Client *previous);
+
 /*
  * Elimina il task specificato.
  * Ritorna 1 in caso di successo, altrimenti 0
@@ -35,10 +36,13 @@ void deleteClient(Client *previous) {
 	previous->next = previous->next->next;
 }
 
+/* Cancelliamo la testa della lista */
 void deleteHead(Client **head, pid_t pid) {
  	*head = (*head)->next;
  }
 
+/* Dato il pid, ritorna l'elemento precedente a quello richiesto,
+ * utile per eliminare un client dalla lista*/
 Client* previousClient(Client **head, pid_t pid) {
 	if ((*head) == NULL) {
 		return NULL;
@@ -52,7 +56,7 @@ Client* previousClient(Client **head, pid_t pid) {
 	return NULL;
 }
 
-
+/*Chiude la pipe e ne elimina il file relativo*/
 void closeConnection(int closePipe, char* pipeName) {
 	close(closePipe);
 	unlink(pipeName);

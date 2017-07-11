@@ -12,16 +12,13 @@ void sendMessage(int pidFrom, int pidTo);
 
 char* clientPname(pid_t pid);
 
-void createPipe(char* pipeName);
-int openRPipe(char* pipeName);
+ int openRPipe(char* pipeName);
 
-void acceptConnection(Client **head, pid_t pid);
-void connectedClientList(Client *head);
-int readCommand (int fd, char *str);
+ int readCommand (int fd, char *str);
 
 int getServerPipe();
 char* pipeFullPath(char* name);
 
 Client* getLastClient(Client *head);
-
+void connectedClientList(Client *head);
 #endif /* HEADER_SERVER_H_ */

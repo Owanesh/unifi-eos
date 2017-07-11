@@ -185,3 +185,10 @@ char *trim(char *str) {
 void set_argv(const char **args) {
 	argv = (char**) args;
 }
+
+void setVerboseMode(int a) {
+	if (a == 1)
+		verboseMode = 1;
+	else
+		verboseMode = 0;
+}

@@ -56,6 +56,7 @@ int readValue();
 char *trim(char *str);
 
 char** argv;
+int verboseMode;
 void set_argv(const char **args);
 
 

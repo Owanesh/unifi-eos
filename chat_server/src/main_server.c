@@ -1,8 +1,11 @@
 #include "header/utilities.h"
 #include "header/server.h"
+#include "header/connect.h"
+#include "header/disconnect.h"
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 Client *head = NULL; //client list
 

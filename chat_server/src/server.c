@@ -18,6 +18,7 @@ void start() {
 	createPipe(server_pipe_name);
 	server_pipe = openReadPipe(server_pipe_name);
 }
+
 void stop() {
 	closeConnection(server_pipe, server_pipe_name);
 }
@@ -26,8 +27,11 @@ int getServerPipe() {
 	return server_pipe;
 }
 
-/* Return complete path of pipe
+/* Ritorna la path completa della pipe all'interno del sistema
  * defaultPath + pipeName
+ *
+ * Funzione fondamentale per creare il parametro PipeName spesso
+ * richiesto nelle funzioni
  */
 char* pipeFullPath(char* name) {
 	static char completePipeName[53];
@@ -51,13 +55,13 @@ int openReadPipe(char* pipeName) {
 void writeOnPipe(char* pipeName, char* message) {
 	int fd, messageLen;
 	messageLen = strlen(message) + 1;
-	do { /* Keep trying to open the file until successful */
-		fd = open(pipeFullPath(pipeName), O_WRONLY); /* Open named pipe for writing */
+	do { /* Prova ad aprire la pipe fino a che non ci riesce */
+		fd = open(pipeFullPath(pipeName), O_WRONLY); /* Apre la pipe in scrittura */
 		if (fd == -1)
-			sleep(1); /* Try again in 1 second */
+			sleep(1); /* Ci riprova dopo una secondo */
 	} while (fd == -1);
- 		write(fd, message, messageLen); /* Write message down pipe */
-	close(fd); /* Close pipe descriptor */
+ 		write(fd, message, messageLen); /* Scrive il messaggio nella pipe */
+	close(fd); /* Chiude la pipe */
 }
 
 /* Ritorna il nome completo della pipe di un client
@@ -69,6 +73,8 @@ char* getClientPipeName(pid_t pid) {
 	return pipePath;
 }
 
+/* Scorre la lista dei client, stampando tutti i pid che trova.
+ * Ogni pid che trova corrisponde ad un utente connesso */
 void connectedClientList(Client *head) {
 	if (head == NULL) {
 		printf("\n *** NESSUN UTENTE CONNESSO ***");
@@ -84,6 +90,8 @@ void connectedClientList(Client *head) {
 	}
 }
 
+/* Ritorna l'ultimo client della lista, cosi da semplificare l'inserimento
+ * di un nuovo Client */
 Client* getLastClient(Client *head) {
 	if (head == NULL) {
 		return NULL;
@@ -96,12 +104,12 @@ Client* getLastClient(Client *head) {
 }
 
 int readCommand(int fd, char *str) {
-	/* ALL CMD ARE [<CMD> ]
-	 * CMD + whitespace */
+	/* Tutti i comandi sono [<CMD> ]
+	 * CMD + spaziobianco */
 
 	int n;
-	do { /* Read characters until ' ' or end-of-input */
-		n = read(fd, str, 1); /* Read one character */
+	do { /* Legge caratteri fino a  ' ' o alla fine dell'input */
+		n = read(fd, str, 1); /* Legge un sol carattere */
 	} while (n > 0 && *str++ != ' ');
-	return (n > 0); /* Return false if end-of-input */
+	return (n > 0);
 }

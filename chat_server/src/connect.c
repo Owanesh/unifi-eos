@@ -7,10 +7,9 @@
 #include "header/client.h"
 #include "header/utilities.h"
 #include "header/server.h"
+
 /* Crea una pipe, a partire dal nome, e ne acquisice i permessi (0660)
  * */
-
-
 void createPipe(char* pipeName) {
  	char* completePipeName = pipeFullPath(pipeName);
 	//rimuovo la vecchia sessione del server

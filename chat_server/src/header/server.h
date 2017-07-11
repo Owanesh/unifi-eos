@@ -10,9 +10,9 @@ void stop();
 char** getListOfUser(int pidRequest);
 void sendMessage(int pidFrom, int pidTo);
 
-char* clientPname(pid_t pid);
+char* getClientPipeName(pid_t pid);
 
- int openRPipe(char* pipeName);
+ int openReadPipe(char* pipeName);
 
  int readCommand (int fd, char *str);
 

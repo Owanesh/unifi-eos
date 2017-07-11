@@ -10,16 +10,14 @@
 #include "header/disconnect.h"
 #include "header/connect.h"
 
-
 int server_pipe;
 char* server_pipe_name = "server_pipe";
 char* defaultpath = "../";
 
-
 void start() {
 	createPipe(server_pipe_name);
-	server_pipe = openRPipe(server_pipe_name);
- }
+	server_pipe = openReadPipe(server_pipe_name);
+}
 void stop() {
 	closeConnection(server_pipe, server_pipe_name);
 }
@@ -27,8 +25,6 @@ void stop() {
 int getServerPipe() {
 	return server_pipe;
 }
-
-
 
 /* Return complete path of pipe
  * defaultPath + pipeName
@@ -40,9 +36,8 @@ char* pipeFullPath(char* name) {
 	return completePipeName;
 }
 
-
 /* Passando il nome della pipe che vogliamo, la apre in lettura*/
-int openRPipe(char* pipeName) {
+int openReadPipe(char* pipeName) {
 	int openedPipe = open(pipeName, O_RDONLY | O_NONBLOCK); //salvo la pipe per la chiusura
 	if (openedPipe == -1) {
 		printf("\n[ERROR] (%s) Pipe creata ma inutilizzabile", pipeName);
@@ -53,17 +48,26 @@ int openRPipe(char* pipeName) {
 	return openedPipe;
 }
 
+void writeOnPipe(char* pipeName, char* message) {
+	int fd, messageLen;
+	messageLen = strlen(message) + 1;
+	do { /* Keep trying to open the file until successful */
+		fd = open(pipeFullPath(pipeName), O_WRONLY); /* Open named pipe for writing */
+		if (fd == -1)
+			sleep(1); /* Try again in 1 second */
+	} while (fd == -1);
+ 		write(fd, message, messageLen); /* Write message down pipe */
+	close(fd); /* Close pipe descriptor */
+}
+
 /* Ritorna il nome completo della pipe di un client
  * pid + _client_pipe */
-char* clientPname(pid_t pid) {
+char* getClientPipeName(pid_t pid) {
 	static char pipePath[50];
 	char base_string[] = "_client_pipe";
 	sprintf(pipePath, "%d%s", pid, base_string);
 	return pipePath;
 }
-
-
-
 
 void connectedClientList(Client *head) {
 	if (head == NULL) {

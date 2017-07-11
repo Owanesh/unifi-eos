@@ -86,7 +86,7 @@ void acceptConnection(Client **head, pid_t pid) {
 			fflush(stdout);
 		}
 		//fork
-		createPipe(clientPname(pid));
+		createPipe(getClientPipeName(pid));
 		addClientInList(head, pid);
 	} else if (verboseMode == 1) {
 		printf("\n[WARNING] %d is already connected ", pid);

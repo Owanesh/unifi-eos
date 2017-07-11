@@ -92,10 +92,11 @@ Client* getLastClient(Client *head) {
 }
 
 int readCommand(int fd, char *str) {
-	/* Read a single ’\0’-terminated line into str from fd */
-	/* Return 0 when the end-of-input is reached and 1 otherwise */
+	/* ALL CMD ARE [<CMD> ]
+	 * CMD + whitespace */
+
 	int n;
-	do { /* Read characters until ’\0’ or end-of-input */
+	do { /* Read characters until ' ' or end-of-input */
 		n = read(fd, str, 1); /* Read one character */
 	} while (n > 0 && *str++ != ' ');
 	return (n > 0); /* Return false if end-of-input */

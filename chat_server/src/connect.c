@@ -69,11 +69,13 @@ void addClientInList(Client **head, pid_t pid) {
 		(*head) = malloc(sizeof(Client));
 		(*head)->next = NULL;
 		(*head)->pid = pid;
+		(*head)->pipe = -1;
 	} else {
 		Client *last = getLastClient((*head));
 		last->next = malloc(sizeof(Client));
 		last->next->next = NULL;
 		last->next->pid = pid;
+		last->next->pipe = -1;
 	}
 }
 

@@ -7,6 +7,7 @@
 #include <unistd.h> /* unlink */
 #include <string.h>
 #include "header/client.h"
+#include "header/disconnect.h"
 int log_enabled = 1;
 
 int server_pipe;
@@ -15,7 +16,8 @@ char* defaultpath = "../";
 
 
 void start() {
-	server_pipe = createPipe(server_pipe_name);
+	createPipe(server_pipe_name);
+	server_pipe = openRPipe(server_pipe_name);
  }
 void stop() {
 	closeConnection(server_pipe, server_pipe_name);
@@ -25,18 +27,21 @@ int getServerPipe() {
 	return server_pipe;
 }
 
-void closeConnection(int closePipe, char* pipeName) {
-	close(closePipe);
-	unlink(pipeName);
-	printf("\n[SUCCESS] Sessione terminata per %s ", pipeName);
-}
+
+
+/* Return complete path of pipe
+ * defaultPath + pipeName
+ */
 char* pipeFullPath(char* name) {
 	static char completePipeName[53];
 	strcpy(completePipeName, defaultpath);
 	strcat(completePipeName, name);
 	return completePipeName;
 }
-int createPipe(char* pipeName) {
+
+/* Crea una pipe, a partire dal nome, e ne acquisice i permessi (0660)
+ * */
+void createPipe(char* pipeName) {
  	char* completePipeName = pipeFullPath(pipeName);
 	//rimuovo la vecchia sessione del server
 	if (unlink(completePipeName) == -1) {
@@ -46,7 +51,6 @@ int createPipe(char* pipeName) {
 	} else if (log_enabled == 1) {
 		printf("\n[LOG] (%s) Rimossa sessione precedente", pipeName);
 		fflush(stdout);
-
 	}
 	//creo la nuova pipe
 	if (mknod(completePipeName, S_IFIFO, 0) < 0) {
@@ -68,12 +72,11 @@ int createPipe(char* pipeName) {
 				pipeName);
 		fflush(stdout);
 	}
-	//apro la pipe
-	return openPipe(completePipeName); //salvo la pipe per la chiusura
 
 }
 
-int openPipe(char* pipeName) {
+/* Passando il nome della pipe che vogliamo, la apre in lettura*/
+int openRPipe(char* pipeName) {
 	int openedPipe = open(pipeName, O_RDONLY | O_NONBLOCK); //salvo la pipe per la chiusura
 	if (openedPipe == -1) {
 		printf("\n[ERROR] (%s) Pipe creata ma inutilizzabile", pipeName);
@@ -84,7 +87,8 @@ int openPipe(char* pipeName) {
 	return openedPipe;
 }
 
-/* return client pipe name */
+/* Ritorna il nome completo della pipe di un client
+ * pid + _client_pipe */
 char* clientPname(pid_t pid) {
 	static char pipePath[50];
 	char base_string[] = "_client_pipe";
@@ -110,6 +114,7 @@ bool isAlreadyConnected(Client **head, pid_t pid) {
 	return false;
 }
 
+/* Aggiunge un client nella lista */
 void addClientInList(Client **head, pid_t pid) {
 	if ((*head) == NULL) {
 		(*head) = malloc(sizeof(Client));
@@ -122,6 +127,7 @@ void addClientInList(Client **head, pid_t pid) {
 		last->next->pid = pid;
 	}
 }
+
 
 void acceptConnection(Client **head, pid_t pid) {
 	if (!isAlreadyConnected(head, pid)) {
@@ -137,6 +143,7 @@ void acceptConnection(Client **head, pid_t pid) {
 		fflush(stdout);
 	}
 }
+
 
 void connectedClientList(Client *head) {
 	if (head == NULL) {

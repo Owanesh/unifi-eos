@@ -10,11 +10,10 @@ void stop();
 char** getListOfUser(int pidRequest);
 void sendMessage(int pidFrom, int pidTo);
 
-void closeConnection(int closePipe, char* pipeName);
 char* clientPname(pid_t pid);
 
-int createPipe(char* pipeName);
-int openPipe(char* pipeName);
+void createPipe(char* pipeName);
+int openRPipe(char* pipeName);
 
 void acceptConnection(Client **head, pid_t pid);
 void connectedClientList(Client *head);

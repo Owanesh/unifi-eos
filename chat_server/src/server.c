@@ -41,6 +41,8 @@ int openPipe(char* pipeName) {
 				pipeName);
 	} else if (log_enabled == 1) {
 		printf("\n[LOG] (%s) Rimossa sessione precedente", pipeName);
+		fflush(stdout);
+
 	}
 	//creo la nuova pipe
 	if (mknod(completePipeName, S_IFIFO, 0) < 0) {
@@ -48,6 +50,8 @@ int openPipe(char* pipeName) {
 				pipeName);
 	} else if (log_enabled == 1) {
 		printf("\n[LOG] (%s) Generata nuova sessione", pipeName);
+		fflush(stdout);
+
 	}
 	//acquisisco i permessi sulla pipe
 	if (chmod(completePipeName, 0660) < 0) {
@@ -58,6 +62,7 @@ int openPipe(char* pipeName) {
 		printf(
 				"\n[LOG] (%s) Acquisiti permessi per la sessione corrente (0660)",
 				pipeName);
+		fflush(stdout);
 	}
 	//apro la pipe
 	openedPipe = open(completePipeName, O_RDONLY | O_NONBLOCK); //salvo la pipe per la chiusura
@@ -65,6 +70,8 @@ int openPipe(char* pipeName) {
 		printf("\n[ERROR] (%s) Pipe creata ma inutilizzabile", pipeName);
 	} else if (log_enabled == 1) {
 		printf("\n[LOG] (%s) La pipe è pronta!", pipeName);
+		fflush(stdout);
+
 	}
 
 	//ritorno il "puntatore" alla pipe
@@ -86,11 +93,13 @@ bool isAlreadyConnected(Client **head, pid_t pid) {
 	if ((*head) == NULL) {
 		return false;
 	} else {
-		while ((*head)->next != NULL) {
-			if ((*head)->pid == pid) {
+		Client *chead = (*head);
+		do {
+			if (chead->pid == pid) {
 				return true;
 			}
-		}
+			chead = chead->next;
+		} while (chead != NULL);
 	}
 	return false;
 }
@@ -109,29 +118,33 @@ void addClientInList(Client **head, pid_t pid) {
 }
 
 void acceptConnection(Client **head, pid_t pid) {
-	if (!isAlreadyConnected(head, pid)) {
-		if (log_enabled == 1)
+ 	if (!isAlreadyConnected(head, pid)) {
+		if (log_enabled == 1) {
 			printf("\n[LOG] Request from %d accepted", pid);
-		 openPipe(clientPname(pid));
+			fflush(stdout);
+		}
+		//fork
+		openPipe(clientPname(pid));
 		addClientInList(head, pid);
 	} else if (log_enabled == 1) {
 		printf("\n[WARNING] %d is already connected ", pid);
+		fflush(stdout);
 	}
 }
 
-void connectedClientList(Client **head) {
-	if ((*head) == NULL) {
-		if (log_enabled == 1) {
-			printf("\n[WARNING] Empty List");
-		}
+void connectedClientList(Client *head) {
+	if (head == NULL) {
+		printf("\n *** NESSUN UTENTE CONNESSO ***");
 		return;
 	} else {
-		Client *cloneHead = (*head);
+		Client *cloneHead = (head);
+		printf("\n*** LISTA UTENTI CONNESSI ***");
 		do {
-			printf("\n %d", (cloneHead)->pid);
-			(cloneHead) = (cloneHead)->next;
-		} while ((cloneHead) != NULL);
-	}
+			printf("\n %d", cloneHead->pid);
+			fflush(stdout);
+			cloneHead = cloneHead->next;
+		} while (cloneHead != NULL);
+ 	}
 }
 
 Client* getLastClient(Client *head) {

@@ -8,11 +8,14 @@ Client *head = NULL; //client list
 
 int main(int argc, const char **argv) {
 	start();
-	acceptConnection(&head,1223);
-	acceptConnection(&head,777);
-	connectedClientList(&head);
+	acceptConnection(&head,111);
+	acceptConnection(&head,222);
+	acceptConnection(&head,333);
 	acceptConnection(&head,444);
+	acceptConnection(&head,111);
+	connectedClientList(head);
 
-	connectedClientList(&head);
+
+
 
 }

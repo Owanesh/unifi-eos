@@ -13,14 +13,16 @@ int server_pipe;
 char* server_pipe_name = "server_pipe";
 char* defaultpath = "../";
 
-Client* getLastClient(Client *head);
 
 void start() {
-	openPipe(server_pipe_name);
-}
-
+	server_pipe = createPipe(server_pipe_name);
+ }
 void stop() {
 	closeConnection(server_pipe, server_pipe_name);
+}
+
+int getServerPipe() {
+	return server_pipe;
 }
 
 void closeConnection(int closePipe, char* pipeName) {
@@ -28,12 +30,14 @@ void closeConnection(int closePipe, char* pipeName) {
 	unlink(pipeName);
 	printf("\n[SUCCESS] Sessione terminata per %s ", pipeName);
 }
-
-int openPipe(char* pipeName) {
-	int openedPipe;
-	char completePipeName[53];
+char* pipeFullPath(char* name) {
+	static char completePipeName[53];
 	strcpy(completePipeName, defaultpath);
-	strcat(completePipeName, pipeName);
+	strcat(completePipeName, name);
+	return completePipeName;
+}
+int createPipe(char* pipeName) {
+ 	char* completePipeName = pipeFullPath(pipeName);
 	//rimuovo la vecchia sessione del server
 	if (unlink(completePipeName) == -1) {
 		printf(
@@ -65,16 +69,18 @@ int openPipe(char* pipeName) {
 		fflush(stdout);
 	}
 	//apro la pipe
-	openedPipe = open(completePipeName, O_RDONLY | O_NONBLOCK); //salvo la pipe per la chiusura
+	return openPipe(completePipeName); //salvo la pipe per la chiusura
+
+}
+
+int openPipe(char* pipeName) {
+	int openedPipe = open(pipeName, O_RDONLY | O_NONBLOCK); //salvo la pipe per la chiusura
 	if (openedPipe == -1) {
 		printf("\n[ERROR] (%s) Pipe creata ma inutilizzabile", pipeName);
 	} else if (log_enabled == 1) {
 		printf("\n[LOG] (%s) La pipe è pronta!", pipeName);
 		fflush(stdout);
-
 	}
-
-	//ritorno il "puntatore" alla pipe
 	return openedPipe;
 }
 
@@ -118,13 +124,13 @@ void addClientInList(Client **head, pid_t pid) {
 }
 
 void acceptConnection(Client **head, pid_t pid) {
- 	if (!isAlreadyConnected(head, pid)) {
+	if (!isAlreadyConnected(head, pid)) {
 		if (log_enabled == 1) {
 			printf("\n[LOG] Request from %d accepted", pid);
 			fflush(stdout);
 		}
 		//fork
-		openPipe(clientPname(pid));
+		createPipe(clientPname(pid));
 		addClientInList(head, pid);
 	} else if (log_enabled == 1) {
 		printf("\n[WARNING] %d is already connected ", pid);
@@ -144,7 +150,7 @@ void connectedClientList(Client *head) {
 			fflush(stdout);
 			cloneHead = cloneHead->next;
 		} while (cloneHead != NULL);
- 	}
+	}
 }
 
 Client* getLastClient(Client *head) {
@@ -156,4 +162,14 @@ Client* getLastClient(Client *head) {
 		last = last->next;
 	}
 	return last;
+}
+
+int readCommand(int fd, char *str) {
+	/* Read a single ’\0’-terminated line into str from fd */
+	/* Return 0 when the end-of-input is reached and 1 otherwise */
+	int n;
+	do { /* Read characters until ’\0’ or end-of-input */
+		n = read(fd, str, 1); /* Read one character */
+	} while (n > 0 && *str++ != ' ');
+	return (n > 0); /* Return false if end-of-input */
 }

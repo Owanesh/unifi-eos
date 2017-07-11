@@ -19,7 +19,8 @@ void sendMessage() {
 	 * 2) verificare che sia non troppo lungo e che ci siano caratteri
 	 * 3) se il messaggio è valido, richiedere uno o più destinatari
 	 * 4) impacchettare il messaggio come da protocollo
-	 *    -> "MSG <pid_destinatari> <pid_mittente> <messaggio>"
+	 *    -> "MSG <pid_destinatari> $<pid_mittente> <messaggio>"
+	 * 5) invia il messaggio su server_pipe e libera la memoria occupata
 	 */
 	//
 	char* message = malloc(sizeof(char) * MAX_LENGTH_MSG);

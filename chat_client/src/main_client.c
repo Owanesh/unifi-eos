@@ -11,7 +11,7 @@
 #include <signal.h>
 
 // opzioni del menù principale
-const char* options[] = { "(1) Connessione al server", "(2) Elenco dei client",
+const char* options[] = { "(1) Connessione al server", "(2) Elenco dei client connessi",
 		"(3) Invia un nuovo messaggio", "(4) Visualizza i nuovi messaggi",
 		"(5) Disconnessione dal server", "(6) Esci", NULL };
 

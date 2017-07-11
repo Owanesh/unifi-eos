@@ -48,7 +48,7 @@ void sendRequestToServer() {
 	char msg[50];
 	//richiesta-> "LIST <pid>"
 	sprintf(msg, "%s %d", "LIST", getpid());
-	int msgLength = strlen(msg) + 1;
+	int msgLength = strlen(msg) + 1;//+1 per '\0'
 	write(fdServerPipe, msg, msgLength);
 }
 

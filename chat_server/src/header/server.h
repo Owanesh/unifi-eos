@@ -1,19 +1,24 @@
 #ifndef HEADER_SERVER_H_
 #define HEADER_SERVER_H_
 #include <fcntl.h>
+#include "client.h"
 
-struct Client {
-	pid_t pid;
-	struct Client *next;
-};
-
+/* Basic server command*/
 void start();
-
 void stop();
 
 char** getListOfUser(int pidRequest);
 void sendMessage(int pidFrom, int pidTo);
-void closeConnection(int closePipe, char* pipeName);
 
+char* getClientPipeName(pid_t pid);
 
+ int openReadPipe(char* pipeName);
+
+ int readCommand (int fd, char *str);
+
+int getServerPipe();
+char* pipeFullPath(char* name);
+
+Client* getLastClient(Client *head);
+void connectedClientList(Client *head);
 #endif /* HEADER_SERVER_H_ */

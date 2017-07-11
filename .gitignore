@@ -101,6 +101,8 @@ nbproject/private/
 # Icon must end with two \r
 Icon
 
+chat_server/src/server
+
 **/Debug/
 
 # Thumbnails

@@ -5,72 +5,103 @@
 #include <sys/stat.h>           /* For S_IFIFO */
 #include <fcntl.h>
 #include <unistd.h> /* unlink */
-
-int log_enabled = 1;
+#include <string.h>
+#include "header/client.h"
+#include "header/disconnect.h"
+#include "header/connect.h"
 
 int server_pipe;
 char* server_pipe_name = "server_pipe";
+char* defaultpath = "../";
 
 void start() {
-	if (unlink(server_pipe_name) == -1) { //rimuovo la vecchia sessione del server
-		perror("\nErrore durante la rimozione della vecchia sessione: ");
-	} else if (log_enabled == 1) {
-		printf("\n[LOG] Rimossa sessione precedente");
-	}
-	if (mknod(server_pipe_name, S_IFIFO, 0) < 0) {
-		perror("\nErrore durante la generazione del pipe: ");
-	} else if (log_enabled == 1) {
-		printf("\n[LOG] Generata nuova sessione");
-	}
-	if (chmod(server_pipe_name, 0660) < 0) { //acquisisco i permessi sulla pipe
-		perror("\nErrore durante l'acquisizione dei permessi sul pipe: ");
-	} else if (log_enabled == 1) {
-		printf("\n[LOG] Acquisiti permessi per la sessione corrente (0660)");
-	}
-	server_pipe = open(server_pipe_name, O_RDONLY); //salvo la pipe per la chiusura
-	if (server_pipe == -1) {
-		perror("\nPipe creata ma inutilizzabile: ");
-	} else if (log_enabled == 1) {
-		printf("\n[LOG] Il server è pronto!");
-	}
+	createPipe(server_pipe_name);
+	server_pipe = openReadPipe(server_pipe_name);
 }
-
 void stop() {
 	closeConnection(server_pipe, server_pipe_name);
 }
 
-void closeConnection(int closePipe, char* pipeName) {
-	close(closePipe);
-	unlink(pipeName);
-	printf("\n[SUCCESS] Sessione terminata per %s ", pipeName);
+int getServerPipe() {
+	return server_pipe;
 }
 
-char** getListOfUser(int pidRequest);
+/* Return complete path of pipe
+ * defaultPath + pipeName
+ */
+char* pipeFullPath(char* name) {
+	static char completePipeName[53];
+	strcpy(completePipeName, defaultpath);
+	strcat(completePipeName, name);
+	return completePipeName;
+}
 
-void sendMessage(int pidFrom, int pidTo);
-
-int openPipe(char* pipeName) {
-	int openedPipe;
-	if (unlink(pipeName) == -1) { //rimuovo la vecchia sessione del server
-		perror("\nErrore durante la rimozione della vecchia sessione: ");
-	} else if (log_enabled == 1) {
-		printf("\n[LOG] Rimossa sessione precedente");
-	}
-	if (mknod(pipeName, S_IFIFO, 0) < 0) {
-		perror("\nErrore durante la generazione del pipe: ");
-	} else if (log_enabled == 1) {
-		printf("\n[LOG] Generata nuova sessione");
-	}
-	if (chmod(pipeName, 0660) < 0) { //acquisisco i permessi sulla pipe
-		perror("\nErrore durante l'acquisizione dei permessi sul pipe: ");
-	} else if (log_enabled == 1) {
-		printf("\n[LOG] Acquisiti permessi per la sessione corrente (0660)");
-	}
-	openedPipe = open(pipeName, O_RDONLY); //salvo la pipe per la chiusura
+/* Passando il nome della pipe che vogliamo, la apre in lettura*/
+int openReadPipe(char* pipeName) {
+	int openedPipe = open(pipeName, O_RDONLY | O_NONBLOCK); //salvo la pipe per la chiusura
 	if (openedPipe == -1) {
-		perror("\nPipe creata ma inutilizzabile: ");
-	} else if (log_enabled == 1) {
-		printf("\n[LOG] Il server è pronto!");
+		printf("\n[ERROR] (%s) Pipe creata ma inutilizzabile", pipeName);
+	} else if (verboseMode == 1) {
+		printf("\n[LOG] (%s) La pipe è pronta!", pipeName);
+		fflush(stdout);
 	}
 	return openedPipe;
+}
+
+void writeOnPipe(char* pipeName, char* message) {
+	int fd, messageLen;
+	messageLen = strlen(message) + 1;
+	do { /* Keep trying to open the file until successful */
+		fd = open(pipeFullPath(pipeName), O_WRONLY); /* Open named pipe for writing */
+		if (fd == -1)
+			sleep(1); /* Try again in 1 second */
+	} while (fd == -1);
+ 		write(fd, message, messageLen); /* Write message down pipe */
+	close(fd); /* Close pipe descriptor */
+}
+
+/* Ritorna il nome completo della pipe di un client
+ * pid + _client_pipe */
+char* getClientPipeName(pid_t pid) {
+	static char pipePath[50];
+	char base_string[] = "_client_pipe";
+	sprintf(pipePath, "%d%s", pid, base_string);
+	return pipePath;
+}
+
+void connectedClientList(Client *head) {
+	if (head == NULL) {
+		printf("\n *** NESSUN UTENTE CONNESSO ***");
+		return;
+	} else {
+		Client *cloneHead = (head);
+		printf("\n*** LISTA UTENTI CONNESSI ***");
+		do {
+			printf("\n %d", cloneHead->pid);
+			fflush(stdout);
+			cloneHead = cloneHead->next;
+		} while (cloneHead != NULL);
+	}
+}
+
+Client* getLastClient(Client *head) {
+	if (head == NULL) {
+		return NULL;
+	}
+	Client *last = head;
+	while (last->next != NULL) {
+		last = last->next;
+	}
+	return last;
+}
+
+int readCommand(int fd, char *str) {
+	/* ALL CMD ARE [<CMD> ]
+	 * CMD + whitespace */
+
+	int n;
+	do { /* Read characters until ' ' or end-of-input */
+		n = read(fd, str, 1); /* Read one character */
+	} while (n > 0 && *str++ != ' ');
+	return (n > 0); /* Return false if end-of-input */
 }

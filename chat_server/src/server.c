@@ -6,7 +6,7 @@
 #include <fcntl.h>
 #include <unistd.h> /* unlink */
 #include <string.h>
-
+#include "header/client.h"
 int log_enabled = 1;
 
 int server_pipe;

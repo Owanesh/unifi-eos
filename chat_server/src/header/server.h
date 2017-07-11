@@ -1,11 +1,7 @@
 #ifndef HEADER_SERVER_H_
 #define HEADER_SERVER_H_
 #include <fcntl.h>
-
-typedef struct Client {
-	pid_t pid;
-	struct Client *next;
-} Client ;
+#include "client.h"
 
 /* Basic server command*/
 void start();

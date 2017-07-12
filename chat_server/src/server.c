@@ -14,6 +14,8 @@ int server_pipe;
 char* server_pipe_name = "server_pipe";
 char* defaultpath = "../";
 
+void initClient(Client *client);
+
 void start() {
 	createPipe(server_pipe_name);
 	server_pipe = openReadPipe(server_pipe_name);
@@ -52,16 +54,24 @@ int openReadPipe(char* pipeName) {
 	return openedPipe;
 }
 
-void writeOnPipe(char* pipeName, char* message) {
-	int fd, messageLen;
-	messageLen = strlen(message) + 1;
+/* Inizializza il valore pipe di un Client*/
+void initClient(Client *client) {
+	int fd = 0;
 	do { /* Prova ad aprire la pipe fino a che non ci riesce */
-		fd = open(pipeFullPath(pipeName), O_WRONLY); /* Apre la pipe in scrittura */
+		fd = open(pipeFullPath(getClientPipeName(client->pid)), O_WRONLY); /* Apre la pipe in scrittura */
 		if (fd == -1)
 			sleep(1); /* Ci riprova dopo una secondo */
 	} while (fd == -1);
-	write(fd, message, messageLen); /* Scrive il messaggio nella pipe */
-	close(fd); /* Chiude la pipe */
+	client->pipe = fd;
+}
+
+/* Dato un client, e un messaggio, si scrive sulla relativa pipe*/
+void writeOnPipe(Client *client, char* message) {
+	int fd, messageLen;
+	messageLen = strlen(message) + 1;
+	if (client->pipe == -1)
+		initClient(client);
+	write(client->pipe, message, messageLen); /* Scrive il messaggio nella pipe */
 }
 
 /* Ritorna il nome completo della pipe di un client
@@ -139,4 +149,5 @@ void getFirstField(char keyword[20], char* cmd) {
 		i++;
 	}
 	keyword[i] = '\0';
+
 }

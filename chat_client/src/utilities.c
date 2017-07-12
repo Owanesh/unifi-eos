@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <string.h>
 #include <ctype.h>
 
 /*
@@ -195,4 +194,10 @@ int countDigits(int n) {
 		count++;
 	}
 	return count;
+}
+void setVerboseMode(int a) {
+	if (a == 1)
+		verboseMode = 1;
+	else
+		verboseMode = 0;
 }

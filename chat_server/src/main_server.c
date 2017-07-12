@@ -2,11 +2,12 @@
 #include "header/server.h"
 #include "header/connect.h"
 #include "header/disconnect.h"
+#include "header/writeClientList.h"
+#include "header/deliverMessage.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include "header/writeClientList.h"
 
 // puntatore alla testa della lista dei client
 Client *head = NULL;
@@ -29,7 +30,7 @@ void switchCommand(char* cmd) {
 	} else if (strcmp(keyword, "MSG") == 0) {
 		// "MSG <pid_destinatari> $<pid_mittente> <messaggio>"
 		printf("\n\t MSG cmd request ");
-
+		deliverMessage(head, cmd);
 	} else if (strcmp(keyword, "DISCONNECT") == 0) {
 		// "DISCONNECT <pid>"
 		printf("\n\t DISCONNECT cmd request ");

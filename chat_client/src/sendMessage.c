@@ -178,7 +178,7 @@ void buildMessage(char* message, char** receivers, int count) {
 	for (i = 0; i < count; i++) {
 		dimension_message += strlen(*(receivers + i)) + 1;	//+1 per lo spazio
 	}
-	dimension_message += (countDigits(getpid()) + 1); //+1 spazio
+	dimension_message += (countDigits(getpid()) + 1); //+2  per '$' + spazio
 	dimension_message += strlen(message) + 1; //+1 per '\0'
 	char* temp = malloc(sizeof(char) * dimension_message);
 	if (temp == NULL)

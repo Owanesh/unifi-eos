@@ -60,7 +60,7 @@ void writeOnPipe(char* pipeName, char* message) {
 		if (fd == -1)
 			sleep(1); /* Ci riprova dopo una secondo */
 	} while (fd == -1);
- 		write(fd, message, messageLen); /* Scrive il messaggio nella pipe */
+	write(fd, message, messageLen); /* Scrive il messaggio nella pipe */
 	close(fd); /* Chiude la pipe */
 }
 
@@ -103,13 +103,40 @@ Client* getLastClient(Client *head) {
 	return last;
 }
 
-int readCommand(int fd, char *str) {
-	/* Tutti i comandi sono [<CMD> ]
-	 * CMD + spaziobianco */
-
-	int n;
-	do { /* Legge caratteri fino a  ' ' o alla fine dell'input */
-		n = read(fd, str, 1); /* Legge un sol carattere */
-	} while (n > 0 && *str++ != ' ');
-	return (n > 0);
+/*
+ * Legge il comando ricevuto in server_pipe, inserendolo in "str"
+ */
+void readCommand(char *str) {
+	int dim = 512;
+	/* non essendo possibile prevedere la lunghezza massima del messaggio ricevuto
+	 * si alloca dinamicamente lo spazio del buffer
+	 */
+	str = realloc(str, sizeof(char) * dim);
+	int n, count = 0;
+	do { // Legge fino a '\0' o EOF
+		n = read(server_pipe, str, 1);
+		if (n != 0) {
+			count++;
+			if (count == dim) {
+				//rialloco il doppio della dimensione precedente
+				str = realloc(str, sizeof(char) * (dim * 2));
+				dim *= 2;
+				str += (count - 1); //riposiziono il puntatore
+			}
+		}
+	} while (n > 0 && *str++ != '\0');
+}
+/*
+ * Acquisisce il primo campo della stringa ricevuta,
+ * ovvero la keyword che identifica il tipo di comando e
+ * la inserisce nella variabile keyword
+ */
+void getFirstField(char keyword[20], char* cmd) {
+	int i = 0;
+	while (*cmd != ' ') {
+		keyword[i] = *cmd;
+		cmd++;
+		i++;
+	}
+	keyword[i] = '\0';
 }

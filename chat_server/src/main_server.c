@@ -10,22 +10,27 @@
 Client *head = NULL; //client list
 
 void switchCommand(char* cmd) {
-	if (strcmp(cmd, "LIST") == 0) {
-		printf("\n\t List cmd request ");
-	} else if (strcmp(cmd, "CONNECT") == 0) {
+	char keyword[20];
+	getFirstField(keyword, cmd);
+	if (strcmp(keyword, "LIST") == 0) {
+		printf("\n\t LIST cmd request ");
+	} else if (strcmp(keyword, "CONNECT") == 0) {
 		printf("\n\t CONNECT cmd request ");
-	} else if (strcmp(cmd, "MSG") == 0) {
+	} else if (strcmp(keyword, "MSG") == 0) {
 		printf("\n\t MSG cmd request ");
-	} else if (strcmp(cmd, "DISCONNECT") == 0) {
+	} else if (strcmp(keyword, "DISCONNECT") == 0) {
 		printf("\n\t DISCONNECT cmd request ");
 	} else {
-		printf("<%s> Comando non riconosciuto", cmd);
+		printf("<%s> \nComando non riconosciuto", cmd);
 	}
 }
 int main(int argc, const char **argv) {
 	start();
-	char str[100];
-	readCommand(getServerPipe(), str);
+	char* command = NULL;
+	while (1) {
+		readCommand(command);
+		switchCommand(command);
+	}
 	acceptConnection(&head, 111);
 	acceptConnection(&head, 444);
 	connectedClientList(head);

@@ -19,7 +19,7 @@ void getListOfClients() {
 	 * 6) libera lo spazio occupato
 	 */
 	//dimensione iniziale della lista, se si rivelera' insufficiente verra' riallocata
-	int dim = 50;
+	int dim = 64;
 	sendRequestToServer();
 	char *list = malloc(sizeof(char) * dim);
 	if (list != NULL) {
@@ -48,7 +48,7 @@ void sendRequestToServer() {
 	char msg[50];
 	//richiesta-> "LIST <pid>"
 	sprintf(msg, "%s %d", "LIST", getpid());
-	int msgLength = strlen(msg) + 1;//+1 per '\0'
+	int msgLength = strlen(msg) + 1; //+1 per '\0'
 	write(fdServerPipe, msg, msgLength);
 }
 

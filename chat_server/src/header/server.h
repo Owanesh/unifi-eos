@@ -12,9 +12,10 @@ void sendMessage(int pidFrom, int pidTo);
 
 char* getClientPipeName(pid_t pid);
 
- int openReadPipe(char* pipeName);
+int openReadPipe(char* pipeName);
 
- int readCommand (int fd, char *str);
+void readCommand(char *str);
+void getFirstField(char keyword[20], char* cmd);
 
 int getServerPipe();
 char* pipeFullPath(char* name);

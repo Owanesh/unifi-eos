@@ -1,45 +1,64 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include "header/client.h"
 #include <fcntl.h>
 #include <unistd.h> /* unlink */
-#include <string.h>
+#include "header/client.h"
+#include "header/server.h"
+#include "header/disconnect.h"
 
-void removeCase(Client **head, pid_t pid);
-void deleteHead(Client **head, pid_t pid);
+int deleteHead(Client **head, pid_t pid);
+int deleteNode(Client **head, pid_t pid);
 Client* previousClient(Client **head, pid_t pid);
-void deleteClient(Client *previous);
 
 /*
- * Elimina il task specificato.
- * Ritorna 1 in caso di successo, altrimenti 0
+ * Elimina il client specificato da pid dalla lista.
  */
-void delete(Client **head, pid_t pid) {
+void disconnect(Client **head, char* cmd) {
 	if ((*head) == NULL) {
 		printf("\n [ERRORE] Nessun utente connesso");
 		return;
 	}
-	removeCase(head, pid);
-}
-
-void removeCase(Client **head, pid_t pid) {
+	pid_t pid;
+	getPidFromCmd(cmd, &pid);
+	int fd;
 	if ((*head)->pid == pid) {
-		deleteHead(head, pid);
+		//eliminazione nodo iniziale
+		fd = deleteHead(head, pid);
+	} else {
+		//eliminazione nodo intermedio (o finale)
+		fd = deleteNode(head, pid);
 	}
-	Client *prev = previousClient(head, pid);
-	if (prev != NULL) {
-		deleteClient(prev);
-	}
+	// chisura ed eliminazione della pipe del client
+	char temp[30];
+	getClientPipePath(pid, temp);
+	closeConnection(fd, temp);
 }
 
-void deleteClient(Client *previous) {
-	previous->next = previous->next->next;
+/*
+ * Rimuove il Client specificato e ritorna il fd della relativa pipe
+ */
+int deleteHead(Client **head, pid_t pid) {
+	int fd = (*head)->pipe;
+	Client* ptrToFree = *head;
+	*head = (*head)->next;
+	free(ptrToFree);
+	return fd;
 }
 
-/* Cancelliamo la testa della lista */
-void deleteHead(Client **head, pid_t pid) {
- 	*head = (*head)->next;
- }
+/*
+ * Rimuove il Client specificato e ritorna il fd della relativa pipe
+ */
+int deleteNode(Client **head, pid_t pid) {
+	Client *previous = previousClient(head, pid);
+	int fd = 0;
+	if (previous != NULL) {
+		fd = previous->next->pipe;
+		Client* ptrToFree = previous->next;
+		previous->next = previous->next->next;
+		free(ptrToFree);
+	}
+	return fd;
+}
 
 /* Dato il pid, ritorna l'elemento precedente a quello richiesto,
  * utile per eliminare un client dalla lista*/
@@ -56,9 +75,9 @@ Client* previousClient(Client **head, pid_t pid) {
 	return NULL;
 }
 
-/*Chiude la pipe e ne elimina il file relativo*/
-void closeConnection(int closePipe, char* pipeName) {
-	close(closePipe);
-	unlink(pipeName);
-	printf("\n[SUCCESS] Sessione terminata per %s ", pipeName);
+/*Chiude la pipe e la elimina */
+void closeConnection(int fd, char* pipePath) {
+	close(fd);
+	unlink(pipePath);
+	printf("\n[SUCCESS] Sessione terminata per %s ", pipePath);
 }

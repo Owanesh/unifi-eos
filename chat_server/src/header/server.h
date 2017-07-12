@@ -3,23 +3,17 @@
 #include <fcntl.h>
 #include "client.h"
 
-/* Basic server command*/
+// file descriptor del server
+extern int server_pipe;
+
 void start();
 void stop();
-
-char** getListOfUser(int pidRequest);
-void sendMessage(int pidFrom, int pidTo);
-
-char* getClientPipeName(pid_t pid);
-
-int openReadPipe(char* pipeName);
-
+void getClientPipePath(pid_t pid, char* bufferPath);
 void readCommand(char *str);
 void getFirstField(char keyword[20], char* cmd);
-
-int getServerPipe();
-char* pipeFullPath(char* name);
-
+void getPidFromCmd(char* cmd, pid_t* pid);
+int getPipeByPid(pid_t pid, Client* head);
 Client* getLastClient(Client *head);
-void connectedClientList(Client *head);
+
+
 #endif /* HEADER_SERVER_H_ */

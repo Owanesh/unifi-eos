@@ -58,6 +58,7 @@ int readValue();
 
 char *trim(char *str);
 
+int countDigits(int n);
 
 void set_argv(const char **args);
 

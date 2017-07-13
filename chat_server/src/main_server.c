@@ -1,4 +1,3 @@
-#include "header/utilities.h"
 #include "header/server.h"
 #include "header/connect.h"
 #include "header/disconnect.h"
@@ -23,8 +22,10 @@ int main(void) {
 	start();
 	signal(SIGINT, handler_termination);
 	while (1) {
-		readCommand(command);
-		switchCommand(command);
+		int isCmd = readCommand(&command);
+		printf("\n%s\n", command);
+		if (isCmd)
+			switchCommand(command);
 	}
 }
 
@@ -33,38 +34,43 @@ void switchCommand(char* cmd) {
 	getFirstField(keyword, cmd);
 	if (strcmp(keyword, "LIST") == 0) {
 		// "LIST <pid>"
-		printf("\n\t LIST cmd request ");
+		printf("\nLIST cmd request ");
 		writeClientList(head, cmd);
 
 	} else if (strcmp(keyword, "CONNECT") == 0) {
 		// "CONNECT <pid>"
-		printf("\n\t CONNECT cmd request ");
+		printf("\nCONNECT cmd request ");
 		acceptConnection(&head, cmd);
 
 	} else if (strcmp(keyword, "MSG") == 0) {
 		// "MSG <pid_destinatari> $<pid_mittente> <messaggio>"
-		printf("\n\t MSG cmd request ");
+		printf("\nMSG cmd request ");
 		deliverMessage(head, cmd);
 
 	} else if (strcmp(keyword, "DISCONNECT") == 0) {
 		// "DISCONNECT <pid>"
-		printf("\n\t DISCONNECT cmd request ");
+		printf("\nDISCONNECT cmd request ");
 		disconnect(&head, cmd);
 
 	} else {
-		printf("<%s> \nComando non riconosciuto", cmd);
+		printf("\"<%s>\": Comando non riconosciuto", cmd);
 	}
 }
 
 void handler_termination() {
 	/*
-	 * 1) Libera la memoria di ogni nodo della lista
+	 * 1) Libera la memoria di ogni nodo della lista e chiude/elimina le pipe
 	 * 2) Chiude ed elimina la connessione con server_pipe
 	 * 3) libera command
 	 */
 	Client* ptr;
 	while (head != NULL) {
 		ptr = head;
+		close(ptr->pipe);
+		char* temp = malloc(sizeof(char) * 50);
+		getClientPipePath(ptr->pid, temp);
+		unlink(temp);
+		free(temp);
 		head = head->next;
 		free(ptr);
 	}

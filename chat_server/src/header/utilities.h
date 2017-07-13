@@ -9,7 +9,7 @@
 #define LENGTH_ARRAY(x)  (sizeof(x) / sizeof((x)[0]))
 
 char** argv;
-int verboseMode;
+extern int verboseMode;
 
 /* Definizione del tipo di una variabile booleana */
 typedef enum {
@@ -58,7 +58,8 @@ int readValue();
 
 char *trim(char *str);
 
-void set_argv(const char **args);
+int countDigits(int n);
 
+void set_argv(const char **args);
 
 #endif /* HEADER_UTILITIES_H_ */

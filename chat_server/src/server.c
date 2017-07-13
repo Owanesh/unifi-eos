@@ -10,13 +10,18 @@
 #include "header/utilities.h"
 #include "header/server.h"
 
-char* server_pipe_name = "server_pipe";
+char* server_pipe_name = "../server_pipe";
 
 void openServerPipe();
 
 void start() {
 	createPipe(server_pipe_name);
 	openServerPipe();
+
+	// l'apertura non deve essere bloccante, ma le successive read sì, perciò modifico i flag
+	int saved_flags = fcntl(server_pipe, F_GETFL);
+	// maschero O_NONBLOCK
+	fcntl(server_pipe, F_SETFL, saved_flags & (~O_NONBLOCK));
 }
 
 void openServerPipe() {
@@ -39,7 +44,7 @@ void stop() {
 /* Ritorna il nome completo della pipe di un client
  * pid + "_client_pipe" */
 void getClientPipePath(pid_t pid, char* bufferPath) {
-	sprintf(bufferPath, "%d%s", pid, "_client_pipe");
+	sprintf(bufferPath, "../%d%s", pid, "_client_pipe");
 }
 
 /* Ritorna un puntatore all'ultimo client della lista */
@@ -56,26 +61,35 @@ Client* getLastClient(Client *head) {
 
 /*
  * Legge il comando ricevuto in server_pipe, inserendolo in "str"
+ * Restituisce 1 se è presente un comando nella stringa, altrimenti 0
  */
-void readCommand(char *str) {
+int readCommand(char **str) {
 	int dim = 512;
 	/* non essendo possibile prevedere la lunghezza massima del messaggio ricevuto
 	 * si alloca dinamicamente lo spazio del buffer
 	 */
-	str = realloc(str, sizeof(char) * dim);
+	*str = realloc(*str, sizeof(char) * dim);
+	char* temp = *str;
 	int n, count = 0;
 	do { // Legge fino a '\0' o EOF
-		n = read(server_pipe, str, 1);
+		/*
+		 * Nota: la read è bloccante fino a che c'è almeno un client connesso,
+		 * altrimenti legge EOF ed esce, rientrando ed uscendo all'infinito.
+		 */
+		n = read(server_pipe, temp, 1);
 		if (n != 0) {
 			count++;
 			if (count == dim) {
 				//rialloco il doppio della dimensione precedente
-				str = realloc(str, sizeof(char) * (dim * 2));
+				temp = realloc(temp, sizeof(char) * (dim * 2));
 				dim *= 2;
-				str += (count - 1); //riposiziono il puntatore
+				temp += (count - 1); //riposiziono il puntatore
 			}
+		} else {
+			**str = '\0';
 		}
-	} while (n > 0 && *str++ != '\0');
+	} while (n > 0 && *temp++ != '\0');
+	return n;
 }
 
 /*
@@ -85,7 +99,7 @@ void readCommand(char *str) {
  */
 void getFirstField(char keyword[20], char* cmd) {
 	int i = 0;
-	while (*cmd != ' ') {
+	while (*cmd != ' ' && *cmd != '\0') {
 		keyword[i] = *cmd;
 		cmd++;
 		i++;

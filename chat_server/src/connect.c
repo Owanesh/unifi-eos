@@ -85,7 +85,6 @@ void createPipe(char* pipePath) {
 				pipePath);
 		fflush(stdout);
 	}
-
 }
 
 /* Aggiunge un client nella lista */

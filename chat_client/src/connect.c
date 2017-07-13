@@ -24,7 +24,7 @@ int connect() {
 	if (isConnected) {
 		//apertura del "<pid>_client_pipe"
 		char pipePath[50];
-		sprintf(pipePath, "%d", getpid());
+		sprintf(pipePath, "../%d", getpid());
 		strcat(pipePath, "_client_pipe");
 		do {
 			//continua ad aprire finche' non ha successo
@@ -44,7 +44,7 @@ int connect() {
  * Restituisce 1 se il file esiste e viene aperto, altrimenti 0
  */
 int openingConnection() {
-	char *serverPipePath = "server_pipe";
+	char *serverPipePath = "../server_pipe";
 	// apre server_pipe in scrittura
 	fdServerPipe = open(serverPipePath, O_WRONLY);
 	if (fdServerPipe == -1) {

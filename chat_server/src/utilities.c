@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <ctype.h>
 
+int verboseMode = 1;
+
 /*
  * Acquisisce una linea di testo da stdin verificando che non sia:
  * TOO_LONG = la stringa è troppo lunga

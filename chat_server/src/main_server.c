@@ -13,6 +13,20 @@
 Client *head = NULL;
 //definizione delle variabile extern dichiarate in main_client.h
 int server_pipe = 0;
+// buffer per ogni comando letto da server_pipe
+char* command = NULL;
+
+void switchCommand(char* cmd);
+void handler_termination();
+
+int main(void) {
+	start();
+	signal(SIGINT, handler_termination);
+	while (1) {
+		readCommand(command);
+		switchCommand(command);
+	}
+}
 
 void switchCommand(char* cmd) {
 	char keyword[20];
@@ -31,20 +45,32 @@ void switchCommand(char* cmd) {
 		// "MSG <pid_destinatari> $<pid_mittente> <messaggio>"
 		printf("\n\t MSG cmd request ");
 		deliverMessage(head, cmd);
+
 	} else if (strcmp(keyword, "DISCONNECT") == 0) {
 		// "DISCONNECT <pid>"
 		printf("\n\t DISCONNECT cmd request ");
 		disconnect(&head, cmd);
+
 	} else {
 		printf("<%s> \nComando non riconosciuto", cmd);
 	}
 }
 
-int main(void) {
-	start();
-	char* command = NULL;
-	while (1) {
-		readCommand(command);
-		switchCommand(command);
+void handler_termination() {
+	/*
+	 * 1) Libera la memoria di ogni nodo della lista
+	 * 2) Chiude ed elimina la connessione con server_pipe
+	 * 3) libera command
+	 */
+	Client* ptr;
+	while (head != NULL) {
+		ptr = head;
+		head = head->next;
+		free(ptr);
 	}
+	close(server_pipe);
+	unlink("server_pipe");
+	free(command);
+	printf("\nIl server e' terminato con successo.");
+	exit(EXIT_SUCCESS);
 }

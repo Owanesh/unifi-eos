@@ -43,4 +43,4 @@ Testato su
 * Ubuntu 12.0.4
 
 ***
-Make with ❤️  by [Owanesh](https://github.com/Owanesh) and [MatteoMauro](https://github.com/MatteoMauro)
+Made with ❤️  by [Owanesh](https://github.com/Owanesh) and [MatteoMauro](https://github.com/MatteoMauro)

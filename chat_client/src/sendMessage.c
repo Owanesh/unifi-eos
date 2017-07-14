@@ -30,25 +30,25 @@ void sendMessage() {
 	int result = getMessage(message);
 	if (result == OK) {
 		result = getReceivers(&receivers);
+		if (result != 0) {
+			//result contiene il numero di destinatari
+			buildMessage(&message, receivers, result);
+			//il messaggio è pronto per essere inviato al server
+			write(fdServerPipe, message, strlen(message) + 1); //+1 perche' strlen non conta '\0'
+		} else if (result == 0) {
+			printf("Messaggio non inviato.\n");
+		}
+		// free di tutta la memoria allocata
+		if (receivers != NULL) {
+			int i = 0;
+			for (; i < result; i++) {
+				free(*(receivers + i));
+			}
+			free(receivers);
+		}
 	}
-	if (result != 0) {
-		//result contiene il numero di destinatari
-		buildMessage(&message, receivers, result);
-		//il messaggio è pronto per essere inviato al server
-		write(fdServerPipe, message, strlen(message) + 1); //+1 perche' strlen non conta '\0'
-	} else if (result == 0) {
-		printf("Messaggio non inviato.\n");
-	}
-	// free di tutta la memoria allocata
 	if (message != NULL)
 		free(message);
-	if (receivers != NULL) {
-		int i = 0;
-		for (; i < result; i++) {
-			free(*(receivers + i));
-		}
-		free(receivers);
-	}
 }
 
 int getMessage(char* message) {

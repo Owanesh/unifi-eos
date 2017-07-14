@@ -21,8 +21,11 @@ void disconnect() {
 	close(fdServerPipe);
 	if (messages != NULL) {
 		int i = 0;
-		for (; i < countMessages; i++)
+		for (; i < totalMessages; i++)
 			free(messages[i]);
 		free(messages);
 	}
+	messages = NULL;
+	countMessages = 0;
+	totalMessages = 0;
 }

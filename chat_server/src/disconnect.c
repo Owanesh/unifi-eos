@@ -29,7 +29,7 @@ void disconnect(Client **head, char* cmd) {
 		fd = deleteNode(head, pid);
 	}
 	// chisura ed eliminazione della pipe del client
-	char temp[30];
+	char temp[50];
 	getClientPipePath(pid, temp);
 	closeConnection(fd, temp);
 }
@@ -60,8 +60,7 @@ int deleteNode(Client **head, pid_t pid) {
 	return fd;
 }
 
-/* Dato il pid, ritorna l'elemento precedente a quello richiesto,
- * utile per eliminare un client dalla lista*/
+/* Dato il pid, ritorna l'elemento precedente a quello richiesto*/
 Client* previousClient(Client **head, pid_t pid) {
 	if ((*head) == NULL) {
 		return NULL;

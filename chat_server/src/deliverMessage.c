@@ -31,6 +31,7 @@ void deliverMessage(Client* head, char* cmd) {
 	pid_t sender;
 	char* message = NULL;
 	int countReceivers = extractFields(&receivers, &sender, &message, cmd); //1)
+
 	int countExistings = checkReceivers(head, receivers, countReceivers,
 			message); //2)
 	printf("\nSono stati inviati %d messaggi.\n", countExistings);
@@ -94,14 +95,14 @@ int countFields(char* cmd, const char token_delimiter) {
 	int token_counter = 0;
 
 	/* Conteggio di quanti token troviamo scorrendo la stringa  */
-	while (*cmd) {
+	while (*cmd != '\0' && *cmd != '$') { //dovrei sempre uscire perche' trovo '$'
 		if (token_delimiter == *cmd) {
 			token_counter++;
 		}
 		cmd++;
 	}
-	//+2 per il MSG e per il NULL finale
-	token_counter += 2;
+	if (*cmd == '$')
+		token_counter += 3; // pid mittente + messaggio + NULL finale
 	return token_counter;
 }
 
@@ -114,11 +115,22 @@ void str_split(char* cmd, const char token_delimiter, char** fields) {
 	char* token = strtok(cmd, delim);
 	/* Preso il token successivo (strtok), controllo se e' valido*/
 	while (token != NULL) {
+		char c = *token;
 		fields[id_tok] = strdup(token);
 		token = strtok(0, delim);
 		id_tok++;
+		if (c == '$') {
+			break;
+		}
 	}
-	fields[id_tok] = NULL;
+	//adesso devo ricompattare il resto del messaggio
+	fields[id_tok] = malloc(sizeof(char) * MAX_LENGTH_MSG);
+	while (token != NULL) {
+		strcat(fields[id_tok], token);
+		strcat(fields[id_tok], " ");
+		token = strtok(0, delim);
+	}
+	fields[++id_tok] = NULL;
 }
 
 int checkReceivers(Client* head, pid_t** receivers, int countReceivers,
@@ -126,11 +138,11 @@ int checkReceivers(Client* head, pid_t** receivers, int countReceivers,
 	int length = strlen(message) + 1;
 	int i = 0, countExistings = 0;
 	Client* node;
-	for (; i < countReceivers; i++) {
-		int j = 0, found = 0;
+	for (; i < countReceivers; i++) { //per ogni receivers che possiedo...
+		int found = 0;
 		node = head; //ripristino la partenza
-		for (; j < countReceivers && !found && node != NULL; j++) {
-			if (node->pid == *(receivers[j])) {
+		while (!found && node != NULL) { //...verifico se esiste scorrendo tutta la lista
+			if (node->pid == *(receivers[i])) {
 				write(node->pipe, message, length);
 				found = 1;
 				countExistings++;

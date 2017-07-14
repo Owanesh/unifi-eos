@@ -14,20 +14,22 @@ void handler_termination() {
 void handler_new_message() {
 	//lettura dalla pipe e inserimento nel buffer messages (dichiarato in main_client.h)
 	countMessages++;
-	//rialloco countMessages puntatori
-	messages = realloc(messages, sizeof(char*) * countMessages);
+	totalMessages++;
+	//rialloco totalMessages puntatori
+	messages = realloc(messages, sizeof(char*) * totalMessages);
 	if (messages == NULL)
 		exit(EXIT_FAILURE);
 	//alloco lo spazio per il nuovo messaggio
-	messages[countMessages - 1] = malloc(sizeof(char) * MAX_LENGTH_MSG);
-	if (messages[countMessages - 1] == NULL)
+	messages[totalMessages - 1] = malloc(sizeof(char) * MAX_LENGTH_MSG);
+	if (messages[totalMessages - 1] == NULL)
 		exit(EXIT_FAILURE);
-	char* ptr = messages[countMessages - 1]; //alias
+	char* ptr = messages[totalMessages - 1]; //alias
 	int n;
 	do { // Legge fino a '\0' o EOF
 		n = read(fdClientPipe, ptr, 1);
 	} while (n > 0 && *ptr++ != '\0');
-	printf("\n[NOTA] E' disponibile un nuovo messaggio (aggiorna il menu' per vedere quanti ne sono disponibili).\n");
+	printf(
+			"\n[NOTA] E' disponibile un nuovo messaggio (aggiorna il menu' per vedere quanti ne sono disponibili).\n");
 	fflush(stdout);
 	signal(SIGUSR1, handler_new_message); //riattivo l'handler
 }

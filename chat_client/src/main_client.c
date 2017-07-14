@@ -22,6 +22,8 @@ int fdClientPipe;
 int fdServerPipe;
 char** messages = NULL;
 int countMessages = 0;
+int totalMessages = 0;
+
 
 /* Controlla la scelta dell'utente ed invoca le funzioni opportune */
 void switchOptions(int value) {
@@ -63,6 +65,7 @@ void switchOptions(int value) {
 			printf("Non sei connesso.\n");
 		break;
 	case 6:
+		break;
 	case 7:
 		if (connected)
 			disconnect();

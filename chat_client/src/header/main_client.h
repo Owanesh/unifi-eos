@@ -7,5 +7,6 @@ extern int fdClientPipe;
 extern int fdServerPipe;
 extern char** messages;
 extern int countMessages;
+extern int totalMessages;
 
 #endif /* HEADER_MAIN_CLIENT_H_ */

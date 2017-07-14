@@ -7,7 +7,6 @@
 #include "header/main_client.h"
 #include "header/getListOfClients.h"
 void sendRequestToServer();
-void printList(char* list);
 
 void getListOfClients() {
 	/*
@@ -22,7 +21,9 @@ void getListOfClients() {
 	int dim = 64;
 	sendRequestToServer();
 	char *list = malloc(sizeof(char) * dim);
+	char* start;
 	if (list != NULL) {
+		start = list;
 		int n, count = 0;
 		do { // Legge fino a '\0' o EOF
 			n = read(fdClientPipe, list, 1);
@@ -31,13 +32,14 @@ void getListOfClients() {
 				if (count == dim) {
 					//rialloco il doppio della dimensione precedente
 					list = realloc(list, sizeof(char) * (dim * 2));
+					start = list;
 					dim *= 2;
 					list += (count - 1); //riposiziono il puntatore
 				}
 			}
 		} while (n > 0 && *list++ != '\0');
-		printList(list);
-		free(list);
+		printf("%s", start);
+		free(start);
 	}
 }
 
@@ -52,7 +54,3 @@ void sendRequestToServer() {
 	write(fdServerPipe, msg, msgLength);
 }
 
-void printList(char* list) {
-	//SOLO PER PROVA
-	printf("Lista dei client connessi:\n%s\n", list);
-}

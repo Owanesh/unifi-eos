@@ -8,9 +8,9 @@
 
 int getMessage(char* message);
 int readLine();
-int getReceivers(char** receivers);
+int getReceivers(char*** receivers);
 int getValue();
-void buildMessage(char* message, char** receivers, int count);
+void buildMessage(char** message, char** receivers, int count);
 
 void sendMessage() {
 	/*
@@ -29,11 +29,11 @@ void sendMessage() {
 	char** receivers = NULL;
 	int result = getMessage(message);
 	if (result == OK) {
-		result = getReceivers(receivers);
+		result = getReceivers(&receivers);
 	}
 	if (result != 0) {
 		//result contiene il numero di destinatari
-		buildMessage(message, receivers, result);
+		buildMessage(&message, receivers, result);
 		//il messaggio è pronto per essere inviato al server
 		write(fdServerPipe, message, strlen(message) + 1); //+1 perche' strlen non conta '\0'
 	} else if (result == 0) {
@@ -103,24 +103,26 @@ int readLine(char *buff, size_t sz) {
  * return > 0 -> il client ha inserito i destinatari desiderati
  * return 0 -> il client non vuole più inviare il messaggio e annulla l'operazione
  */
-int getReceivers(char** receivers) {
+int getReceivers(char*** receivers) {
 	int count = 0, pid;
 	do {
 		printf(
 				"Inserisci PID del processo destinatario (0 per annullare, INVIO per terminare): ");
 		pid = getValue();
-		if (pid != -1 && pid != 0) {
+		if (pid == getpid())
+			printf("Non puoi inserire il tuo stesso pid.\nRiprovare: ");
+		else if (pid != -1 && pid != 0) {
 			count++;
 			//riallocazione di count puntatori
-			receivers = realloc(receivers, sizeof(char*) * count);
-			if (receivers == NULL)
+			*receivers = realloc(*receivers, sizeof(char*) * count);
+			if (*receivers == NULL)
 				exit(EXIT_FAILURE);
 			//allocazione e inserimento dell'ultimo pid inserito
 			int digits = countDigits(pid) + 1; //+1 per il '\0'
-			*(receivers + count - 1) = malloc(sizeof(char) * digits);
-			if (*(receivers + count - 1) == NULL)
+			*(*receivers + count - 1) = malloc(sizeof(char) * digits);
+			if (*(*receivers + count - 1) == NULL)
 				exit(EXIT_FAILURE);
-			sprintf(*(receivers + count - 1), "%d", pid);
+			sprintf(*(*receivers + count - 1), "%d", pid);
 		} else if (pid == -1) {
 			count = 0; //azzerando count il messaggio non verrà inviato
 		}
@@ -144,10 +146,10 @@ int getValue() {
 
 		char* bufferTrimmed = trim(buffer);
 		//trim restituisce NULL se l'utente ha digitato solo "{' '}\n"
-		if (bufferTrimmed != NULL) {
-			if (bufferTrimmed[0] == '\n') {
-				return 0; //fine inserimento
-			}
+		if (bufferTrimmed == NULL)
+			//terminazione
+			return 0;
+		else {
 			// un carattere iniziale resituirebbe 0
 			validSyntax = sscanf(bufferTrimmed, "%d", &value)
 					&& bufferTrimmed[0] != ' ';
@@ -161,9 +163,9 @@ int getValue() {
 }
 /*
  * Inserisce in "message" la stringa opportunamente formattata
- * MSG <pid_dest1> ... <pid_destN> <pid_mittente> <message>
+ * MSG <pid_dest1> ... <pid_destN> $<pid_mittente> <message>
  */
-void buildMessage(char* message, char** receivers, int count) {
+void buildMessage(char** message, char** receivers, int count) {
 	/*
 	 * 1) calcolo la dimensione del messaggio finale
 	 * 2) copio "MSG " in un variabile d'appoggio "temp"
@@ -179,7 +181,7 @@ void buildMessage(char* message, char** receivers, int count) {
 		dimension_message += strlen(*(receivers + i)) + 1;	//+1 per lo spazio
 	}
 	dimension_message += (countDigits(getpid()) + 2); //+2  per '$' + spazio
-	dimension_message += strlen(message) + 1; //+1 per '\0'
+	dimension_message += strlen(*message) + 1; //+1 per '\0'
 	char* temp = malloc(sizeof(char) * dimension_message);
 	if (temp == NULL)
 		exit(EXIT_FAILURE);
@@ -194,9 +196,9 @@ void buildMessage(char* message, char** receivers, int count) {
 		exit(EXIT_FAILURE);
 	sprintf(mypid, "$%d ", getpid());
 	strcat(temp, mypid);
-	strcat(temp, message);
-	message = realloc(message, sizeof(char) * (strlen(temp) + 1));
-	strcpy(message, temp);
+	strcat(temp, *message);
+	*message = realloc(*message, sizeof(char) * (strlen(temp) + 1));
+	strcpy(*message, temp);
 	free(temp);
 	free(mypid);
 }

@@ -35,7 +35,7 @@ void deliverMessage(Client* head, char* cmd) {
 			message); //2)
 	printf("\nSono stati inviati %d messaggi.\n", countExistings);
 	if (countExistings < countReceivers) // non tutti i destinatari erano corretti
-		kill(getSenderPipe(sender, head), SIGUSR2);
+		kill(sender, SIGUSR2);
 
 	//3)
 	int i = 0;
@@ -55,6 +55,7 @@ int extractFields(pid_t*** receivers, pid_t* sender, char** message, char* cmd) 
 	while (*(fields + count)[0] != '$')
 		count++;
 	// alloco lo spazio per contenerli tutti
+	count--; //tolgo il MSG iniziale
 	*receivers = malloc(sizeof(pid_t*) * count);
 	// acquisisco i pid dei receivers
 	int i = 1;
@@ -63,7 +64,7 @@ int extractFields(pid_t*** receivers, pid_t* sender, char** message, char* cmd) 
 		*(*(*receivers + (i - 1))) = strtol(*(fields + i), NULL, 10);
 	}
 	// acquisisco il mittente
-	*sender = strtol(*(fields + i), NULL, 10);
+	*sender = strtol((*(fields + i)) + sizeof(char), NULL, 10); //+sizeof(char) per oltrepassare il'$' iniziale
 	// acquisisco il messaggio
 	i++;
 	*message = malloc(sizeof(char) * (strlen(*(fields + i)) + 1)); //+1 per '\0'

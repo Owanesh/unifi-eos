@@ -10,7 +10,7 @@
 #include "header/utilities.h"
 #include "header/server.h"
 
-char* server_pipe_name = "../server_pipe";
+char* server_pipe_name = "../../server_pipe";
 
 void openServerPipe();
 
@@ -44,7 +44,7 @@ void stop() {
 /* Ritorna il nome completo della pipe di un client
  * pid + "_client_pipe" */
 void getClientPipePath(pid_t pid, char* bufferPath) {
-	sprintf(bufferPath, "../%d%s", pid, "_client_pipe");
+	sprintf(bufferPath, "../../%d%s", pid, "_client_pipe");
 }
 
 /* Ritorna un puntatore all'ultimo client della lista */

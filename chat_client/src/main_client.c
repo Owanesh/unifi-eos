@@ -11,9 +11,10 @@
 #include <signal.h>
 
 // opzioni del menù principale
-const char* options[] = { "(1) Connessione al server", "(2) Elenco dei client connessi",
-		"(3) Invia un nuovo messaggio", "(4) Visualizza i nuovi messaggi",
-		"(5) Disconnessione dal server", "(6) Esci", NULL };
+const char* options[] = { "(1) Connessione al server",
+		"(2) Elenco dei client connessi", "(3) Invia un nuovo messaggio",
+		"(4) Visualizza i nuovi messaggi", "(5) Disconnessione dal server",
+		"(6) Aggiorna il menu'", "(7) Esci", NULL };
 
 int connected = 0;
 //definizione delle variabile extern dichiarate in main_client.h
@@ -62,6 +63,7 @@ void switchOptions(int value) {
 			printf("Non sei connesso.\n");
 		break;
 	case 6:
+	case 7:
 		if (connected)
 			disconnect();
 		break;
@@ -75,7 +77,7 @@ int main(int argc, const char **argv) {
 	signal(SIGUSR1, handler_new_message);
 	//ruotine di gestione "destinatario non trovato"
 	signal(SIGUSR2, handler_dest_not_found);
-	int optionsAllowed[] = { 1, 6 };
+	int optionsAllowed[] = { 1, 7 };
 	int value;
 	do {
 		char footer[30];
@@ -85,7 +87,7 @@ int main(int argc, const char **argv) {
 				optionsAllowed,
 				NULL, 0);
 		switchOptions(value);
-	} while (value != 6);
+	} while (value != 7);
 	printf("\nProgramma terminato.");
 	exit(EXIT_SUCCESS);
 }

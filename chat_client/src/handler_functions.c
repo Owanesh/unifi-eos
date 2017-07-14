@@ -5,7 +5,6 @@
 #include "header/handler_functions.h"
 #include "header/disconnect.h"
 
-
 void handler_termination() {
 	// prima di uscire e' necessario avvisare della propria disconnessione
 	disconnect();
@@ -28,10 +27,14 @@ void handler_new_message() {
 	do { // Legge fino a '\0' o EOF
 		n = read(fdClientPipe, ptr, 1);
 	} while (n > 0 && *ptr++ != '\0');
+	printf("\n[NOTA] E' disponibile un nuovo messaggio (aggiorna il menu' per vedere quanti ne sono disponibili).\n");
+	fflush(stdout);
 	signal(SIGUSR1, handler_new_message); //riattivo l'handler
 }
 
 void handler_dest_not_found() {
-	printf("Il messaggio non e' stato recapitato: destinatario inesistente.\n");
+	printf(
+			"\n[NOTA] Il messaggio non e' stato recapitato: uno o piu' destinatari inesistenti.\n");
+	fflush(stdout);
 	signal(SIGUSR2, handler_dest_not_found); //riattivo l'handler
 }

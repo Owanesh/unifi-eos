@@ -21,13 +21,20 @@ void switchCommand(char* cmd);
 void handler_termination();
 
 int main(void) {
-	start();
-	signal(SIGINT, handler_termination);
-	while (1) {
-		int isCmd = readCommand(&command);
-		printf("\n%s\n", command);
-		if (isCmd)
-			switchCommand(command);
+	if (access(server_pipe_path, F_OK) != -1) {
+		// se il file server_pipe esiste, allora un processo server è già operativo
+		printf(
+				"[ERROR] Esiste già un processo server operativo. Impossibile avviarne più di uno contemporaneamente.");
+	} else {
+		// il processo puo' essere correttamente avviato
+		start();
+		signal(SIGINT, handler_termination);
+		while (1) {
+			int isCmd = readCommand(&command);
+			printf("\n%s\n", command);
+			if (isCmd)
+				switchCommand(command);
+		}
 	}
 }
 

@@ -4,6 +4,7 @@
 #include "header/main_client.h"
 #include "header/handler_functions.h"
 #include "header/disconnect.h"
+#include <signal.h>
 
 void handler_termination() {
 	// prima di uscire e' necessario avvisare della propria disconnessione

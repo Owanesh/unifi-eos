@@ -14,6 +14,7 @@ Client *head = NULL;
 int server_pipe = 0;
 // buffer per ogni comando letto da server_pipe
 char* command = NULL;
+char* server_pipe_path = "./server_pipe";
 
 void switchCommand(char* cmd);
 void handler_termination();
@@ -75,7 +76,7 @@ void handler_termination() {
 		free(ptr);
 	}
 	close(server_pipe);
-	unlink("server_pipe");
+	unlink(server_pipe_path);
 	free(command);
 	printf("\nIl server e' terminato con successo.");
 	exit(EXIT_SUCCESS);

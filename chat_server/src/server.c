@@ -10,12 +10,10 @@
 #include "header/utilities.h"
 #include "header/server.h"
 
-char* server_pipe_name = "../../server_pipe";
-
 void openServerPipe();
 
 void start() {
-	createPipe(server_pipe_name);
+	createPipe(server_pipe_path);
 	openServerPipe();
 
 	// l'apertura non deve essere bloccante, ma le successive read sì, perciò modifico i flag
@@ -27,24 +25,24 @@ void start() {
 void openServerPipe() {
 	/* apertura della server_pipe in lettura e ovviamente
 	 * non bloccante, dato che non è necessario che esistano client gia' in attesa*/
-	server_pipe = open(server_pipe_name, O_RDONLY | O_NONBLOCK);
+	server_pipe = open(server_pipe_path, O_RDONLY | O_NONBLOCK);
 	if (server_pipe == -1) {
 		printf("\n[ERROR] (%s) Pipe creata ma inutilizzabile",
-				server_pipe_name);
+				server_pipe_path);
 	} else if (verboseMode == 1) {
-		printf("\n[LOG] (%s) La pipe è pronta!", server_pipe_name);
+		printf("\n[LOG] %s: pipe pronta all'utilizzo", server_pipe_path);
 		fflush(stdout);
 	}
 }
 
 void stop() {
-	closeConnection(server_pipe, server_pipe_name);
+	closeConnection(server_pipe, server_pipe_path);
 }
 
 /* Ritorna il nome completo della pipe di un client
  * pid + "_client_pipe" */
 void getClientPipePath(pid_t pid, char* bufferPath) {
-	sprintf(bufferPath, "../../%d%s", pid, "_client_pipe");
+	sprintf(bufferPath, "./%d%s", pid, "_client_pipe");
 }
 
 /* Ritorna un puntatore all'ultimo client della lista */

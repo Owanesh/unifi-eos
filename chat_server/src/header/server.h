@@ -5,6 +5,8 @@
 // file descriptor del server
 extern int server_pipe;
 
+extern char* server_pipe_path;
+
 void start();
 void stop();
 void getClientPipePath(pid_t pid, char* bufferPath);

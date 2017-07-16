@@ -9,7 +9,7 @@ _Per maggiori informazioni sullo sviluppo e sull'analisi del codice, si prega di
 
 **La repository non sarà mantenuta oltre la consegna (e fine) del progetto.**
 
-### Come partire ?
+## Come compilare ?
 
 **Scheduler**
 ```sh
@@ -25,6 +25,7 @@ make -f interpreter.make
 ```
 
 **Chat**
+
 _Server_
 ```sh
 cd chat_server/
@@ -38,9 +39,23 @@ make -f chat_client.make
 ./chat_client
 ```
 
+## ⚡️ Extra
+#### Chat
+```sh
+cd <yourgitfolder>
+mkdir executables
+mv chat_client/src/chat_client executables/chat_client
+mv chat_server/src/chat_server executables/chat_server
+cd executables
+./chat_server
+./chat_client
+```
+E' necessario che entrambi i programmi stiano nella stessa cartella [Vedi Commit](https://github.com/Owanesh/unifi-eos/commit/8e87d6e8a9e8d42d48375ec8397313fd57213690) 👈
+
+
 Testato su
 * Mac OSX Sierra
-* Ubuntu 12.0.4
+* Ubuntu 12.0.4 LTS
 
 ***
 Made with ❤️  by [Owanesh](https://github.com/Owanesh) and [MatteoMauro](https://github.com/MatteoMauro)

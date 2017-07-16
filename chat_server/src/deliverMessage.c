@@ -125,6 +125,7 @@ void str_split(char* cmd, const char token_delimiter, char** fields) {
 	}
 	//adesso devo ricompattare il resto del messaggio
 	fields[id_tok] = malloc(sizeof(char) * MAX_LENGTH_MSG);
+	sprintf(fields[id_tok], "* Mittente: %s *\n", fields[id_tok - 1]);
 	while (token != NULL) {
 		strcat(fields[id_tok], token);
 		strcat(fields[id_tok], " ");

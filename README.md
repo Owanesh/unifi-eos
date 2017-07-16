@@ -51,7 +51,7 @@ cd executables
 ./chat_client
 ```
 E' necessario che entrambi i programmi stiano nella stessa cartella [Vedi Commit](https://github.com/Owanesh/unifi-eos/commit/8e87d6e8a9e8d42d48375ec8397313fd57213690) 👈
-
+![Win](https://media.giphy.com/media/XE7kcG4fMEDqU/giphy.gif)
 
 Testato su
 * Mac OSX Sierra

@@ -27,13 +27,15 @@ int main(void) {
 				"[ERROR] Esiste già un processo server operativo. Impossibile avviarne più di uno contemporaneamente.");
 	} else {
 		// il processo puo' essere correttamente avviato
-		start();
+ 		start();
 		signal(SIGINT, handler_termination);
+		printf("\n\n");
 		while (1) {
 			int isCmd = readCommand(&command);
-			printf("\n%s\n", command);
-			if (isCmd)
+			if (isCmd){
+				printf("\n%s\n", command);
 				switchCommand(command);
+			}
 		}
 	}
 }

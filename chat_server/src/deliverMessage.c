@@ -155,6 +155,10 @@ int checkReceivers(Client* head, pid_t** receivers, int countReceivers,
 	return countExistings;
 }
 
+/*
+* Acquisisce il riferimento alla pipe del client mittente
+*/
+
 int getSenderPipe(pid_t sender, Client* head) {
 	int found = 0, fd;
 	do {

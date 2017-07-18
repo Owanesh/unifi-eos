@@ -54,7 +54,7 @@ char* buildMessage(Client* head, pid_t pid) {
 }
 
 /*
- * Conta il numero di clients connessi (escluso il pid mittente)
+ * Conta il numero di clients connessi
  */
 int countClients(Client* head) {
 	int count = 0;
